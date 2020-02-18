@@ -18,12 +18,12 @@ namespace ComputerShopView
     {
         [Dependency]
         public new IUnityContainer Container { get; set; }
-        private readonly IAssemblyLogic logicP;
+        private readonly IAssemblyLogic logicA;
         private readonly IMainLogic logicM;
         public FormCreateOrder(IAssemblyLogic logicA, IMainLogic logicM)
         {
             InitializeComponent();
-            this.logicP = logicA;
+            this.logicA = logicA;
             this.logicM = logicM;
         }
 
@@ -43,7 +43,7 @@ namespace ComputerShopView
                 try
                 {
                     int id = Convert.ToInt32(comboBoxAssembly.SelectedValue);
-                    AssemblyViewModel Assembly = logicP.GetElement(id);
+                    AssemblyViewModel Assembly = logicA.GetElement(id);
                     int count = Convert.ToInt32(textBoxCount.Text);
                     textBoxSum.Text = (count * Assembly.Price).ToString();
                 }
@@ -64,12 +64,12 @@ namespace ComputerShopView
         {
             try
             {
-                var listP = logicP.GetList();
-                if (listP != null)
+                var listA = logicA.GetList();
+                if (listA != null)
                 {
                     comboBoxAssembly.DisplayMember = "AssemblyName";
                     comboBoxAssembly.ValueMember = "Id";
-                    comboBoxAssembly.DataSource = listP;
+                    comboBoxAssembly.DataSource = listA;
                     comboBoxAssembly.SelectedItem = null;
                 }
             }

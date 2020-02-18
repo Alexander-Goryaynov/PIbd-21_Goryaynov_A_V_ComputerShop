@@ -118,12 +118,12 @@ namespace ComputerShopListImplement.Implements
                 Price = model.Price
             });
             // детали для сборки
-            int maxPCId = 0;
+            int maxADId = 0;
             for (int i = 0; i < source.AssemblyDetails.Count; ++i)
             {
-                if (source.AssemblyDetails[i].Id > maxPCId)
+                if (source.AssemblyDetails[i].Id > maxADId)
                 {
-                    maxPCId = source.AssemblyDetails[i].Id;
+                    maxADId = source.AssemblyDetails[i].Id;
                 }
             }
             // убираем дубли по деталям
@@ -145,7 +145,7 @@ namespace ComputerShopListImplement.Implements
             {
                 source.AssemblyDetails.Add(new AssemblyDetail
                 {
-                    Id = ++maxPCId,
+                    Id = ++maxADId,
                     AssemblyId = maxId + 1,
                     DetailId = model.AssemblyDetails[i].DetailId,
                     Count = model.AssemblyDetails[i].Count
@@ -173,12 +173,12 @@ namespace ComputerShopListImplement.Implements
             }
             source.Assemblies[index].AssemblyName = model.AssemblyName;
             source.Assemblies[index].Price = model.Price;
-            int maxPCId = 0;
+            int maxADId = 0;
             for (int i = 0; i < source.AssemblyDetails.Count; ++i)
             {
-                if (source.AssemblyDetails[i].Id > maxPCId)
+                if (source.AssemblyDetails[i].Id > maxADId)
                 {
-                    maxPCId = source.AssemblyDetails[i].Id;
+                    maxADId = source.AssemblyDetails[i].Id;
                 }
             }
             // обновляем существуюущие детали
@@ -225,7 +225,7 @@ namespace ComputerShopListImplement.Implements
                     {
                         source.AssemblyDetails.Add(new AssemblyDetail
                         {
-                            Id = ++maxPCId,
+                            Id = ++maxADId,
                             AssemblyId = model.Id,
                             DetailId = model.AssemblyDetails[i].DetailId,
                             Count = model.AssemblyDetails[i].Count
