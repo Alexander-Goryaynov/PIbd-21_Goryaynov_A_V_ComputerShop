@@ -4,9 +4,8 @@ using System.Text;
 
 namespace ComputerShopBusinessLogic.BindingModels
 {
-    public class DetailBindingModel
+    public class ChangeStatusBindingModel
     {
-        public int? Id { get; set; }
-        public string DetailName { get; set; }
+        public int OrderId { get; set; }
     }
 }

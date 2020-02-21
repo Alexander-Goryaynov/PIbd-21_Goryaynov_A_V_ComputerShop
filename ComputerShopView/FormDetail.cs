@@ -33,7 +33,7 @@ namespace ComputerShopView
             {
                 try
                 {
-                    var view = logic.GetElement(id.Value);
+                    var view = logic.Read(new DetailBindingModel { Id = id.Value })?[0];
                     if (view != null)
                     {
                         textBoxName.Text = view.DetailName;
@@ -55,21 +55,11 @@ namespace ComputerShopView
             }
             try
             {
-                if (id.HasValue)
+                logic?.CreateOrUpdate(new DetailBindingModel
                 {
-                    logic.UpdElement(new DetailBindingModel
-                    {
-                        Id = id.Value,
-                        DetailName = textBoxName.Text
-                    });
-                }
-                else
-                {
-                    logic.AddElement(new DetailBindingModel
-                    {
-                        DetailName = textBoxName.Text
-                    });
-                }
+                    Id = id,
+                    DetailName = textBoxName.Text
+                });
                 MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DialogResult = DialogResult.OK;
                 Close();

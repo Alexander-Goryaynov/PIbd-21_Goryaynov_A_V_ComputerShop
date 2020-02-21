@@ -1,4 +1,5 @@
 ﻿using ComputerShopBusinessLogic.Interfaces;
+using ComputerShopBusinessLogic.BindingModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Unity;
+using ComputerShopBusinessLogic.ViewModels;
 
 namespace ComputerShopView
 {
@@ -54,7 +56,7 @@ namespace ComputerShopView
                     int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        logic.DelElement(id);
+                        logic.Delete(new AssemblyBindingModel { Id = id });
                     }
                     catch (Exception ex)
                     {
@@ -77,13 +79,17 @@ namespace ComputerShopView
         private void LoadData()
         {
             try
-            {
-                var list = logic.GetList();
+            {                
+                var list = logic.Read(null);
                 if (list != null)
                 {
                     dataGridView.DataSource = list;
-                    dataGridView.Columns[0].Visible = false;
-                    dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    for (int i = 0; i < 5; i++)
+                    {
+                        dataGridView.Columns[0].Visible = false;
+                        dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                        dataGridView.Columns[3].Visible = false;
+                    }
                 }
             }
             catch (Exception ex)

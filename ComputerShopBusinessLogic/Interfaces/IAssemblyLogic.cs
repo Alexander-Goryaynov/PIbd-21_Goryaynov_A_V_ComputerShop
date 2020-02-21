@@ -7,11 +7,9 @@ using ComputerShopBusinessLogic.BindingModels;
 namespace ComputerShopBusinessLogic.Interfaces
 {
     public interface IAssemblyLogic
-    {
-        List<AssemblyViewModel> GetList();
-        AssemblyViewModel GetElement(int id);
-        void AddElement(AssemblyBindingModel model);
-        void UpdElement(AssemblyBindingModel model);
-        void DelElement(int id);
+    {        
+        List<AssemblyViewModel> Read(AssemblyBindingModel model);
+        void CreateOrUpdate(AssemblyBindingModel model);
+        void Delete(AssemblyBindingModel model);        
     }
 }

@@ -104,7 +104,6 @@
             this.Name = "FormAssemblyDetail";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Деталь сборки";
-            this.Load += new System.EventHandler(this.FormAssemblyDetail_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

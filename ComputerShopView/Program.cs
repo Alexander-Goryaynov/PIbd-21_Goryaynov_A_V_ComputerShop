@@ -30,7 +30,9 @@ namespace ComputerShopView
                 new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IAssemblyLogic, AssemblyLogic>(
                 new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IMainLogic, MainLogic>(
+            currentContainer.RegisterType<IOrderLogic, OrderLogic>(
+                new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<MainLogic>(
                 new HierarchicalLifetimeManager());
             return currentContainer;
         }

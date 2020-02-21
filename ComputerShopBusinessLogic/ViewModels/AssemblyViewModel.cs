@@ -12,6 +12,6 @@ namespace ComputerShopBusinessLogic.ViewModels
         public string AssemblyName { get; set; }
         [DisplayName("Цена")]
         public decimal Price { get; set; }
-        public List<AssemblyDetailViewModel> AssemblyDetails { get; set; }
+        public Dictionary<int, (string, int)> AssemblyDetails { get; set; }
     }
 }

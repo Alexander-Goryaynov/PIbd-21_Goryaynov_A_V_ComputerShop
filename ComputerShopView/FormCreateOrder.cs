@@ -1,4 +1,5 @@
 ﻿using ComputerShopBusinessLogic.BindingModels;
+using ComputerShopBusinessLogic.BusinessLogic;
 using ComputerShopBusinessLogic.Interfaces;
 using ComputerShopBusinessLogic.ViewModels;
 using System;
@@ -19,8 +20,8 @@ namespace ComputerShopView
         [Dependency]
         public new IUnityContainer Container { get; set; }
         private readonly IAssemblyLogic logicA;
-        private readonly IMainLogic logicM;
-        public FormCreateOrder(IAssemblyLogic logicA, IMainLogic logicM)
+        private readonly MainLogic logicM;
+        public FormCreateOrder(IAssemblyLogic logicA, MainLogic logicM)
         {
             InitializeComponent();
             this.logicA = logicA;
@@ -32,10 +33,6 @@ namespace ComputerShopView
             CalcSum();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            CalcSum();
-        }
         private void CalcSum()
         {
             if (comboBoxAssembly.SelectedValue != null && !string.IsNullOrEmpty(textBoxCount.Text))
@@ -43,9 +40,9 @@ namespace ComputerShopView
                 try
                 {
                     int id = Convert.ToInt32(comboBoxAssembly.SelectedValue);
-                    AssemblyViewModel Assembly = logicA.GetElement(id);
+                    AssemblyViewModel assembly = logicA.Read(new AssemblyBindingModel { Id = id })?[0];
                     int count = Convert.ToInt32(textBoxCount.Text);
-                    textBoxSum.Text = (count * Assembly.Price).ToString();
+                    textBoxSum.Text = (count * assembly?.Price ?? 0).ToString();
                 }
                 catch (Exception ex)
                 {
@@ -64,12 +61,12 @@ namespace ComputerShopView
         {
             try
             {
-                var listA = logicA.GetList();
-                if (listA != null)
+                List<AssemblyViewModel> list = logicA.Read(null);
+                if (list != null)
                 {
                     comboBoxAssembly.DisplayMember = "AssemblyName";
                     comboBoxAssembly.ValueMember = "Id";
-                    comboBoxAssembly.DataSource = listA;
+                    comboBoxAssembly.DataSource = list;
                     comboBoxAssembly.SelectedItem = null;
                 }
             }
@@ -93,13 +90,14 @@ namespace ComputerShopView
             }
             try
             {
-                logicM.CreateOrder(new OrderBindingModel
+                logicM.CreateOrder(new CreateOrderBindingModel
                 {
                     AssemblyId = Convert.ToInt32(comboBoxAssembly.SelectedValue),
                     Count = Convert.ToInt32(textBoxCount.Text),
                     Sum = Convert.ToDecimal(textBoxSum.Text)
                 });
-                MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
                 DialogResult = DialogResult.OK;
                 Close();
             }
@@ -107,6 +105,11 @@ namespace ComputerShopView
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void textBoxCount_TextChanged(object sender, EventArgs e)
+        {
+            CalcSum();
         }
     }
 }

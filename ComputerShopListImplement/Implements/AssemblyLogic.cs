@@ -15,244 +15,143 @@ namespace ComputerShopListImplement.Implements
         {
             source = DataListSingleton.GetInstance();
         }
-        public List<AssemblyViewModel> GetList()
+        public void CreateOrUpdate(AssemblyBindingModel model)
         {
-            List<AssemblyViewModel> result = new List<AssemblyViewModel>();
-            for (int i = 0; i < source.Assemblies.Count; ++i)
+            Assembly tempAssembly = model.Id.HasValue ? null : new Assembly { Id = 1 };
+            foreach (var assembly in source.Assemblies)
             {
-                // требуется дополнительно получить список деталей для сборки и их количество
-                List<AssemblyDetailViewModel> AssemblyDetails = new List<AssemblyDetailViewModel>();
-                for (int j = 0; j < source.AssemblyDetails.Count; ++j)
-                {
-                    if (source.AssemblyDetails[j].AssemblyId == source.Assemblies[i].Id)
-                    {
-                        string DetailName = string.Empty;
-                        for (int k = 0; k < source.Details.Count; ++k)
-                        {
-                            if (source.AssemblyDetails[j].DetailId == source.Details[k].Id)
-                            {
-                                DetailName = source.Details[k].DetailName;
-                                break;
-                            }
-                        }
-                        AssemblyDetails.Add(new AssemblyDetailViewModel
-                        {
-                            Id = source.AssemblyDetails[j].Id,
-                            AssemblyId = source.AssemblyDetails[j].AssemblyId,
-                            DetailId = source.AssemblyDetails[j].DetailId,
-                            DetailName = DetailName,
-                            Count = source.AssemblyDetails[j].Count
-                        });
-                    }
-                }
-                result.Add(new AssemblyViewModel
-                {
-                    Id = source.Assemblies[i].Id,
-                    AssemblyName = source.Assemblies[i].AssemblyName,
-                    Price = source.Assemblies[i].Price,
-                    AssemblyDetails = AssemblyDetails
-                });
-            }
-            return result;
-        }
-        public AssemblyViewModel GetElement(int id)
-        {
-            for (int i = 0; i < source.Assemblies.Count; ++i)
-            {
-                // требуется дополнительно получить список деталей для сборки и их количество
-                List<AssemblyDetailViewModel> AssemblyDetails = new List<AssemblyDetailViewModel>();
-                for (int j = 0; j < source.AssemblyDetails.Count; ++j)
-                {
-                    if (source.AssemblyDetails[j].AssemblyId == source.Assemblies[i].Id)
-                    {
-                        string DetailName = string.Empty;
-                        for (int k = 0; k < source.Details.Count; ++k)
-                        {
-                            if (source.AssemblyDetails[j].DetailId == source.Details[k].Id)
-                            {
-                                DetailName = source.Details[k].DetailName;
-                                break;
-                            }
-                        }
-                        AssemblyDetails.Add(new AssemblyDetailViewModel
-                        {
-                            Id = source.AssemblyDetails[j].Id,
-                            AssemblyId = source.AssemblyDetails[j].AssemblyId,
-                            DetailId = source.AssemblyDetails[j].DetailId,
-                            DetailName = DetailName,
-                            Count = source.AssemblyDetails[j].Count
-                        });
-                    }
-                }
-                if (source.Assemblies[i].Id == id)
-                {
-                    return new AssemblyViewModel
-                    {
-                        Id = source.Assemblies[i].Id,
-                        AssemblyName = source.Assemblies[i].AssemblyName,
-                        Price = source.Assemblies[i].Price,
-                        AssemblyDetails = AssemblyDetails
-                    };
-                }
-            }
-            throw new Exception("Деталь не найдена");
-        }
-        public void AddElement(AssemblyBindingModel model)
-        {
-            int maxId = 0;
-            for (int i = 0; i < source.Assemblies.Count; ++i)
-            {
-                if (source.Assemblies[i].Id > maxId)
-                {
-                    maxId = source.Assemblies[i].Id;
-                }
-                if (source.Assemblies[i].AssemblyName == model.AssemblyName)
+                if (assembly.AssemblyName == model.AssemblyName && assembly.Id != model.Id)
                 {
                     throw new Exception("Уже есть сборка с таким названием");
                 }
-            }
-            source.Assemblies.Add(new Assembly
-            {
-                Id = maxId + 1,
-                AssemblyName = model.AssemblyName,
-                Price = model.Price
-            });
-            // детали для сборки
-            int maxADId = 0;
-            for (int i = 0; i < source.AssemblyDetails.Count; ++i)
-            {
-                if (source.AssemblyDetails[i].Id > maxADId)
+                if (!model.Id.HasValue && assembly.Id >= tempAssembly.Id)
                 {
-                    maxADId = source.AssemblyDetails[i].Id;
+                    tempAssembly.Id = assembly.Id + 1;
+                }
+                else if (model.Id.HasValue && assembly.Id == model.Id)
+                {
+                    tempAssembly = assembly;
                 }
             }
-            // убираем дубли по деталям
-            for (int i = 0; i < model.AssemblyDetails.Count; ++i)
+            if (model.Id.HasValue)
             {
-                for (int j = 1; j < model.AssemblyDetails.Count; ++j)
+                if (tempAssembly == null)
                 {
-                    if (model.AssemblyDetails[i].DetailId ==
-                    model.AssemblyDetails[j].DetailId)
-                    {
-                        model.AssemblyDetails[i].Count +=
-                        model.AssemblyDetails[j].Count;
-                        model.AssemblyDetails.RemoveAt(j--);
-                    }
+                    throw new Exception("Элемент не найден");
                 }
+                CreateModel(model, tempAssembly);
             }
-            // добавляем детали
-            for (int i = 0; i < model.AssemblyDetails.Count; ++i)
+            else
             {
-                source.AssemblyDetails.Add(new AssemblyDetail
-                {
-                    Id = ++maxADId,
-                    AssemblyId = maxId + 1,
-                    DetailId = model.AssemblyDetails[i].DetailId,
-                    Count = model.AssemblyDetails[i].Count
-                });
+                source.Assemblies.Add(CreateModel(model, tempAssembly));
             }
         }
-        public void UpdElement(AssemblyBindingModel model)
-        {
-            int index = -1;
-            for (int i = 0; i < source.Assemblies.Count; ++i)
-            {
-                if (source.Assemblies[i].Id == model.Id)
-                {
-                    index = i;
-                }
-                if (source.Assemblies[i].AssemblyName == model.AssemblyName &&
-                source.Assemblies[i].Id != model.Id)
-                {
-                    throw new Exception("Уже есть сборка с таким названием");
-                }
-            }
-            if (index == -1)
-            {
-                throw new Exception("Деталь не найдена");
-            }
-            source.Assemblies[index].AssemblyName = model.AssemblyName;
-            source.Assemblies[index].Price = model.Price;
-            int maxADId = 0;
-            for (int i = 0; i < source.AssemblyDetails.Count; ++i)
-            {
-                if (source.AssemblyDetails[i].Id > maxADId)
-                {
-                    maxADId = source.AssemblyDetails[i].Id;
-                }
-            }
-            // обновляем существуюущие детали
-            for (int i = 0; i < source.AssemblyDetails.Count; ++i)
-            {
-                if (source.AssemblyDetails[i].AssemblyId == model.Id)
-                {
-                    bool flag = true;
-                    for (int j = 0; j < model.AssemblyDetails.Count; ++j)
-                    {
-                        // если встретили, то изменяем количество
-                        if (source.AssemblyDetails[i].Id == model.AssemblyDetails[j].Id)
-                        {
-                            source.AssemblyDetails[i].Count = model.AssemblyDetails[j].Count;
-                            flag = false;
-                            break;
-                        }
-                    }
-                    // если не встретили, то удаляем
-                    if (flag)
-                    {
-                        source.AssemblyDetails.RemoveAt(i--);
-                    }
-                }
-            }
-            // новые записи
-            for (int i = 0; i < model.AssemblyDetails.Count; ++i)
-            {
-                if (model.AssemblyDetails[i].Id == 0)
-                {
-                    // ищем дубли
-                    for (int j = 0; j < source.AssemblyDetails.Count; ++j)
-                    {
-                        if (source.AssemblyDetails[j].AssemblyId == model.Id &&
-                        source.AssemblyDetails[j].DetailId == model.AssemblyDetails[i].DetailId)
-                        {
-                            source.AssemblyDetails[j].Count += model.AssemblyDetails[i].Count;
-                            model.AssemblyDetails[i].Id = source.AssemblyDetails[j].Id;
-                            break;
-                        }
-                    }
-                    // если не нашли дубли, то новая запись
-                    if (model.AssemblyDetails[i].Id == 0)
-                    {
-                        source.AssemblyDetails.Add(new AssemblyDetail
-                        {
-                            Id = ++maxADId,
-                            AssemblyId = model.Id,
-                            DetailId = model.AssemblyDetails[i].DetailId,
-                            Count = model.AssemblyDetails[i].Count
-                        });
-                    }
-                }
-            }
-        }
-        public void DelElement(int id)
+        public void Delete(AssemblyBindingModel model)
         {
             // удаляем записи по деталям при удалении сборки
             for (int i = 0; i < source.AssemblyDetails.Count; ++i)
             {
-                if (source.AssemblyDetails[i].AssemblyId == id)
+                if (source.AssemblyDetails[i].AssemblyId == model.Id)
                 {
                     source.AssemblyDetails.RemoveAt(i--);
                 }
             }
             for (int i = 0; i < source.Assemblies.Count; ++i)
             {
-                if (source.Assemblies[i].Id == id)
+                if (source.Assemblies[i].Id == model.Id)
                 {
                     source.Assemblies.RemoveAt(i);
                     return;
                 }
             }
-            throw new Exception("Деталь не найдена");
+            throw new Exception("Элемент не найден");
+        }
+        private Assembly CreateModel(AssemblyBindingModel model, Assembly assembly)
+        {
+            assembly.AssemblyName = model.AssemblyName;
+            assembly.Price = model.Price;
+            //обновляем существующие детали и ищем максимальный идентификатор
+            int maxADId = 0;
+            for (int i = 0; i < source.AssemblyDetails.Count; ++i)
+            {
+                if (source.AssemblyDetails[i].Id > maxADId)
+                {
+                    maxADId = source.AssemblyDetails[i].Id;
+                }
+                if (source.AssemblyDetails[i].AssemblyId == assembly.Id)
+                {
+                    // если в модели пришла запись детали с таким id
+                    if (model.AssemblyDetails.ContainsKey(source.AssemblyDetails[i].DetailId))
+                    {
+                        // обновляем количество
+                        source.AssemblyDetails[i].Count = model.AssemblyDetails[source.AssemblyDetails[i].DetailId].Item2;
+                        // из модели убираем эту запись, чтобы остались только не просмотренные
+                        model.AssemblyDetails.Remove(source.AssemblyDetails[i].DetailId);
+                    }
+                    else
+                    {
+                        source.AssemblyDetails.RemoveAt(i--);
+                    }
+                }
+            }
+            // новые записи
+            foreach (var ad in model.AssemblyDetails)
+            {
+                source.AssemblyDetails.Add(new AssemblyDetail
+                {
+                    Id = ++maxADId,
+                    AssemblyId = assembly.Id,
+                    DetailId = ad.Key,
+                    Count = ad.Value.Item2
+                });
+            }
+            return assembly;
+        }
+        public List<AssemblyViewModel> Read(AssemblyBindingModel model)
+        {
+            List<AssemblyViewModel> result = new List<AssemblyViewModel>();
+            foreach (var assembly in source.Assemblies)
+            {
+                if (model != null)
+                {
+                    if (assembly.Id == model.Id)
+                    {
+                        result.Add(CreateViewModel(assembly));
+                        break;
+                    }
+                    continue;
+                }
+                result.Add(CreateViewModel(assembly));
+            }
+            return result;
+        }
+        private AssemblyViewModel CreateViewModel(Assembly assembly)
+        {
+            // требуется дополнительно получить список деталей для сборки с названиями и их количество
+            Dictionary<int, (string, int)> assemblyDetails = new Dictionary<int, (string, int)>();
+            foreach (var ad in source.AssemblyDetails)
+            {
+                if (ad.AssemblyId == assembly.Id)
+                {
+                    string detailName = string.Empty;
+                    foreach (var detail in source.Details)
+                    {
+                        if (ad.DetailId == detail.Id)
+                        {
+                            detailName = detail.DetailName;
+                            break;
+                        }
+                    }
+                    assemblyDetails.Add(ad.DetailId, (detailName, ad.Count));
+                }
+            }
+            return new AssemblyViewModel
+            {
+                Id = assembly.Id,
+                AssemblyName = assembly.AssemblyName,
+                Price = assembly.Price,
+                AssemblyDetails = assemblyDetails
+            };
         }
     }
 }

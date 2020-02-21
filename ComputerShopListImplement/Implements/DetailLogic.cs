@@ -15,85 +15,79 @@ namespace ComputerShopListImplement.Implements
         {
             source = DataListSingleton.GetInstance();
         }
-        public List<DetailViewModel> GetList()
+        public void CreateOrUpdate(DetailBindingModel model)
         {
-            List<DetailViewModel> result = new List<DetailViewModel>();
-            for (int i = 0; i < source.Details.Count; ++i)
+            Detail tempDetail = model.Id.HasValue ? null : new Detail { Id = 1 };
+            foreach (var detail in source.Details)
             {
-                result.Add(new DetailViewModel
-                {
-                    Id = source.Details[i].Id,
-                    DetailName = source.Details[i].DetailName
-                });
-            }
-            return result;
-        }
-        public DetailViewModel GetElement(int id)
-        {
-            for (int i = 0; i < source.Details.Count; ++i)
-            {
-                if (source.Details[i].Id == id)
-                {
-                    return new DetailViewModel
-                    {
-                        Id = source.Details[i].Id,
-                        DetailName = source.Details[i].DetailName
-                    };
-                }
-            }
-            throw new Exception("Деталь не найдена");
-        }
-        public void AddElement(DetailBindingModel model)
-        {
-            int maxId = 0;
-            for (int i = 0; i < source.Details.Count; ++i)
-            {
-                if (source.Details[i].Id > maxId)
-                {
-                    maxId = source.Details[i].Id;
-                }
-                if (source.Details[i].DetailName == model.DetailName)
+                if (detail.DetailName == model.DetailName && detail.Id != model.Id)
                 {
                     throw new Exception("Уже есть деталь с таким названием");
                 }
-            }
-            source.Details.Add(new Detail
-            {
-                Id = maxId + 1,
-                DetailName = model.DetailName
-            });
-        }
-        public void UpdElement(DetailBindingModel model)
-        {
-            int index = -1;
-            for (int i = 0; i < source.Details.Count; ++i)
-            {
-                if (source.Details[i].Id == model.Id)
+                if (!model.Id.HasValue && detail.Id >= tempDetail.Id)
                 {
-                    index = i;
+                    tempDetail.Id = detail.Id + 1;
                 }
-                if (source.Details[i].DetailName == model.DetailName && source.Details[i].Id != model.Id)
+                else if (model.Id.HasValue && detail.Id == model.Id)
                 {
-                    throw new Exception("Уже есть деталь с таким названием");
+                    tempDetail = detail;
                 }
             }
-            if (index == -1)
+            if (model.Id.HasValue)
             {
-                throw new Exception("Деталь не найдена");
+                if (tempDetail == null)
+                {
+                    throw new Exception("Элемент не найден");
+                }
+                CreateModel(model, tempDetail);
             }
-            source.Details[index].DetailName = model.DetailName;
+            else
+            {
+                source.Details.Add(CreateModel(model, tempDetail));
+            }
         }
-        public void DelElement(int id)
+        public void Delete(DetailBindingModel model)
         {
             for (int i = 0; i < source.Details.Count; ++i)
             {
-                if (source.Details[i].Id == id)
+                if (source.Details[i].Id == model.Id.Value)
                 {
                     source.Details.RemoveAt(i);
                     return;
                 }
             }
             throw new Exception("Деталь не найдена");
+        }
+        public List<DetailViewModel> Read(DetailBindingModel model)
+        {
+            List<DetailViewModel> result = new List<DetailViewModel>();
+            foreach (var detail in source.Details)
+            {
+                if (model != null)
+                {
+                    if (detail.Id == model.Id)
+                    {
+                        result.Add(CreateViewModel(detail));
+                        break;
+                    }
+                    continue;
+                }
+                result.Add(CreateViewModel(detail));
+            }
+            return result;
+        }
+        private Detail CreateModel(DetailBindingModel model, Detail detail)
+        {
+            detail.DetailName = model.DetailName;
+            return detail;
+        }
+        private DetailViewModel CreateViewModel(Detail detail)
+        {
+            return new DetailViewModel
+            {
+                Id = detail.Id,
+                DetailName = detail.DetailName
+            };
         }
     }
 }

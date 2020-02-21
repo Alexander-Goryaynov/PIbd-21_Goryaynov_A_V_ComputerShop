@@ -83,7 +83,6 @@ namespace ComputerShopListImplement.Implements
             {
                 throw new Exception("Заказ не в статусе \"Принят\"");
             }
-            source.Orders[index].DateImplement = DateTime.Now;
             source.Orders[index].Status = OrderStatus.Выполняется;
         }
         public void FinishOrder(OrderBindingModel model)
@@ -105,6 +104,7 @@ namespace ComputerShopListImplement.Implements
             {
                 throw new Exception("Заказ не в статусе \"Выполняется\"");
             }
+            source.Orders[index].DateImplement = DateTime.Now;
             source.Orders[index].Status = OrderStatus.Готов;
         }
         public void PayOrder(OrderBindingModel model)

@@ -21,7 +21,7 @@ namespace ComputerShopView
         public int Id { set { id = value; } }
         private readonly IAssemblyLogic logic;
         private int? id;
-        private List<AssemblyDetailViewModel> AssemblyDetails;
+        private Dictionary<int, (string, int)> assemblyDetails;
         public FormAssembly(IAssemblyLogic service)
         {
             InitializeComponent();
@@ -33,13 +33,13 @@ namespace ComputerShopView
             var form = Container.Resolve<FormAssemblyDetail>();
             if (form.ShowDialog() == DialogResult.OK)
             {
-                if (form.ModelView != null)
+                if (assemblyDetails.ContainsKey(form.Id))
                 {
-                    if (id.HasValue)
-                    {
-                        form.ModelView.AssemblyId = id.Value;
-                    }
-                    AssemblyDetails.Add(form.ModelView);
+                    assemblyDetails[form.Id] = (form.ComponentName, form.Count);
+                }
+                else
+                {
+                    assemblyDetails.Add(form.Id, (form.ComponentName, form.Count));
                 }
                 LoadData();
             }
@@ -50,10 +50,12 @@ namespace ComputerShopView
             if (dataGridView.SelectedRows.Count == 1)
             {
                 var form = Container.Resolve<FormAssemblyDetail>();
-                form.ModelView = AssemblyDetails[dataGridView.SelectedRows[0].Cells[0].RowIndex];
+                int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
+                form.Id = id;
+                form.Count = assemblyDetails[id].Item2;
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    AssemblyDetails[dataGridView.SelectedRows[0].Cells[0].RowIndex] = form.ModelView;
+                    assemblyDetails[form.Id] = (form.ComponentName, form.Count);
                     LoadData();
                 }
             }
@@ -67,7 +69,7 @@ namespace ComputerShopView
                 {
                     try
                     {
-                        AssemblyDetails.RemoveAt(dataGridView.SelectedRows[0].Cells[0].RowIndex);
+                        assemblyDetails.Remove(Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value));
                     }
                     catch (Exception ex)
                     {
@@ -95,43 +97,20 @@ namespace ComputerShopView
                 MessageBox.Show("Заполните цену", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (AssemblyDetails == null || AssemblyDetails.Count == 0)
+            if (assemblyDetails == null || assemblyDetails.Count == 0)
             {
                 MessageBox.Show("Заполните детали", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             try
             {
-                List<AssemblyDetailBindingModel> AssemblyDetailBM = new List<AssemblyDetailBindingModel>();
-                for (int i = 0; i < AssemblyDetails.Count; ++i)
+                logic.CreateOrUpdate(new AssemblyBindingModel
                 {
-                    AssemblyDetailBM.Add(new AssemblyDetailBindingModel
-                    {
-                        Id = AssemblyDetails[i].Id,
-                        AssemblyId = AssemblyDetails[i].AssemblyId,
-                        DetailId = AssemblyDetails[i].DetailId,
-                        Count = AssemblyDetails[i].Count
-                    });
-                }
-                if (id.HasValue)
-                {
-                    logic.UpdElement(new AssemblyBindingModel
-                    {
-                        Id = id.Value,
-                        AssemblyName = textBoxName.Text,
-                        Price = Convert.ToDecimal(textBoxPrice.Text),
-                        AssemblyDetails = AssemblyDetailBM
-                    });
-                }
-                else
-                {
-                    logic.AddElement(new AssemblyBindingModel
-                    {
-                        AssemblyName = textBoxName.Text,
-                        Price = Convert.ToDecimal(textBoxPrice.Text),
-                        AssemblyDetails = AssemblyDetailBM
-                    });
-                }
+                    Id = id,
+                    AssemblyName = textBoxName.Text,
+                    Price = Convert.ToDecimal(textBoxPrice.Text),
+                    AssemblyDetails = assemblyDetails
+                });
                 MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DialogResult = DialogResult.OK;
                 Close();
@@ -154,12 +133,13 @@ namespace ComputerShopView
             {
                 try
                 {
-                    AssemblyViewModel view = logic.GetElement(id.Value);
+                    AssemblyViewModel view = logic.Read(new AssemblyBindingModel {
+                        Id = id.Value })?[0];
                     if (view != null)
                     {
                         textBoxName.Text = view.AssemblyName;
                         textBoxPrice.Text = view.Price.ToString();
-                        AssemblyDetails = view.AssemblyDetails;
+                        assemblyDetails = view.AssemblyDetails;
                         LoadData();
                     }
                 }
@@ -170,21 +150,26 @@ namespace ComputerShopView
             }
             else
             {
-                AssemblyDetails = new List<AssemblyDetailViewModel>();
+                assemblyDetails = new Dictionary<int, (string, int)>();
             }
         }
         private void LoadData()
         {
+            dataGridView.Columns.Clear();
+            dataGridView.Columns.Add("Id", "Id");
+            dataGridView.Columns.Add("MaterialName", "Материал");
+            dataGridView.Columns.Add("Count", "Количество");
+            dataGridView.Columns[0].Visible = false;
+            dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             try
             {
-                if (AssemblyDetails != null)
+                if (assemblyDetails != null)
                 {
-                    dataGridView.DataSource = null;
-                    dataGridView.DataSource = AssemblyDetails;
-                    dataGridView.Columns[0].Visible = false;
-                    dataGridView.Columns[1].Visible = false;
-                    dataGridView.Columns[2].Visible = false;
-                    dataGridView.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    dataGridView.Rows.Clear();
+                    foreach (var ad in assemblyDetails)
+                    {
+                        dataGridView.Rows.Add(new object[] { ad.Key, ad.Value.Item1, ad.Value.Item2 });
+                    }
                 }
             }
             catch (Exception ex)

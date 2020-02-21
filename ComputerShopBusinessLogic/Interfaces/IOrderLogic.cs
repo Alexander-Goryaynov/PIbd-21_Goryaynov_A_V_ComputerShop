@@ -6,10 +6,10 @@ using System.Text;
 
 namespace ComputerShopBusinessLogic.Interfaces
 {
-    public interface IDetailLogic
-    {
-        List<DetailViewModel> Read(DetailBindingModel model);
-        void CreateOrUpdate(DetailBindingModel model);
-        void Delete(DetailBindingModel model);
+    public interface IOrderLogic
+    {        
+        List<OrderViewModel> Read(OrderBindingModel model);
+        void CreateOrUpdate(OrderBindingModel model);
+        void Delete(OrderBindingModel model);        
     }
 }
