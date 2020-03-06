@@ -128,5 +128,66 @@ namespace ComputerShopListImplement.Implements
             }
             source.Orders[index].Status = OrderStatus.Оплачен;
         }
+
+        public void FillWarehouse(WarehouseDetailBindingModel model)
+        {
+            // проверяем, есть ли такой склад
+            int index = -1;
+            for (int i = 0; i < source.Warehouses.Count; i++)
+            {
+                if (source.Warehouses[i].Id == model.WarehouseId)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            if (index == -1)
+                throw new Exception("Склад не найден");
+
+            index = -1;
+            for (int i = 0; i < source.Details.Count; i++)
+            {
+                if (source.Details[i].Id == model.DetailId)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            if (index == -1)
+                throw new Exception("Деталь не найдена");
+            WarehouseDetail warehouseDetail = null;
+            for (int i = 0; i < source.WarehouseDetails.Count; ++i)
+            {
+                // ищем на складе самую первую соответствующую запись
+                if ((source.WarehouseDetails[i].WarehouseId == model.WarehouseId) &&
+                    (source.WarehouseDetails[i].DetailId == model.DetailId))
+                {
+                    warehouseDetail = source.WarehouseDetails[i];
+                    break;
+                }
+            }
+            if (warehouseDetail != null)
+            {
+                // если нашли, добавляем ещё деталей в запись
+                warehouseDetail.Count += model.Count;
+            }
+            else
+            {
+                // иначе вычисляем новый Id создаём новую запись
+                int maxId = 0;
+                for (int i = 0; i < source.WarehouseDetails.Count; ++i)
+                {
+                    if (source.WarehouseDetails[i].Id > maxId)
+                        maxId = source.WarehouseDetails[i].Id;
+                }
+                source.WarehouseDetails.Add(new WarehouseDetail
+                {
+                    Id = maxId + 1,
+                    WarehouseId = model.WarehouseId,
+                    DetailId = model.DetailId,
+                    Count = model.Count
+                });
+            }
+        }
     }
 }
