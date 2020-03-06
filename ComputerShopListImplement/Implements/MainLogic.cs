@@ -21,12 +21,12 @@ namespace ComputerShopListImplement.Implements
             List<OrderViewModel> result = new List<OrderViewModel>();
             for (int i = 0; i < source.Orders.Count; ++i)
             {
-                string AssemblyName = string.Empty;
+                string assemblyName = string.Empty;
                 for (int j = 0; j < source.Assemblies.Count; ++j)
                 {
                     if (source.Assemblies[j].Id == source.Orders[i].AssemblyId)
                     {
-                        AssemblyName = source.Assemblies[j].AssemblyName;
+                        assemblyName = source.Assemblies[j].AssemblyName;
                         break;
                     }
                 }
@@ -34,7 +34,7 @@ namespace ComputerShopListImplement.Implements
                 {
                     Id = source.Orders[i].Id,
                     AssemblyId = source.Orders[i].AssemblyId,
-                    AssemblyName = AssemblyName,
+                    AssemblyName = assemblyName,
                     Count = source.Orders[i].Count,
                     Sum = source.Orders[i].Sum,
                     DateCreate = source.Orders[i].DateCreate,
@@ -160,7 +160,7 @@ namespace ComputerShopListImplement.Implements
             {
                 // ищем на складе самую первую соответствующую запись
                 if ((source.WarehouseDetails[i].WarehouseId == model.WarehouseId) &&
-                    (source.WarehouseDetails[i].DetailId == model.DetailId))
+                        (source.WarehouseDetails[i].DetailId == model.DetailId))
                 {
                     warehouseDetail = source.WarehouseDetails[i];
                     break;

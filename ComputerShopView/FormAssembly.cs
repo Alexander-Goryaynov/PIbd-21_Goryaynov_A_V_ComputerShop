@@ -134,7 +134,7 @@ namespace ComputerShopView
                 try
                 {
                     AssemblyViewModel view = logic.Read(new AssemblyBindingModel {
-                        Id = id.Value })?[0];
+                            Id = id.Value })?[0];
                     if (view != null)
                     {
                         textBoxName.Text = view.AssemblyName;
