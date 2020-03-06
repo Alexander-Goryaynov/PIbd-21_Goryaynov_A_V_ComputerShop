@@ -20,11 +20,6 @@ namespace ComputerShopFileImplement.Implements
         public void CreateOrUpdate(OrderBindingModel model)
         {
             Order order;
-            order = source.Orders.FirstOrDefault(rec => rec.AssemblyId == model.AssemblyId &&
-                    rec.Count == model.Count && rec.DateCreate == model.DateCreate &&
-                    rec.Status == model.Status && rec.Sum == model.Sum && rec.Id != model.Id);
-            if (order != null)
-                throw new Exception("Такой заказ уже существует");
             if (model.Id.HasValue)
             {
                 order = source.Orders.FirstOrDefault(rec => rec.Id == model.Id);
