@@ -124,6 +124,7 @@
             this.Controls.Add(this.labelDetail);
             this.Controls.Add(this.labelWarehouse);
             this.Name = "FormFillWarehouse";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Пополнение склада";
             this.Load += new System.EventHandler(this.FormFillWarehouse_Load);
             this.ResumeLayout(false);
