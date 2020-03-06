@@ -20,13 +20,7 @@ namespace ComputerShopListImplement.Implements
         {
             Order tempOrder = model.Id.HasValue ? null : new Order { Id = 1 };
             foreach (var order in source.Orders)
-            {
-                if (order.DateCreate == model.DateCreate && order.Count == model.Count &&
-                    order.AssemblyId == model.AssemblyId && order.Sum == model.Sum &&
-                    order.Status == model.Status && order.Id != model.Id)
-                {
-                    throw new Exception("Такой заказ уже существует");
-                }
+            {                
                 if (!model.Id.HasValue && order.Id >= tempOrder.Id)
                 {
                     tempOrder.Id = order.Id + 1;
