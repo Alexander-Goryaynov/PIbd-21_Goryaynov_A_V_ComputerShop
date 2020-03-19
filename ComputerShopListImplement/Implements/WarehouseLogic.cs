@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using ComputerShopBusinessLogic.BindingModels;
 using ComputerShopBusinessLogic.Interfaces;
 using ComputerShopBusinessLogic.ViewModels;
@@ -36,6 +35,11 @@ namespace ComputerShopListImplement.Implements
             });
         }
 
+        public bool AreDetailsAvailable(int assemblyId, int count)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DelElement(int id)
         {
             for (int i = 0; i < source.WarehouseDetails.Count; ++i)
@@ -54,6 +58,11 @@ namespace ComputerShopListImplement.Implements
                 }
             }
             throw new Exception("Элемент не найден");
+        }
+
+        public void DeleteFromWarehouse(int assemblyId, int count)
+        {
+            throw new NotImplementedException();
         }
 
         public WarehouseViewModel GetElement(int id)
@@ -137,6 +146,42 @@ namespace ComputerShopListImplement.Implements
             return result;
         }
 
+        public void FillWarehouse(WarehouseDetailBindingModel model)
+        {
+            int foundItemIndex = -1;
+            for (int i = 0; i < source.WarehouseDetails.Count; ++i)
+            {
+                if (source.WarehouseDetails[i].DetailId == model.DetailId
+                    && source.WarehouseDetails[i].WarehouseId == model.WarehouseId)
+                {
+                    foundItemIndex = i;
+                    break;
+                }
+            }
+            if (foundItemIndex != -1)
+            {
+                source.WarehouseDetails[foundItemIndex].Count =
+                    source.WarehouseDetails[foundItemIndex].Count + model.Count;
+            }
+            else
+            {
+                int maxId = 0;
+                for (int i = 0; i < source.WarehouseDetails.Count; ++i)
+                {
+                    if (source.WarehouseDetails[i].Id > maxId)
+                    {
+                        maxId = source.WarehouseDetails[i].Id;
+                    }
+                }
+                source.WarehouseDetails.Add(new WarehouseDetail
+                {
+                    Id = maxId + 1,
+                    WarehouseId = model.WarehouseId,
+                    DetailId = model.DetailId,
+                    Count = model.Count
+                });
+            }
+        }
         public void UpdElement(WarehouseBindingModel model)
         {
             int index = -1;

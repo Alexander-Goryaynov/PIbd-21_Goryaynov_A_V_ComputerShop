@@ -16,16 +16,22 @@ namespace ComputerShopFileImplement
         private readonly string OrderFileName = "Order.xml";
         private readonly string AssemblyFileName = "Assembly.xml";
         private readonly string AssemblyDetailFileName = "AssemblyDetail.xml";
+        private readonly string WarehouseFileName = "Warehouse.xml";
+        private readonly string WarehouseDetailFileName = "WarehouseDetail.xml";
         public List<Detail> Details { get; set; }
         public List<Order> Orders { get; set; }
         public List<Assembly> Assemblies { get; set; }
         public List<AssemblyDetail> AssemblyDetails { get; set; }
+        public List<Warehouse> Warehouses { get; set; }
+        public List<WarehouseDetail> WarehouseDetails { get; set; }
         private FileDataListSingleton()
         {
             Details = LoadDetails();
             Orders = LoadOrders();
             Assemblies = LoadAssemblies();
             AssemblyDetails = LoadAssemblyDetails();
+            Warehouses = LoadWarehouses();
+            WarehouseDetails = LoadWarehouseDetails();
         }
         public static FileDataListSingleton GetInstance()
         {
@@ -41,6 +47,8 @@ namespace ComputerShopFileImplement
             SaveOrders();
             SaveAssemblies();
             SaveAssemblyDetails();
+            SaveWarehouses();
+            SaveWarehouseDetails();
         }
         private List<Detail> LoadDetails()
         {
@@ -123,16 +131,54 @@ namespace ComputerShopFileImplement
             }
             return list;
         }
+        private List<Warehouse> LoadWarehouses()
+        {
+            var list = new List<Warehouse>();
+            if (File.Exists(WarehouseFileName))
+            {
+                XDocument xDocument = XDocument.Load(WarehouseFileName);
+                var xElements = xDocument.Root.Elements("Warehouse").ToList();
+                foreach (var elem in xElements)
+                {
+                    list.Add(new Warehouse
+                    {
+                        Id = Convert.ToInt32(elem.Attribute("Id").Value),
+                        WarehouseName = elem.Element("WarehouseName").Value
+                    });
+                }
+            }
+            return list;
+        }
+        private List<WarehouseDetail> LoadWarehouseDetails()
+        {
+            var list = new List<WarehouseDetail>();
+            if (File.Exists(WarehouseDetailFileName))
+            {
+                XDocument xDocument = XDocument.Load(WarehouseDetailFileName);
+                var xElements = xDocument.Root.Elements("WarehouseDetails").ToList();
+                foreach (var elem in xElements)
+                {
+                    list.Add(new WarehouseDetail
+                    {
+                        Id = Convert.ToInt32(elem.Attribute("Id").Value),
+                        WarehouseId = Convert.ToInt32(elem.Element("WarehouseId").Value),
+                        DetailId = Convert.ToInt32(elem.Element("DetailId").Value),
+                        Count = Convert.ToInt32(elem.Element("Count").Value)
+                    });
+                }
+            }
+            return list;
+        }
         private void SaveDetails()
         {
             if (Details != null)
             {
                 var xElement = new XElement("Details");
-                foreach (var Detail in Details)
+                foreach (var detail in Details)
                 {
                     xElement.Add(new XElement("Detail",
-                    new XAttribute("Id", Detail.Id),
-                    new XElement("DetailName", Detail.DetailName)));
+                    new XAttribute("Id", detail.Id),
+                    new XElement("DetailName", detail.DetailName)));
                 }
                 XDocument xDocument = new XDocument(xElement);
                 xDocument.Save(DetailFileName);
@@ -189,6 +235,38 @@ namespace ComputerShopFileImplement
                 }
                 XDocument xDocument = new XDocument(xElement);
                 xDocument.Save(AssemblyDetailFileName);
+            }
+        }
+        private void SaveWarehouses()
+        {
+            if (Warehouses != null)
+            {
+                var xElement = new XElement("Warehouses");
+                foreach (var warehouse in Warehouses)
+                {
+                    xElement.Add(new XElement("Warehouse",
+                    new XAttribute("Id", warehouse.Id),
+                    new XElement("WarehouseName", warehouse.WarehouseName)));
+                }
+                XDocument xDocument = new XDocument(xElement);
+                xDocument.Save(WarehouseFileName);
+            }
+        }
+        private void SaveWarehouseDetails()
+        {
+            if (WarehouseDetails != null)
+            {
+                var xElement = new XElement("WarehouseDetails");
+                foreach (var warehouseDetail in WarehouseDetails)
+                {
+                    xElement.Add(new XElement("WarehouseDetails",
+                    new XAttribute("Id", warehouseDetail.Id),
+                    new XElement("WarehouseId", warehouseDetail.WarehouseId),
+                    new XElement("DetailId", warehouseDetail.DetailId),
+                    new XElement("Count", warehouseDetail.Count)));
+                }
+                XDocument xDocument = new XDocument(xElement);
+                xDocument.Save(WarehouseDetailFileName);
             }
         }
     }

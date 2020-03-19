@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ComputerShopFileImplement.Models
+namespace ComputerShopBusinessLogic.BindingModels
 {
-<<<<<<< HEAD:ComputerShopBusinessLogic/BindingModels/WarehouseDetailBindingModel.cs
     public class WarehouseDetailBindingModel
-=======
-    public class AssemblyDetail
->>>>>>> lab2:ComputerShopFileImplement/Models/AssemblyDetail.cs
     {
         public int Id { get; set; }
         public int WarehouseId { get; set; }

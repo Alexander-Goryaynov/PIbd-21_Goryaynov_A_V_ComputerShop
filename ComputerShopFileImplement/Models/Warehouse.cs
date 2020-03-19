@@ -4,11 +4,9 @@ using System.Text;
 
 namespace ComputerShopFileImplement.Models
 {
-    public class AssemblyDetail
+    public class Warehouse
     {
         public int Id { get; set; }
-        public int AssemblyId { get; set; }
-        public int DetailId { get; set; }
-        public int Count { get; set; }
+        public string WarehouseName { get; set; }
     }
 }

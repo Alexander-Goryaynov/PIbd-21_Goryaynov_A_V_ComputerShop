@@ -10,9 +10,11 @@ namespace ComputerShopBusinessLogic.BusinessLogic
     public class MainLogic
     {
         private readonly IOrderLogic orderLogic;
-        public MainLogic(IOrderLogic orderLogic)
+        private readonly IWarehouseLogic warehouseLogic;
+        public MainLogic(IOrderLogic orderLogic, IWarehouseLogic warehouseLogic)
         {
             this.orderLogic = orderLogic;
+            this.warehouseLogic = warehouseLogic;
         }
         public void CreateOrder(CreateOrderBindingModel model)
         {
@@ -36,6 +38,10 @@ namespace ComputerShopBusinessLogic.BusinessLogic
             {
                 throw new Exception("Заказ не в статусе \"Принят\"");
             }
+            if (!warehouseLogic.AreDetailsAvailable(order.AssemblyId, order.Count))
+            {
+                throw new Exception("На складах не хватает деталей");
+            }
             orderLogic.CreateOrUpdate(new OrderBindingModel
             {
                 Id = order.Id,
@@ -46,6 +52,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 DateImplement = null,
                 Status = OrderStatus.Выполняется
             });
+            warehouseLogic.DeleteFromWarehouse(order.AssemblyId, order.Count);
         }
         public void FinishOrder (ChangeStatusBindingModel model)
         {
@@ -90,6 +97,10 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 DateImplement = order.DateImplement,
                 Status = OrderStatus.Оплачен
             });
+        }
+        public void FillWarehouse(WarehouseDetailBindingModel model)
+        {
+            warehouseLogic.FillWarehouse(model);
         }
     }
 }
