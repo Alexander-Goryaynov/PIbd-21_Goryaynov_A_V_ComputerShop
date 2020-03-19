@@ -68,14 +68,14 @@
             // деталиToolStripMenuItem
             // 
             this.деталиToolStripMenuItem.Name = "деталиToolStripMenuItem";
-            this.деталиToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.деталиToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.деталиToolStripMenuItem.Text = "Детали";
             this.деталиToolStripMenuItem.Click += new System.EventHandler(this.деталиToolStripMenuItem_Click);
             // 
             // сборкиToolStripMenuItem
             // 
             this.сборкиToolStripMenuItem.Name = "сборкиToolStripMenuItem";
-            this.сборкиToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.сборкиToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.сборкиToolStripMenuItem.Text = "Сборки";
             this.сборкиToolStripMenuItem.Click += new System.EventHandler(this.сборкиToolStripMenuItem_Click);
             // 
@@ -88,9 +88,12 @@
             // 
             // dataGridView
             // 
+            this.dataGridView.AllowUserToAddRows = false;
+            this.dataGridView.AllowUserToDeleteRows = false;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.Location = new System.Drawing.Point(0, 27);
             this.dataGridView.Name = "dataGridView";
+            this.dataGridView.ReadOnly = true;
             this.dataGridView.Size = new System.Drawing.Size(633, 421);
             this.dataGridView.TabIndex = 1;
             // 
