@@ -98,9 +98,6 @@ namespace ComputerShopDatabaseImplement.Migrations
                     b.Property<DateTime?>("DateImplement")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -109,7 +106,7 @@ namespace ComputerShopDatabaseImplement.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("AssemblyId");
 
                     b.ToTable("Orders");
                 });
@@ -131,9 +128,11 @@ namespace ComputerShopDatabaseImplement.Migrations
 
             modelBuilder.Entity("ComputerShopDatabaseImplement.Models.Order", b =>
                 {
-                    b.HasOne("ComputerShopDatabaseImplement.Models.Assembly", null)
-                        .WithMany("Order")
-                        .HasForeignKey("OrderId");
+                    b.HasOne("ComputerShopDatabaseImplement.Models.Assembly", "Assembly")
+                        .WithMany("Orders")
+                        .HasForeignKey("AssemblyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

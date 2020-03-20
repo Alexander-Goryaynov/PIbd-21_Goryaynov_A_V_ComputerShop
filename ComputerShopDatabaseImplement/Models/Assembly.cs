@@ -16,7 +16,7 @@ namespace ComputerShopDatabaseImplement.Models
         public decimal Price { get; set; }
         [ForeignKey("AssemblyId")]
         public virtual List<AssemblyDetail> AssemblyDetails { get; set; }
-        [ForeignKey("OrderId")]
-        public virtual List<Order> Order { get; set; }
+        [ForeignKey("AssemblyId")] 
+        public virtual List<Order> Orders { get; set; }
     }
 }

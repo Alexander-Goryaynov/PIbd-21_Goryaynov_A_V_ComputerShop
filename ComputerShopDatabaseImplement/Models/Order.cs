@@ -18,6 +18,8 @@ namespace ComputerShopDatabaseImplement.Models
         [Required]
         public DateTime DateCreate { get; set; }
         public DateTime? DateImplement { get; set; }
-        public virtual int AssemblyId { get; set; }
+        public int AssemblyId { get; set; } 
+        public virtual Assembly Assembly { get; set; } 
+
     }
 }
