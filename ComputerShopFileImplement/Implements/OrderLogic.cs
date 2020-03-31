@@ -25,26 +25,19 @@ namespace ComputerShopFileImplement.Implements
                 order = source.Orders.FirstOrDefault(rec => rec.Id == model.Id);
                 if (order == null)
                     throw new Exception("Элемент не найден");
-                order.AssemblyId = model.AssemblyId;
-                order.Count = model.Count;
-                order.DateCreate = model.DateCreate;
-                order.DateImplement = model.DateImplement;
-                order.Status = model.Status;
-                order.Sum = model.Sum;
             }
             else
             {
                 int maxId = source.Orders.Count > 0 ? source.Orders.Max(rec => rec.Id) : 0;
                 order = new Order { Id = maxId + 1 };
-                order.AssemblyId = model.AssemblyId;
-                order.Count = model.Count;
-                order.DateCreate = model.DateCreate;
-                order.DateImplement = model.DateImplement;
-                order.Status = model.Status;
-                order.Sum = model.Sum;
                 source.Orders.Add(order);
             }
-            
+            order.AssemblyId = model.AssemblyId;
+            order.Count = model.Count;
+            order.DateCreate = model.DateCreate;
+            order.DateImplement = model.DateImplement;
+            order.Status = model.Status;
+            order.Sum = model.Sum;
         }
 
         public void Delete(OrderBindingModel model)
@@ -69,7 +62,7 @@ namespace ComputerShopFileImplement.Implements
                 Id = rec.Id,
                 AssemblyId = rec.AssemblyId,
                 AssemblyName = source.Assemblies
-                .FirstOrDefault(recA => recA.Id == rec.AssemblyId).AssemblyName,
+                .FirstOrDefault(recA => recA.Id == rec.AssemblyId)?.AssemblyName,
                 Count = rec.Count,
                 DateCreate = rec.DateCreate,
                 DateImplement = rec.DateImplement,
