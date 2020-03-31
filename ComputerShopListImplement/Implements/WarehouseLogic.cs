@@ -158,5 +158,40 @@ namespace ComputerShopListImplement.Implements
             }
             source.Warehouses[index].WarehouseName = model.WarehouseName;
         }
+        public void FillWarehouse(WarehouseDetailBindingModel model)
+        {
+            int index = -1;
+            for (int i = 0; i < source.WarehouseDetails.Count; i++)
+            {
+                if (source.WarehouseDetails[i].DetailId == model.DetailId &&
+                    source.WarehouseDetails[i].WarehouseId == model.WarehouseId)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            if (index != -1)
+            {
+                source.WarehouseDetails[index].Count += model.Count;
+            }
+            else
+            {
+                int maxId = 0;
+                for (int i = 0; i < source.WarehouseDetails.Count; i++)
+                {
+                    if (source.WarehouseDetails[i].Id > maxId)
+                    {
+                        maxId = source.WarehouseDetails[i].Id;
+                    }
+                }
+                source.WarehouseDetails.Add(new WarehouseDetail
+                {
+                    Id = maxId + 1,
+                    WarehouseId = model.WarehouseId,
+                    DetailId = model.DetailId,
+                    Count = model.Count
+                });
+            }
+        }
     }
 }

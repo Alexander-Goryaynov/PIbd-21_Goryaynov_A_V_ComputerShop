@@ -1,5 +1,6 @@
 ﻿using ComputerShopBusinessLogic.BindingModels;
 using ComputerShopBusinessLogic.Interfaces;
+using ComputerShopBusinessLogic.BusinessLogic;
 using ComputerShopListImplement.Implements;
 using System;
 using System.Collections.Generic;
