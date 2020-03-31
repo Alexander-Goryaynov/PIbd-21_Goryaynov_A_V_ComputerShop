@@ -69,7 +69,7 @@ namespace ComputerShopFileImplement.Implements
                 Id = rec.Id,
                 AssemblyId = rec.AssemblyId,
                 AssemblyName = source.Assemblies
-                .FirstOrDefault(recA => recA.Id == rec.AssemblyId).AssemblyName,
+                .FirstOrDefault(recA => recA.Id == rec.AssemblyId)?.AssemblyName,
                 Count = rec.Count,
                 DateCreate = rec.DateCreate,
                 DateImplement = rec.DateImplement,
