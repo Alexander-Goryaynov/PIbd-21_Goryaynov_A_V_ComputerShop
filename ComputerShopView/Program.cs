@@ -1,5 +1,6 @@
 ﻿using ComputerShopBusinessLogic.Interfaces;
 using ComputerShopListImplement.Implements;
+using ComputerShopBusinessLogic.BusinessLogic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,8 @@ namespace ComputerShopView
             currentContainer.RegisterType<IOrderLogic, OrderLogic>(
                 new HierarchicalLifetimeManager());
             currentContainer.RegisterType<MainLogic>(
+                new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IWarehouseLogic, WarehouseLogic>(
                 new HierarchicalLifetimeManager());
             return currentContainer;
         }
