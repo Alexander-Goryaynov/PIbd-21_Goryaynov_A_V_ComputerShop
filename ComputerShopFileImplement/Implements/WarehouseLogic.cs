@@ -146,7 +146,7 @@ namespace ComputerShopFileImplement.Implements
             foreach (var elem in assemblyDetails)
             {
                 int present = elem.Count * count;
-                var warehouseDetails = source.AssemblyDetails.FindAll(x => x.DetailId == elem.DetailId);
+                var warehouseDetails = source.WarehouseDetails.FindAll(x => x.DetailId == elem.DetailId);
                 foreach (var rec in warehouseDetails)
                 {
                     int countToDelete = present > rec.Count ? rec.Count : present;
