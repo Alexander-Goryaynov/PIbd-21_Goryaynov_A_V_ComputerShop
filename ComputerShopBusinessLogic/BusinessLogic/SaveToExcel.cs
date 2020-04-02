@@ -15,8 +15,8 @@ namespace ComputerShopBusinessLogic.BusinessLogic
     {
         public static void CreateDoc(ExcelInfo info)
         {
-            using (SpreadsheetDocument spreadsheetDocument =
-                SpreadsheetDocument.Create(info.FileName, SpreadsheetDocumentType.Workbook))
+            using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Create(
+                info.FileName, SpreadsheetDocumentType.Workbook))
             {
                 // Создаем книгу (в ней хранятся листы)
                 WorkbookPart workbookpart = spreadsheetDocument.AddWorkbookPart();
@@ -24,11 +24,9 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 CreateStyles(workbookpart);
                 // Получаем/создаем хранилище текстов для книги
                 SharedStringTablePart shareStringPart =
-                spreadsheetDocument.WorkbookPart.GetPartsOfType<SharedStringTablePart>().Count() > 0
-                ?
-                spreadsheetDocument.WorkbookPart.GetPartsOfType<SharedStringTablePart>().First()
-                :
-                spreadsheetDocument.WorkbookPart.AddNewPart<SharedStringTablePart>();
+                    spreadsheetDocument.WorkbookPart.GetPartsOfType<SharedStringTablePart>().Count() > 0 ?
+                    spreadsheetDocument.WorkbookPart.GetPartsOfType<SharedStringTablePart>().First() :
+                    spreadsheetDocument.WorkbookPart.AddNewPart<SharedStringTablePart>();
                 // Создаем SharedStringTable, если его нет
                 if (shareStringPart.SharedStringTable == null)
                 {
@@ -39,7 +37,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 worksheetPart.Worksheet = new Worksheet(new SheetData());
                 // Добавляем лист в книгу
                 Sheets sheets =
-                spreadsheetDocument.WorkbookPart.Workbook.AppendChild<Sheets>(new Sheets());
+                    spreadsheetDocument.WorkbookPart.Workbook.AppendChild<Sheets>(new Sheets());
                 Sheet sheet = new Sheet()
                 {
                     Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart),
