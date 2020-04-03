@@ -292,9 +292,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ReportOrders.rdlc" />
+    <EmbeddedResource Include="ReportAssemblyDetails.rdlc" />
     <None Include="packages.config" />
-    <None Include="Properties\DataSources\ComputerShopBusinessLogic.ViewModels.ReportOrdersViewModel.datasource" />
+    <None Include="Properties\DataSources\ComputerShopBusinessLogic.ViewModels.ReportAssemblyDetailViewModel.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

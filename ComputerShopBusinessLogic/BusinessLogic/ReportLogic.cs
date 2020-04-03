@@ -28,22 +28,19 @@ namespace ComputerShopBusinessLogic.BusinessLogic
             var list = new List<ReportAssemblyDetailViewModel>();
             foreach (var detail in details)
             {
-                var record = new ReportAssemblyDetailViewModel
-                {
-                    DetailName = detail.DetailName,
-                    Assemblies = new List<Tuple<string, int>>(),
-                    TotalCount = 0
-                };
                 foreach (var assembly in assemblies)
                 {
                     if (assembly.AssemblyDetails.ContainsKey(detail.Id))
                     {
-                        record.Assemblies.Add(new Tuple<string, int>(assembly.AssemblyName,
-                            assembly.AssemblyDetails[detail.Id].Item2));
-                        record.TotalCount += assembly.AssemblyDetails[detail.Id].Item2;
+                        var record = new ReportAssemblyDetailViewModel
+                        {
+                            AssemblyName = assembly.AssemblyName,
+                            DetailName = detail.DetailName,
+                            Count = assembly.AssemblyDetails[detail.Id].Item2
+                        };
+                        list.Add(record);
                     }
                 }
-                list.Add(record);
             }
             return list;
         }
@@ -64,35 +61,35 @@ namespace ComputerShopBusinessLogic.BusinessLogic
             })
             .ToList();
         }
-        public void SaveDetailsToWordFile(ReportBindingModel model)
+        public void SaveAssembliesToWordFile(ReportBindingModel model)
         {
             SaveToWord.CreateDoc(new WordInfo
             {
                 FileName = model.FileName,
-                Title = "Список деталей",
-                Details = detailLogic.Read(null)
+                Title = "Список сборок",
+                Assemblies = assemblyLogic.Read(null)
             });
         }
-        public void SaveAssemblyDetailToExcelFile(ReportBindingModel model)
+        public void SaveOrdersToExcelFile(ReportBindingModel model)
         {
             SaveToExcel.CreateDoc(new ExcelInfo
             {
+                DateFrom = model.DateFrom.Value,
+                DateTo = model.DateTo.Value,
                 FileName = model.FileName,
-                Title = "Список деталей",
-                AssemblyDetails = GetAssemblyDetail()
+                Title = "Список заказов",
+                Orders = GetOrders(model)
             });
         }
 
         [Obsolete]
-        public void SaveOrdersToPdfFile(ReportBindingModel model)
+        public void SaveAssemblyDetailsToPdfFile(ReportBindingModel model)
         {
             SaveToPdf.CreateDoc(new PdfInfo
             {
                 FileName = model.FileName,
-                Title = "Список заказов",
-                DateFrom = model.DateFrom.Value,
-                DateTo = model.DateTo.Value,
-                Orders = GetOrders(model)
+                Title = "Список деталей по сборкам",
+                AssemblyDetails = GetAssemblyDetail()
             });
         }
     }

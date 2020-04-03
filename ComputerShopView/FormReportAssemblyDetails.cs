@@ -1,5 +1,6 @@
 ﻿using ComputerShopBusinessLogic.BindingModels;
 using ComputerShopBusinessLogic.BusinessLogic;
+using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,52 +25,40 @@ namespace ComputerShopView
             this.logic = logic;
         }
 
-        private void FormReportAssemblyDetails_Load(object sender, EventArgs e)
+        private void buttonMake_Click(object sender, EventArgs e)
         {
             try
             {
-                var dict = logic.GetAssemblyDetail();
-                if (dict != null)
-                {
-                    dataGridView.Rows.Clear();
-                    foreach (var elem in dict)
-                    {
-                        dataGridView.Rows.Add(new object[] { elem.DetailName, "", "" });
-                        foreach (var listElem in elem.Assemblies)
-                        {
-                            dataGridView.Rows.Add(new object[] { "", listElem.Item1, listElem.Item2 });
-                        }
-                        dataGridView.Rows.Add(new object[] { "Итого", "", elem.TotalCount });
-                        dataGridView.Rows.Add(new object[] { });
-                    }
-                }
+                var dataSource = logic.GetAssemblyDetail();
+                ReportDataSource source = new ReportDataSource("DataSetAD", dataSource);
+                reportViewer.LocalReport.DataSources.Add(source);
+                reportViewer.RefreshReport();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
+                    MessageBoxIcon.Error);
             }
         }
 
-        private void buttonSave_Click(object sender, EventArgs e)
+        [Obsolete]
+        private void buttonToPdf_Click(object sender, EventArgs e)
         {
-            using (var dialog = new SaveFileDialog { Filter = "xlsx|*.xlsx" })
+            using (var dialog = new SaveFileDialog { Filter = "pdf|*.pdf" })
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     try
                     {
-                        logic.SaveAssemblyDetailToExcelFile(new ReportBindingModel
+                        logic.SaveAssemblyDetailsToPdfFile(new ReportBindingModel
                         {
-                            FileName = dialog.FileName
+                            FileName = dialog.FileName,
                         });
-                        MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
+                        MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
+                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }

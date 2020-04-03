@@ -132,7 +132,7 @@ namespace ComputerShopView
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    reportLogic.SaveDetailsToWordFile(new ReportBindingModel
+                    reportLogic.SaveAssembliesToWordFile(new ReportBindingModel
                     {
                         FileName = dialog.FileName
                     });
@@ -142,15 +142,15 @@ namespace ComputerShopView
             }
         }
 
-        private void assemblyDetailsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void orderDatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormReportAssemblyDetails>();
+            var form = Container.Resolve<FormReportOrders>();
             form.ShowDialog();
         }
 
-        private void ordersToolStripMenuItem_Click(object sender, EventArgs e)
+        private void assemblyDetailsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormReportOrders>();
+            var form = Container.Resolve<FormReportAssemblyDetails>();
             form.ShowDialog();
         }
     }

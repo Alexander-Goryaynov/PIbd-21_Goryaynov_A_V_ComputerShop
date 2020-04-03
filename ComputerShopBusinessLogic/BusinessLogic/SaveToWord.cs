@@ -28,11 +28,21 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                         JustificationValues = JustificationValues.Center
                     }
                 }));
-                foreach (var detail in info.Details)
+                foreach (var assembly in info.Assemblies)
                 {
                     docBody.AppendChild(CreateParagraph(new WordParagraph
                     {
-                        Texts = new List<string> { detail.DetailName },
+                        Texts = new List<string> { assembly.AssemblyName },
+                        TextProperties = new WordParagraphProperties
+                        {
+                            Size = "24",
+                            JustificationValues = JustificationValues.Both,
+                            Bold = true
+                        }
+                    }));
+                    docBody.AppendChild(CreateParagraph(new WordParagraph
+                    {
+                        Texts = new List<string> { "Цена: " + assembly.Price },
                         TextProperties = new WordParagraphProperties
                         {
                             Size = "24",

@@ -33,9 +33,9 @@
             this.деталиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сборкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.detailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.assembliesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.orderDatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.assemblyDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ordersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.buttonCreateOrder = new System.Windows.Forms.Button();
             this.buttonTakeOrderInWork = new System.Windows.Forms.Button();
@@ -83,33 +83,33 @@
             // reportsToolStripMenuItem
             // 
             this.reportsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.detailsToolStripMenuItem,
-            this.assemblyDetailsToolStripMenuItem,
-            this.ordersToolStripMenuItem});
+            this.assembliesToolStripMenuItem,
+            this.orderDatesToolStripMenuItem,
+            this.assemblyDetailsToolStripMenuItem});
             this.reportsToolStripMenuItem.Name = "reportsToolStripMenuItem";
             this.reportsToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
             this.reportsToolStripMenuItem.Text = "Отчеты";
             // 
-            // detailsToolStripMenuItem
+            // assembliesToolStripMenuItem
             // 
-            this.detailsToolStripMenuItem.Name = "detailsToolStripMenuItem";
-            this.detailsToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.detailsToolStripMenuItem.Text = "Список деталей";
-            this.detailsToolStripMenuItem.Click += new System.EventHandler(this.detailsToolStripMenuItem_Click);
+            this.assembliesToolStripMenuItem.Name = "assembliesToolStripMenuItem";
+            this.assembliesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.assembliesToolStripMenuItem.Text = "Список сборок";
+            this.assembliesToolStripMenuItem.Click += new System.EventHandler(this.detailsToolStripMenuItem_Click);
+            // 
+            // orderDatesToolStripMenuItem
+            // 
+            this.orderDatesToolStripMenuItem.Name = "orderDatesToolStripMenuItem";
+            this.orderDatesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.orderDatesToolStripMenuItem.Text = "Заказы по датам";
+            this.orderDatesToolStripMenuItem.Click += new System.EventHandler(this.orderDatesToolStripMenuItem_Click);
             // 
             // assemblyDetailsToolStripMenuItem
             // 
             this.assemblyDetailsToolStripMenuItem.Name = "assemblyDetailsToolStripMenuItem";
-            this.assemblyDetailsToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.assemblyDetailsToolStripMenuItem.Text = "Детали по сборкам";
+            this.assemblyDetailsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.assemblyDetailsToolStripMenuItem.Text = "Детали сборок";
             this.assemblyDetailsToolStripMenuItem.Click += new System.EventHandler(this.assemblyDetailsToolStripMenuItem_Click);
-            // 
-            // ordersToolStripMenuItem
-            // 
-            this.ordersToolStripMenuItem.Name = "ordersToolStripMenuItem";
-            this.ordersToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.ordersToolStripMenuItem.Text = "Список заказов";
-            this.ordersToolStripMenuItem.Click += new System.EventHandler(this.ordersToolStripMenuItem_Click);
             // 
             // dataGridView
             // 
@@ -210,8 +210,8 @@
         private System.Windows.Forms.Button buttonPayOrder;
         private System.Windows.Forms.Button buttonRef;
         private System.Windows.Forms.ToolStripMenuItem reportsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem detailsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem assembliesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem orderDatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem assemblyDetailsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ordersToolStripMenuItem;
     }
 }

@@ -61,19 +61,28 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                     CellToName = "C1"
                 });
                 uint rowIndex = 2;
-                foreach (var ad in info.AssemblyDetails)
+                List<DateTime> dates = new List<DateTime>();
+                foreach (var order in info.Orders)
                 {
+                    if (!dates.Contains(order.DateCreate.Date))
+                    {
+                        dates.Add(order.DateCreate.Date);
+                    }
+                }
+                foreach (var date in dates)
+                {
+                    decimal generalSum = 0;
                     InsertCellInWorksheet(new ExcelCellParameters
                     {
                         Worksheet = worksheetPart.Worksheet,
                         ShareStringPart = shareStringPart,
                         ColumnName = "A",
                         RowIndex = rowIndex,
-                        Text = ad.DetailName,
+                        Text = date.Date.ToShortDateString(),
                         StyleIndex = 0U
                     });
                     rowIndex++;
-                    foreach (var assembly in ad.Assemblies)
+                    foreach (var order in info.Orders.Where(rec => rec.DateCreate.Date == date.Date))
                     {
                         InsertCellInWorksheet(new ExcelCellParameters
                         {
@@ -81,27 +90,40 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                             ShareStringPart = shareStringPart,
                             ColumnName = "B",
                             RowIndex = rowIndex,
-                            Text = assembly.Item1,
+                            Text = order.AssemblyName,
                             StyleIndex = 1U
                         });
+
                         InsertCellInWorksheet(new ExcelCellParameters
                         {
                             Worksheet = worksheetPart.Worksheet,
                             ShareStringPart = shareStringPart,
                             ColumnName = "C",
                             RowIndex = rowIndex,
-                            Text = assembly.Item2.ToString(),
+                            Text = order.Sum.ToString(),
                             StyleIndex = 1U
                         });
+                        generalSum += order.Sum;
                         rowIndex++;
                     }
+
+                    InsertCellInWorksheet(new ExcelCellParameters
+                    {
+                        Worksheet = worksheetPart.Worksheet,
+                        ShareStringPart = shareStringPart,
+                        ColumnName = "A",
+                        RowIndex = rowIndex,
+                        Text = "Общая сумма:",
+                        StyleIndex = 0U
+                    });
+
                     InsertCellInWorksheet(new ExcelCellParameters
                     {
                         Worksheet = worksheetPart.Worksheet,
                         ShareStringPart = shareStringPart,
                         ColumnName = "C",
                         RowIndex = rowIndex,
-                        Text = ad.TotalCount.ToString(),
+                        Text = generalSum.ToString(),
                         StyleIndex = 0U
                     });
                     rowIndex++;

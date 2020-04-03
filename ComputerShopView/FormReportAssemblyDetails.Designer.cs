@@ -28,80 +28,85 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.ColumnDetail = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnAssembly = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.buttonSave = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+            this.components = new System.ComponentModel.Container();
+            Microsoft.Reporting.WinForms.ReportDataSource reportDataSource1 = new Microsoft.Reporting.WinForms.ReportDataSource();
+            this.ReportAssemblyDetailViewModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.reportViewer = new Microsoft.Reporting.WinForms.ReportViewer();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.buttonMake = new System.Windows.Forms.Button();
+            this.buttonToPdf = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.ReportAssemblyDetailViewModelBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView
+            // ReportAssemblyDetailViewModelBindingSource
             // 
-            this.dataGridView.AllowUserToAddRows = false;
-            this.dataGridView.AllowUserToDeleteRows = false;
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColumnDetail,
-            this.ColumnAssembly,
-            this.ColumnCount});
-            this.dataGridView.Location = new System.Drawing.Point(12, 56);
-            this.dataGridView.Name = "dataGridView";
-            this.dataGridView.ReadOnly = true;
-            this.dataGridView.Size = new System.Drawing.Size(776, 382);
-            this.dataGridView.TabIndex = 0;
+            this.ReportAssemblyDetailViewModelBindingSource.DataSource = typeof(ComputerShopBusinessLogic.ViewModels.ReportAssemblyDetailViewModel);
             // 
-            // ColumnDetail
+            // reportViewer
             // 
-            this.ColumnDetail.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnDetail.HeaderText = "Деталь";
-            this.ColumnDetail.Name = "ColumnDetail";
-            this.ColumnDetail.ReadOnly = true;
+            reportDataSource1.Name = "DataSetAssemblyDetail";
+            reportDataSource1.Value = this.ReportAssemblyDetailViewModelBindingSource;
+            this.reportViewer.LocalReport.DataSources.Add(reportDataSource1);
+            this.reportViewer.LocalReport.ReportEmbeddedResource = "ComputerShopView.ReportAssemblyDetails.rdlc";
+            this.reportViewer.Location = new System.Drawing.Point(12, 27);
+            this.reportViewer.Name = "reportViewer";
+            this.reportViewer.ServerReport.BearerToken = null;
+            this.reportViewer.Size = new System.Drawing.Size(940, 419);
+            this.reportViewer.TabIndex = 0;
             // 
-            // ColumnAssembly
+            // menuStrip
             // 
-            this.ColumnAssembly.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnAssembly.HeaderText = "Сборка";
-            this.ColumnAssembly.Name = "ColumnAssembly";
-            this.ColumnAssembly.ReadOnly = true;
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(964, 24);
+            this.menuStrip.TabIndex = 1;
+            this.menuStrip.Text = "menuStrip1";
             // 
-            // ColumnCount
+            // buttonMake
             // 
-            this.ColumnCount.HeaderText = "Количество";
-            this.ColumnCount.Name = "ColumnCount";
-            this.ColumnCount.ReadOnly = true;
+            this.buttonMake.Location = new System.Drawing.Point(570, 1);
+            this.buttonMake.Name = "buttonMake";
+            this.buttonMake.Size = new System.Drawing.Size(164, 20);
+            this.buttonMake.TabIndex = 2;
+            this.buttonMake.Text = "Сформировать";
+            this.buttonMake.UseVisualStyleBackColor = true;
+            this.buttonMake.Click += new System.EventHandler(this.buttonMake_Click);
             // 
-            // buttonSave
+            // buttonToPdf
             // 
-            this.buttonSave.Location = new System.Drawing.Point(12, 12);
-            this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(148, 31);
-            this.buttonSave.TabIndex = 1;
-            this.buttonSave.Text = "Сохранить в Excel";
-            this.buttonSave.UseVisualStyleBackColor = true;
-            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
+            this.buttonToPdf.Location = new System.Drawing.Point(750, 1);
+            this.buttonToPdf.Name = "buttonToPdf";
+            this.buttonToPdf.Size = new System.Drawing.Size(166, 20);
+            this.buttonToPdf.TabIndex = 3;
+            this.buttonToPdf.Text = "В PDF";
+            this.buttonToPdf.UseVisualStyleBackColor = true;
+            this.buttonToPdf.Click += new System.EventHandler(this.buttonToPdf_Click);
             // 
             // FormReportAssemblyDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.buttonSave);
-            this.Controls.Add(this.dataGridView);
+            this.ClientSize = new System.Drawing.Size(964, 454);
+            this.Controls.Add(this.buttonToPdf);
+            this.Controls.Add(this.buttonMake);
+            this.Controls.Add(this.reportViewer);
+            this.Controls.Add(this.menuStrip);
+            this.MainMenuStrip = this.menuStrip;
             this.Name = "FormReportAssemblyDetails";
-            this.Text = "Детали по сборкам";
-            this.Load += new System.EventHandler(this.FormReportAssemblyDetails_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Детали сборок";
+            ((System.ComponentModel.ISupportInitialize)(this.ReportAssemblyDetailViewModelBindingSource)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnDetail;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnAssembly;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnCount;
-        private System.Windows.Forms.Button buttonSave;
+        private Microsoft.Reporting.WinForms.ReportViewer reportViewer;
+        private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.Button buttonMake;
+        private System.Windows.Forms.Button buttonToPdf;
+        private System.Windows.Forms.BindingSource ReportAssemblyDetailViewModelBindingSource;
     }
 }

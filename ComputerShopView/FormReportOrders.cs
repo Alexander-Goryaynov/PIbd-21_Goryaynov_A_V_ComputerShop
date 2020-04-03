@@ -1,6 +1,5 @@
 ﻿using ComputerShopBusinessLogic.BindingModels;
 using ComputerShopBusinessLogic.BusinessLogic;
-using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,60 +34,70 @@ namespace ComputerShopView
             }
             try
             {
-                ReportParameter parameter = new ReportParameter("ReportParameterPeriod",
-                    "c " + dateTimePickerFrom.Value.ToShortDateString() + " по " +
-                    dateTimePickerTo.Value.ToShortDateString());
-                reportViewer.LocalReport.SetParameters(parameter);
-                var dataSource = logic.GetOrders(new ReportBindingModel
+                var dict = logic.GetOrders(new ReportBindingModel { 
+                    DateFrom = dateTimePickerFrom.Value.Date, 
+                    DateTo = dateTimePickerTo.Value.Date });
+                List<DateTime> dates = new List<DateTime>();
+                foreach (var order in dict)
                 {
-                    DateFrom = dateTimePickerFrom.Value.Date,
-                    DateTo = dateTimePickerTo.Value.Date
-                });
-                ReportDataSource source = new ReportDataSource("DataSetOrders", dataSource);
-                reportViewer.LocalReport.DataSources.Add(source);
-                reportViewer.RefreshReport();
+                    if (!dates.Contains(order.DateCreate.Date))
+                    {
+                        dates.Add(order.DateCreate.Date);
+                    }
+                }
+                if (dict != null)
+                {
+                    dataGridView.Rows.Clear();
+                    foreach (var date in dates)
+                    {
+                        decimal generalSum = 0;
+                        dataGridView.Rows.Add(new object[] { date.Date.ToShortDateString() });
+
+                        foreach (var order in dict.Where(rec => rec.DateCreate.Date == date.Date))
+                        {
+                            dataGridView.Rows.Add(new object[] { "", order.AssemblyName, order.Sum });
+                            generalSum += order.Sum;
+                        }
+                        dataGridView.Rows.Add(new object[] { "Итого: ", "", generalSum });
+                    }
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        [Obsolete]
-        private void buttonToPdf_Click(object sender, EventArgs e)
+        private void buttonSaveToExcel_Click(object sender, EventArgs e)
         {
-            if (dateTimePickerFrom.Value.Date >= dateTimePickerTo.Value.Date)
-            {
-                MessageBox.Show("Дата начала должна быть меньше даты окончания",
-                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            using (var dialog = new SaveFileDialog { Filter = "pdf|*.pdf" })
+            using (var dialog = new SaveFileDialog { Filter = "xlsx|*.xlsx" })
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
+                    if (dateTimePickerFrom.Value.Date >= dateTimePickerTo.Value.Date)
+                    {
+                        MessageBox.Show("Дата начала должна быть меньше даты окончания",
+                            "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                     try
                     {
-                        logic.SaveOrdersToPdfFile(new ReportBindingModel
+                        logic.SaveOrdersToExcelFile(new ReportBindingModel
                         {
                             FileName = dialog.FileName,
-                            DateFrom = dateTimePickerFrom.Value,
-                            DateTo = dateTimePickerTo.Value
+                            DateFrom = dateTimePickerFrom.Value.Date,
+                            DateTo = dateTimePickerTo.Value.Date,
                         });
                         MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, 
+                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
                             MessageBoxIcon.Error);
                     }
-
-
                 }
             }
         }
     }
 }
-
