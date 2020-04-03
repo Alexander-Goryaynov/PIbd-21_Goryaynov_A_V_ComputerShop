@@ -32,17 +32,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 {
                     docBody.AppendChild(CreateParagraph(new WordParagraph
                     {
-                        Texts = new List<string> { assembly.AssemblyName },
-                        TextProperties = new WordParagraphProperties
-                        {
-                            Size = "24",
-                            JustificationValues = JustificationValues.Both,
-                            Bold = true
-                        }
-                    }));
-                    docBody.AppendChild(CreateParagraph(new WordParagraph
-                    {
-                        Texts = new List<string> { "Цена: " + assembly.Price },
+                        Texts = new List<string> { assembly.AssemblyName , "  —  Цена: " + assembly.Price.ToString() },
                         TextProperties = new WordParagraphProperties
                         {
                             Size = "24",
@@ -70,6 +60,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
             {
                 Paragraph docParagraph = new Paragraph();
                 docParagraph.AppendChild(CreateParagraphProperties(paragraph.TextProperties));
+                int i = 0;
                 foreach (var run in paragraph.Texts)
                 {
                     Run docRun = new Run();
@@ -78,7 +69,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                     {
                         Val = paragraph.TextProperties.Size
                     });
-                    if (paragraph.TextProperties.Bold)
+                    if (i % 2 == 0)
                     {
                         properties.AppendChild(new Bold());
                     }
@@ -89,6 +80,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                         Space = SpaceProcessingModeValues.Preserve
                     });
                     docParagraph.AppendChild(docRun);
+                    i++;
                 }
                 return docParagraph;
             }
