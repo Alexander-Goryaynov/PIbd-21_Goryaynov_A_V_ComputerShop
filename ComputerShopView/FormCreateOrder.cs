@@ -21,11 +21,13 @@ namespace ComputerShopView
         public new IUnityContainer Container { get; set; }
         private readonly IAssemblyLogic logicA;
         private readonly MainLogic logicM;
-        public FormCreateOrder(IAssemblyLogic logicA, MainLogic logicM)
+        private readonly IClientLogic logicC;
+        public FormCreateOrder(IAssemblyLogic logicA, MainLogic logicM, IClientLogic logicC)
         {
             InitializeComponent();
             this.logicA = logicA;
             this.logicM = logicM;
+            this.logicC = logicC;
         }
 
         private void comboBoxAssembly_SelectedIndexChanged(object sender, EventArgs e)
@@ -61,13 +63,20 @@ namespace ComputerShopView
         {
             try
             {
-                List<AssemblyViewModel> list = logicA.Read(null);
-                if (list != null)
+                List<AssemblyViewModel> assembliesList = logicA.Read(null);
+                if (assembliesList != null)
                 {
                     comboBoxAssembly.DisplayMember = "AssemblyName";
                     comboBoxAssembly.ValueMember = "Id";
-                    comboBoxAssembly.DataSource = list;
+                    comboBoxAssembly.DataSource = assembliesList;
                     comboBoxAssembly.SelectedItem = null;
+                }
+                List<ClientViewModel> clientsList = logicC.Read(null);
+                if (clientsList != null)
+                {
+                    comboBoxClient.DisplayMember = "FIO";
+                    comboBoxClient.DataSource = clientsList;
+                    comboBoxClient.SelectedItem = null;
                 }
             }
             catch (Exception ex)
@@ -88,13 +97,20 @@ namespace ComputerShopView
                 MessageBox.Show("Выберите сборку", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            if (comboBoxClient.SelectedValue == null)
+            {
+                MessageBox.Show("Выберите клиента", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             try
             {
                 logicM.CreateOrder(new CreateOrderBindingModel
                 {
                     AssemblyId = Convert.ToInt32(comboBoxAssembly.SelectedValue),
                     Count = Convert.ToInt32(textBoxCount.Text),
-                    Sum = Convert.ToDecimal(textBoxSum.Text)
+                    Sum = Convert.ToDecimal(textBoxSum.Text),
+                    ClientId = (comboBoxClient.SelectedItem as ClientViewModel).Id,
+                    ClientFIO = (comboBoxClient.SelectedItem as ClientViewModel).FIO
                 });
                 MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK,
                     MessageBoxIcon.Information);

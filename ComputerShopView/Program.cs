@@ -37,6 +37,8 @@ namespace ComputerShopView
                 new HierarchicalLifetimeManager());
             currentContainer.RegisterType<ReportLogic>(
                 new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IClientLogic, ClientLogic>(
+                new HierarchicalLifetimeManager());
             return currentContainer;
         }
     }

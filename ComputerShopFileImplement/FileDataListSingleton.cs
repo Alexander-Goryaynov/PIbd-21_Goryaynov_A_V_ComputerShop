@@ -16,16 +16,19 @@ namespace ComputerShopFileImplement
         private readonly string OrderFileName = "Order.xml";
         private readonly string AssemblyFileName = "Assembly.xml";
         private readonly string AssemblyDetailFileName = "AssemblyDetail.xml";
+        private readonly string ClientFileName = "Client.xml";
         public List<Detail> Details { get; set; }
         public List<Order> Orders { get; set; }
         public List<Assembly> Assemblies { get; set; }
         public List<AssemblyDetail> AssemblyDetails { get; set; }
+        public List<Client> Clients { get; set; }
         private FileDataListSingleton()
         {
             Details = LoadDetails();
             Orders = LoadOrders();
             Assemblies = LoadAssemblies();
             AssemblyDetails = LoadAssemblyDetails();
+            Clients = LoadClients();
         }
         public static FileDataListSingleton GetInstance()
         {
@@ -41,6 +44,7 @@ namespace ComputerShopFileImplement
             SaveOrders();
             SaveAssemblies();
             SaveAssemblyDetails();
+            SaveClients();
         }
         private List<Detail> LoadDetails()
         {
@@ -123,6 +127,26 @@ namespace ComputerShopFileImplement
             }
             return list;
         }
+        private List<Client> LoadClients()
+        {
+            var list = new List<Client>();
+            if (File.Exists(ClientFileName))
+            {
+                XDocument xDocument = XDocument.Load(ClientFileName);
+                var xElements = xDocument.Root.Elements("Client").ToList();
+                foreach (var element in xElements)
+                {
+                    list.Add(new Client
+                    {
+                        Id = Convert.ToInt32(element.Attribute("Id").Value),
+                        FIO = element.Element("FIO").Value,
+                        Email = element.Element("Email").Value,
+                        Password = element.Element("Password").Value
+                    });
+                }
+            }
+            return list;
+        }
         private void SaveDetails()
         {
             if (Details != null)
@@ -189,6 +213,24 @@ namespace ComputerShopFileImplement
                 }
                 XDocument xDocument = new XDocument(xElement);
                 xDocument.Save(AssemblyDetailFileName);
+            }
+        }
+        private void SaveClients()
+        {
+            if (Clients != null)
+            {
+                var xElement = new XElement("Clients");
+                foreach (var client in Clients)
+                {
+                    xElement.Add(new XElement("Client",
+                    new XAttribute("Id", client.Id),
+                    new XElement("FIO", client.FIO),
+                    new XElement("Email", client.Email),
+                    new XElement("Password", client.Password)
+                    ));
+                }
+                XDocument xDocument = new XDocument(xElement);
+                xDocument.Save(ClientFileName);
             }
         }
     }

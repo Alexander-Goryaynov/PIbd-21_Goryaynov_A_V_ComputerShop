@@ -22,8 +22,10 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 Count = model.Count,
                 Sum = model.Sum,
                 DateCreate = DateTime.Now,
-                Status = OrderStatus.Принят
-            });
+                Status = OrderStatus.Принят,
+                ClientFIO = model.ClientFIO,
+                ClientId = model.ClientId
+            });            
         }
         public void TakeOrderInWork(ChangeStatusBindingModel model)
         {
@@ -44,7 +46,9 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 Sum = order.Sum,
                 DateCreate = order.DateCreate,
                 DateImplement = null,
-                Status = OrderStatus.Выполняется
+                Status = OrderStatus.Выполняется,
+                ClientId = order.ClientId,
+                ClientFIO = order.ClientFIO
             });
         }
         public void FinishOrder (ChangeStatusBindingModel model)
@@ -66,7 +70,9 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 Sum = order.Sum,
                 DateCreate = order.DateCreate,
                 DateImplement = DateTime.Now,
-                Status = OrderStatus.Готов
+                Status = OrderStatus.Готов,
+                ClientId = order.ClientId,
+                ClientFIO = order.ClientFIO
             });
         }
         public void PayOrder(ChangeStatusBindingModel model)
@@ -88,7 +94,9 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 Sum = order.Sum,
                 DateCreate = order.DateCreate,
                 DateImplement = order.DateImplement,
-                Status = OrderStatus.Оплачен
+                Status = OrderStatus.Оплачен,
+                ClientId = order.ClientId,
+                ClientFIO = order.ClientFIO
             });
         }
     }

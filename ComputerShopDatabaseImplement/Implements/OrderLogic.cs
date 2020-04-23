@@ -2,6 +2,7 @@
 using ComputerShopBusinessLogic.Interfaces;
 using ComputerShopBusinessLogic.ViewModels;
 using ComputerShopDatabaseImplement.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +19,7 @@ namespace ComputerShopDatabaseImplement.Implements
                 Order element;
                 if (model.Id.HasValue)
                 {
-                    element = context.Orders.FirstOrDefault(rec => rec.Id ==
-                        model.Id);
+                    element = context.Orders.FirstOrDefault(rec => rec.Id == model.Id);
                     if (element == null)
                     {
                         throw new Exception("Элемент не найден");
@@ -31,6 +31,8 @@ namespace ComputerShopDatabaseImplement.Implements
                     context.Orders.Add(element);
                 }
                 element.AssemblyId = model.AssemblyId;
+                element.ClientId = model.ClientId;
+                element.ClientFIO = model.ClientFIO;
                 element.Count = model.Count;
                 element.Sum = model.Sum;
                 element.Status = model.Status;
@@ -73,17 +75,19 @@ namespace ComputerShopDatabaseImplement.Implements
         {
             using (var context = new ComputerShopDatabase())
             {
-                return context.Orders.Where(rec => model == null ||
+                return context.Orders.Where(rec => (model == null) ||
                     (rec.Id == model.Id && model.Id.HasValue) ||
                     (model.DateFrom.HasValue && model.DateTo.HasValue &&
-                    (rec.DateCreate >= model.DateFrom) && (rec.DateCreate <= model.DateTo)))
-                .ToList()
+                    (rec.DateCreate >= model.DateFrom) && (rec.DateCreate <= model.DateTo)) ||
+                    (rec.ClientId == model.ClientId))
+                .Include(order => order.Assembly)
                 .Select(rec => new OrderViewModel()
                 {
                     Id = rec.Id,
                     AssemblyId = rec.AssemblyId,
-                    AssemblyName = context.Assemblies.FirstOrDefault((r) =>
-                        r.Id == rec.AssemblyId).Name,
+                    AssemblyName = rec.Assembly.Name,
+                    ClientFIO = rec.ClientFIO,
+                    ClientId = rec.ClientId,
                     Count = rec.Count,
                     DateCreate = rec.DateCreate,
                     DateImplement = rec.DateImplement,
