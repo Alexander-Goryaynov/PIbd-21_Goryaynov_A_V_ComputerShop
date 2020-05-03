@@ -13,6 +13,7 @@ namespace ComputerShopListImplement
         public List<Assembly> Assemblies { get; set; }
         public List<AssemblyDetail> AssemblyDetails { get; set; }
         public List<Client> Clients { get; set; }
+        public List<Implementer> Implementers { get; set; }
         private DataListSingleton()
         {
             Details = new List<Detail>();
@@ -20,6 +21,7 @@ namespace ComputerShopListImplement
             Assemblies = new List<Assembly>();
             AssemblyDetails = new List<AssemblyDetail>();
             Clients = new List<Client>();
+            Implementers = new List<Implementer>();
         }
         public static DataListSingleton GetInstance()
         {

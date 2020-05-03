@@ -1,4 +1,5 @@
 ﻿using ComputerShopBusinessLogic.BindingModels;
+using ComputerShopBusinessLogic.Enums;
 using ComputerShopBusinessLogic.Interfaces;
 using ComputerShopBusinessLogic.ViewModels;
 using ComputerShopListImplement.Models;
@@ -61,14 +62,16 @@ namespace ComputerShopListImplement.Implements
             List<OrderViewModel> result = new List<OrderViewModel>();
             foreach (var order in source.Orders)
             {
-                if (model != null)
-                {
-                    if (order.Id == model.Id)
-                    {
-                        result.Add(CreateViewModel(order));
-                        break;
-                    }
-                    continue;
+                if ((model != null) && (order.Id == model.Id) ||
+                    (model.DateFrom.HasValue) && (model.DateTo.HasValue) && 
+                    (order.DateCreate >= model.DateFrom) && (order.DateCreate <= model.DateTo) ||
+                    (model.ClientId.HasValue) && (order.ClientId == model.ClientId) ||
+                    (model.AnyFreeOrders.HasValue) && (model.AnyFreeOrders.Value) ||
+                    (model.ImplementerId.HasValue) && (order.ImplementerId == model.ImplementerId) &&
+                    (order.Status == OrderStatus.Выполняется))
+                {                    
+                    result.Add(CreateViewModel(order));
+                    break;                    
                 }
                 result.Add(CreateViewModel(order));
             }
