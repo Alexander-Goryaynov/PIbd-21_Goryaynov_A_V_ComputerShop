@@ -121,10 +121,11 @@ namespace ComputerShopFileImplement.Implements
         }
         public bool AreDetailsAvailable(int assemblyId, int assembliesCount)
         {
-            bool result = true;
             var assemblyDetails = source.AssemblyDetails.Where(x => x.AssemblyId == assemblyId);
-            if (assemblyDetails.Count() == 0) 
+            if (assemblyDetails.Count() == 0)
+            {
                 return false;
+            }                
             foreach (var elem in assemblyDetails)
             {
                 int count = 0;
@@ -133,10 +134,12 @@ namespace ComputerShopFileImplement.Implements
                 {
                     count += rec.Count;
                 }
-                if (count < elem.Count * assembliesCount) 
-                    result = false;
+                if (count < elem.Count * assembliesCount)
+                {
+                    return false;
+                }
             }
-            return result;
+            return true;
         }
 
         public void DeleteFromWarehouse(int assemblyId, int count)
