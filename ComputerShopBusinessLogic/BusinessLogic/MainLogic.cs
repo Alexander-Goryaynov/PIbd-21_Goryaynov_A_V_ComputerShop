@@ -38,6 +38,10 @@ namespace ComputerShopBusinessLogic.BusinessLogic
             {
                 throw new Exception("Заказ не в статусе \"Принят\"");
             }
+            if (!warehouseLogic.AreDetailsAvailable(order.AssemblyId, order.Count))
+            {
+                throw new Exception("На складах не хватает деталей");
+            }
             orderLogic.CreateOrUpdate(new OrderBindingModel
             {
                 Id = order.Id,
@@ -48,6 +52,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 DateImplement = null,
                 Status = OrderStatus.Выполняется
             });
+            warehouseLogic.DeleteFromWarehouse(order.AssemblyId, order.Count);
         }
         public void FinishOrder (ChangeStatusBindingModel model)
         {
