@@ -2,6 +2,7 @@
 using ComputerShopBusinessLogic.Interfaces;
 using ComputerShopBusinessLogic.ViewModels;
 using ComputerShopDatabaseImplement.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,13 +78,12 @@ namespace ComputerShopDatabaseImplement.Implements
                     (rec.Id == model.Id && model.Id.HasValue) ||
                     (model.DateFrom.HasValue && model.DateTo.HasValue &&
                     (rec.DateCreate >= model.DateFrom) && (rec.DateCreate <= model.DateTo)))
-                .ToList()
+                .Include(order => order.Assembly)
                 .Select(rec => new OrderViewModel()
                 {
                     Id = rec.Id,
                     AssemblyId = rec.AssemblyId,
-                    AssemblyName = context.Assemblies.FirstOrDefault((r) =>
-                        r.Id == rec.AssemblyId).Name,
+                    AssemblyName = rec.Assembly.Name,
                     Count = rec.Count,
                     DateCreate = rec.DateCreate,
                     DateImplement = rec.DateImplement,
