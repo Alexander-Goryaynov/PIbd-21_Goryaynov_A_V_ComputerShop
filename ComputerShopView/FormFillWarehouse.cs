@@ -89,7 +89,7 @@ namespace ComputerShopView
             {
                 var warehouseList = logicW.GetList();
                 comboBoxWarehouse.DataSource = warehouseList;
-                comboBoxWarehouse.DisplayMember = "WarehouseName";
+                comboBoxWarehouse.DisplayMember = "Name";
                 comboBoxWarehouse.ValueMember = "Id";
                 var detailList = logicD.Read(null);
                 comboBoxDetail.DataSource = detailList;

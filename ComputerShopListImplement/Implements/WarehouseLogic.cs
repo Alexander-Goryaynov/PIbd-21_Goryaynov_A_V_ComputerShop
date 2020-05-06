@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ComputerShopBusinessLogic.BindingModels;
 using ComputerShopBusinessLogic.Interfaces;
 using ComputerShopBusinessLogic.ViewModels;
@@ -33,11 +34,6 @@ namespace ComputerShopListImplement.Implements
                 Id = maxId + 1,
                 WarehouseName = model.WarehouseName
             });
-        }
-
-        public bool AreDetailsAvailable(int assemblyId, int count)
-        {
-            throw new NotImplementedException();
         }
 
         public void DelElement(int id)
@@ -98,7 +94,7 @@ namespace ComputerShopListImplement.Implements
                     return new WarehouseViewModel
                     {
                         Id = source.Warehouses[i].Id,
-                        WarehouseName = source.Warehouses[i].WarehouseName,
+                        Name = source.Warehouses[i].WarehouseName,
                         WarehouseDetails = warehouseDetails
                     };
                 }
@@ -139,49 +135,13 @@ namespace ComputerShopListImplement.Implements
                 result.Add(new WarehouseViewModel
                 {
                     Id = source.Warehouses[i].Id,
-                    WarehouseName = source.Warehouses[i].WarehouseName,
+                    Name = source.Warehouses[i].WarehouseName,
                     WarehouseDetails = warehouseDetails
                 });
             }
             return result;
         }
 
-        public void FillWarehouse(WarehouseDetailBindingModel model)
-        {
-            int foundItemIndex = -1;
-            for (int i = 0; i < source.WarehouseDetails.Count; ++i)
-            {
-                if (source.WarehouseDetails[i].DetailId == model.DetailId
-                    && source.WarehouseDetails[i].WarehouseId == model.WarehouseId)
-                {
-                    foundItemIndex = i;
-                    break;
-                }
-            }
-            if (foundItemIndex != -1)
-            {
-                source.WarehouseDetails[foundItemIndex].Count =
-                    source.WarehouseDetails[foundItemIndex].Count + model.Count;
-            }
-            else
-            {
-                int maxId = 0;
-                for (int i = 0; i < source.WarehouseDetails.Count; ++i)
-                {
-                    if (source.WarehouseDetails[i].Id > maxId)
-                    {
-                        maxId = source.WarehouseDetails[i].Id;
-                    }
-                }
-                source.WarehouseDetails.Add(new WarehouseDetail
-                {
-                    Id = maxId + 1,
-                    WarehouseId = model.WarehouseId,
-                    DetailId = model.DetailId,
-                    Count = model.Count
-                });
-            }
-        }
         public void UpdElement(WarehouseBindingModel model)
         {
             int index = -1;
@@ -205,30 +165,17 @@ namespace ComputerShopListImplement.Implements
         }
         public void FillWarehouse(WarehouseDetailBindingModel model)
         {
-            int index = -1;
-            for (int i = 0; i < source.WarehouseDetails.Count; i++)
+            var item = source.WarehouseDetails.FirstOrDefault(x => x.DetailId == model.DetailId
+                    && x.WarehouseId == model.WarehouseId);
+
+            if (item != null)
             {
-                if (source.WarehouseDetails[i].DetailId == model.DetailId &&
-                    source.WarehouseDetails[i].WarehouseId == model.WarehouseId)
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index != -1)
-            {
-                source.WarehouseDetails[index].Count += model.Count;
+                item.Count += model.Count;
             }
             else
             {
-                int maxId = 0;
-                for (int i = 0; i < source.WarehouseDetails.Count; i++)
-                {
-                    if (source.WarehouseDetails[i].Id > maxId)
-                    {
-                        maxId = source.WarehouseDetails[i].Id;
-                    }
-                }
+                int maxId = source.WarehouseDetails.Count > 0 ?
+                    source.WarehouseDetails.Max(rec => rec.Id) : 0;
                 source.WarehouseDetails.Add(new WarehouseDetail
                 {
                     Id = maxId + 1,
