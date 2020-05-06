@@ -9,7 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputerShopBusinessLogic",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputerShopListImplement", "ComputerShopListImplement\ComputerShopListImplement.csproj", "{9EA8EF4D-569D-40E7-A128-BAE51D19718D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputerShopFileImplement", "ComputerShopFileImplement\ComputerShopFileImplement.csproj", "{4AEC1C78-C8C1-499F-9EA6-099344450220}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputerShopFileImplement", "ComputerShopFileImplement\ComputerShopFileImplement.csproj", "{4AEC1C78-C8C1-499F-9EA6-099344450220}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputerShopDatabaseImplement", "ComputerShopDatabaseImplement\ComputerShopDatabaseImplement.csproj", "{BAA0BC86-8109-4E3C-B5BE-625EA5B475F6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4FD53A2F-6C75-4B11-B070-B29124C51A62} = {4FD53A2F-6C75-4B11-B070-B29124C51A62}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +38,10 @@ Global
 		{4AEC1C78-C8C1-499F-9EA6-099344450220}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AEC1C78-C8C1-499F-9EA6-099344450220}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AEC1C78-C8C1-499F-9EA6-099344450220}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAA0BC86-8109-4E3C-B5BE-625EA5B475F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAA0BC86-8109-4E3C-B5BE-625EA5B475F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAA0BC86-8109-4E3C-B5BE-625EA5B475F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAA0BC86-8109-4E3C-B5BE-625EA5B475F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
