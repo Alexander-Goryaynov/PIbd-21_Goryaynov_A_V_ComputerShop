@@ -35,7 +35,7 @@ namespace ComputerShopView
                     var view = logic.GetElement(id.Value);
                     if (view != null)
                     {
-                        textBoxName.Text = view.WarehouseName;
+                        textBoxName.Text = view.Name;
                     }
                     var warehouseList = logic.GetList();
                     var warehouseDetails = warehouseList[0].WarehouseDetails;
@@ -66,7 +66,7 @@ namespace ComputerShopView
             }
         }
 
-        private void buttonSave_Click(object sender, EventArgs e)
+        private void ButtonSave_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBoxName.Text))
             {
@@ -103,7 +103,7 @@ namespace ComputerShopView
             }
         }
 
-        private void buttonCancel_Click(object sender, EventArgs e)
+        private void ButtonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();

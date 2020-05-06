@@ -9,7 +9,7 @@ namespace ComputerShopBusinessLogic.ViewModels
     {
         public int Id { get; set; }
         [DisplayName("Название склада")]
-        public string WarehouseName { get; set; }
+        public string Name { get; set; }
         public List<WarehouseDetailViewModel> WarehouseDetails { get; set; }
     }
 }

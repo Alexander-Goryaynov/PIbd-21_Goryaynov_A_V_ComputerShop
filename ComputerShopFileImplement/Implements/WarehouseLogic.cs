@@ -21,7 +21,7 @@ namespace ComputerShopFileImplement.Implements
             return source.Warehouses.Select(rec => new WarehouseViewModel
             {
                 Id = rec.Id,
-                WarehouseName = rec.WarehouseName,
+                Name = rec.WarehouseName,
                 WarehouseDetails = source.WarehouseDetails.Where(z => z.WarehouseId == rec.Id)
                 .Select(x => new WarehouseDetailViewModel
                 {
@@ -45,7 +45,7 @@ namespace ComputerShopFileImplement.Implements
                 return new WarehouseViewModel
                 {
                     Id = id,
-                    WarehouseName = elem.WarehouseName,
+                    Name = elem.WarehouseName,
                     WarehouseDetails = source.WarehouseDetails.Where(z => z.WarehouseId == elem.Id)
                     .Select(x => new WarehouseDetailViewModel
                     {

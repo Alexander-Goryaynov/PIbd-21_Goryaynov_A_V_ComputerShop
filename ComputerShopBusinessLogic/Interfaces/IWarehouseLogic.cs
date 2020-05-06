@@ -14,7 +14,6 @@ namespace ComputerShopBusinessLogic.Interfaces
         void UpdElement(WarehouseBindingModel model);
         void DelElement(int id);
         void FillWarehouse(WarehouseDetailBindingModel model);
-        bool AreDetailsAvailable(int assemblyId, int count);
         void DeleteFromWarehouse(int assemblyId, int count);
     }
 }
