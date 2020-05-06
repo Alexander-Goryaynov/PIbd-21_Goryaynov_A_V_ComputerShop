@@ -13,5 +13,6 @@ namespace ComputerShopBusinessLogic.HelperModels
         public DateTime DateTo { get; set; }
         public List<ReportAssemblyDetailViewModel> AssemblyDetails { get; set; }
         public List<ReportOrdersViewModel> Orders { get; set; }
+        public List<ReportWarehouseDetailViewModel> WarehouseDetails { get; set; }
     }
 }
