@@ -8,6 +8,6 @@ namespace ComputerShopBusinessLogic.ViewModels
     {
         public string AssemblyName { get; set; }
         public int TotalCount { get; set; }
-        public List<(string, int)> Details { get; set; }
+        public string DetailName { get; set; }
     }
 }

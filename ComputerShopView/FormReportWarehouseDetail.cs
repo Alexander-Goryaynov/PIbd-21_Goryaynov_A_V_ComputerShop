@@ -1,5 +1,6 @@
 ﻿using ComputerShopBusinessLogic.BindingModels;
 using ComputerShopBusinessLogic.BusinessLogic;
+using ComputerShopBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,16 +13,18 @@ using System.Windows.Forms;
 using Unity;
 
 namespace ComputerShopView
-{
-    public partial class FormReportOrders : Form
+{  
+    public partial class FormReportWarehouseDetail : Form
     {
         [Dependency]
         public new IUnityContainer Container { get; set; }
         private readonly ReportLogic logic;
-        public FormReportOrders(ReportLogic logic)
+        private readonly IWarehouseLogic warehouseLogic;
+        public FormReportWarehouseDetail(ReportLogic logic, IWarehouseLogic warehouseLogic)
         {
             InitializeComponent();
             this.logic = logic;
+            this.warehouseLogic = warehouseLogic;
         }
 
         private void ButtonSaveToExcel_Click(object sender, EventArgs e)
@@ -30,54 +33,44 @@ namespace ComputerShopView
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    if (dateTimePickerFrom.Value.Date >= dateTimePickerTo.Value.Date)
-                    {
-                        MessageBox.Show("Дата начала должна быть меньше даты окончания", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
                     try
                     {
-                        logic.SaveAssemblyDetailToExcelFile(new ReportBindingModel
-                        {
-                            FileName = dialog.FileName,
-                            DateFrom = dateTimePickerFrom.Value.Date,
-                            DateTo = dateTimePickerTo.Value.Date,
-                        });
+                        logic.SaveWarehouseDetailsToExcelFile(new ReportBindingModel { FileName = dialog.FileName });
                         MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-                       MessageBoxIcon.Error);
+                        MessageBoxIcon.Error);
                     }
                 }
             }
         }
 
-        private void ButtonMake_Click(object sender, EventArgs e)
+        private void FormReportWarehouseDetail_Load(object sender, EventArgs e)
         {
-            if (dateTimePickerFrom.Value.Date >= dateTimePickerTo.Value.Date)
-            {
-                MessageBox.Show("Дата начала должна быть меньше даты окончания", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            LoadData();
+        }
+        private void LoadData()
+        {
             try
             {
-                var list = logic.GetOrders(new ReportBindingModel { DateFrom = dateTimePickerFrom.Value.Date, DateTo = dateTimePickerTo.Value.Date });
+                var list = warehouseLogic.GetList();
                 if (list != null)
                 {
                     dataGridView.Rows.Clear();
-                    foreach (var date in list)
+                    foreach (var warehouse in list)
                     {
-                        decimal sum = 0;
-                        dataGridView.Rows.Add(new object[] { date.Key.ToShortDateString() });
-                        foreach (var order in date)
+                        int sum = 0;
+                        dataGridView.Rows.Add(new object[] { warehouse.Name, "", "" });
+                        foreach (var detail in warehouse.WarehouseDetails)
                         {
-                            dataGridView.Rows.Add(new object[] { "", order.AssemblyName, order.Sum });
-                            sum += order.Sum;
+                            dataGridView.Rows.Add(new object[] { "", detail.DetailName, detail.Count });
+                            sum += detail.Count;
                         }
                         dataGridView.Rows.Add(new object[] { "Итого", "", sum });
+                        dataGridView.Rows.Add(new object[] { });
                     }
                 }
             }

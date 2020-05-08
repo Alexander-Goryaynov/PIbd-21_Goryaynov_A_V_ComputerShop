@@ -7,7 +7,7 @@ namespace ComputerShopBusinessLogic.ViewModels
     public class ReportWarehouseDetailViewModel
     {
         public string WarehouseName { get; set; }
-        public int TotalCount { get; set; }
-        public List<(string, int)> Details { get; set; }
+        public string DetailName { get; set; }
+        public int Count { get; set; }
     }
 }

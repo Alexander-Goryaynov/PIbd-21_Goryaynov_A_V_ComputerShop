@@ -247,6 +247,18 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormReportDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormReportDetail.Designer.cs">
+      <DependentUpon>FormReportDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormReportWarehouseDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormReportWarehouseDetail.Designer.cs">
+      <DependentUpon>FormReportWarehouseDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormWarehouse.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -298,6 +310,12 @@
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormReportDetail.resx">
+      <DependentUpon>FormReportDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormReportWarehouseDetail.resx">
+      <DependentUpon>FormReportWarehouseDetail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormWarehouse.resx">
       <DependentUpon>FormWarehouse.cs</DependentUpon>
     </EmbeddedResource>
@@ -320,8 +338,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <EmbeddedResource Include="ReportAssemblyDetails.rdlc" />
+    <EmbeddedResource Include="ReportWarehouseDetail.rdlc" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\ComputerShopBusinessLogic.ViewModels.ReportAssemblyDetailViewModel.datasource" />
+    <None Include="Properties\DataSources\ComputerShopBusinessLogic.ViewModels.WarehouseDetailViewModel.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

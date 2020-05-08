@@ -164,5 +164,29 @@ namespace ComputerShopView
             var form = Container.Resolve<FormReportAssemblyDetails>();
             form.ShowDialog();
         }
+
+        private void списокСкладовToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dialog = new SaveFileDialog { Filter = "docx|*.docx" })
+            {
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    reportLogic.SaveWarehousesToWordFile(new ReportBindingModel { FileName = dialog.FileName });
+                    MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        private void деталиПоСкладамToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormReportWarehouseDetail>();
+            form.ShowDialog();
+        }
+
+        private void деталиПоСкладамPdfToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormReportDetail>();
+            form.ShowDialog();
+        }
     }
 }

@@ -14,31 +14,15 @@ using Unity;
 
 namespace ComputerShopView
 {
-    public partial class FormReportAssemblyDetails : Form
+    public partial class FormReportDetail : Form
     {
         [Dependency]
         public new IUnityContainer Container { get; set; }
         private readonly ReportLogic logic;
-        public FormReportAssemblyDetails(ReportLogic logic)
+        public FormReportDetail(ReportLogic logic)
         {
             InitializeComponent();
             this.logic = logic;
-        }
-
-        private void ButtonMake_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var dataSource = logic.GetAssemblyDetail();
-                ReportDataSource source = new ReportDataSource("DataSetAD", dataSource);
-                reportViewer.LocalReport.DataSources.Add(source);
-                reportViewer.RefreshReport();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
         }
 
         [Obsolete]
@@ -50,10 +34,11 @@ namespace ComputerShopView
                 {
                     try
                     {
-                        logic.SaveAssembliesToPdfFile(new ReportBindingModel
+                        logic.SaveDetailsToPdfFile(new ReportBindingModel
                         {
                             FileName = dialog.FileName,
                         });
+
                         MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
@@ -62,6 +47,26 @@ namespace ComputerShopView
                     }
                 }
             }
+        }
+
+        private void ReportViewer_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                var dataSource = logic.GetWarehouseDetail();
+                ReportDataSource source = new ReportDataSource("DataSetWarehouseDetail", dataSource);
+                reportViewer.LocalReport.DataSources.Add(source);
+                reportViewer.RefreshReport();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void FormReportDetail_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

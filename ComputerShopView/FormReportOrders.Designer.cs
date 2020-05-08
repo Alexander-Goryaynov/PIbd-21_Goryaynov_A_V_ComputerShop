@@ -96,7 +96,7 @@
             this.buttonMake.TabIndex = 5;
             this.buttonMake.Text = "Сформировать";
             this.buttonMake.UseVisualStyleBackColor = true;
-            this.buttonMake.Click += new System.EventHandler(this.buttonMake_Click);
+            this.buttonMake.Click += new System.EventHandler(this.ButtonMake_Click);
             // 
             // buttonSaveToExcel
             // 
@@ -106,7 +106,7 @@
             this.buttonSaveToExcel.TabIndex = 6;
             this.buttonSaveToExcel.Text = "Сохранить в Excel";
             this.buttonSaveToExcel.UseVisualStyleBackColor = true;
-            this.buttonSaveToExcel.Click += new System.EventHandler(this.buttonSaveToExcel_Click);
+            this.buttonSaveToExcel.Click += new System.EventHandler(this.ButtonSaveToExcel_Click);
             // 
             // DateCreateColumn
             // 

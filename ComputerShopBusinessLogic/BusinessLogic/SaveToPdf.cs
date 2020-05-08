@@ -21,40 +21,87 @@ namespace ComputerShopBusinessLogic.BusinessLogic
             paragraph.Format.Alignment = ParagraphAlignment.Center;
             paragraph.Style = "NormalTitle";
             var table = document.LastSection.AddTable();
-            List<string> columns = new List<string> { "6cm", "6cm", "6cm"};
+            List<string> columns = new List<string> { "6cm", "6cm", "6cm" };
             foreach (var elem in columns)
             {
                 table.AddColumn(elem);
             }
-            CreateRow(new PdfRowParameters
-            {
-                Table = table,
-                Texts = new List<string> { "Сборка", "Деталь", "Количество"},
-                Style = "NormalTitle",
-                ParagraphAlignment = ParagraphAlignment.Center
-            });
-            foreach (var ad in info.AssemblyDetails)
+            if (info.AssemblyDetails != null)
             {
                 CreateRow(new PdfRowParameters
                 {
                     Table = table,
-                    Texts = new List<string> {
-                        ad.AssemblyName,
-                        ad.DetailName,
-                        ad.Count.ToString()
+                    Texts = new List<string> { "Detail", "Assembly", "Count" },
+                    Style = "NormalTitle",
+                    ParagraphAlignment = ParagraphAlignment.Center
+                });
+                foreach (var ad in info.AssemblyDetails)
+                {
+                    CreateRow(new PdfRowParameters
+                    {
+                        Table = table,
+                        Texts = new List<string>
+                        {
+                            ad.DetailName,
+                            ad.AssemblyName,
+                            ad.TotalCount.ToString()
+                        },
+                        Style = "Normal",
+                        ParagraphAlignment = ParagraphAlignment.Left
+                    });
+                }
+            }
+            else if (info.WarehouseDetail != null)
+            {
+                int sum = 0;
+                CreateRow(new PdfRowParameters
+                {
+                    Table = table,
+                    Texts = new List<string> { "Detail", "Warehouse", "Count" },
+                    Style = "NormalTitle",
+                    ParagraphAlignment = ParagraphAlignment.Center
+                });
+
+                foreach (var sb in info.WarehouseDetail)
+                {
+                    CreateRow(new PdfRowParameters
+                    {
+                        Table = table,
+                        Texts = new List<string>
+                    {
+                        sb.DetailName,
+                        sb.WarehouseName,
+                        sb.Count.ToString()
+                    },
+                        Style = "Normal",
+                        ParagraphAlignment = ParagraphAlignment.Left
+                    });
+                    sum += sb.Count;
+                }
+                CreateRow(new PdfRowParameters
+                {
+                    Table = table,
+                    Texts = new List<string>
+                    {
+                        "Всего",
+                        "",
+                        sum.ToString()
                     },
                     Style = "Normal",
                     ParagraphAlignment = ParagraphAlignment.Left
                 });
             }
-            PdfDocumentRenderer renderer = new PdfDocumentRenderer(true,
-                PdfSharp.Pdf.PdfFontEmbedding.Always)
+            PdfDocumentRenderer renderer = new PdfDocumentRenderer(true, PdfSharp.Pdf.PdfFontEmbedding.Always)
             {
                 Document = document
             };
             renderer.RenderDocument();
             renderer.PdfDocument.Save(info.FileName);
         }
+        /// <summary>
+        /// Создание стилей для документа
+        /// </summary>
+        /// <param name="document"></param>
         private static void DefineStyles(Document document)
         {
             Style style = document.Styles["Normal"];
@@ -63,7 +110,11 @@ namespace ComputerShopBusinessLogic.BusinessLogic
             style = document.Styles.AddStyle("NormalTitle", "Normal");
             style.Font.Bold = true;
         }
-        private static void CreateRow (PdfRowParameters rowParameters)
+        /// <summary>
+        /// Создание и заполнение строки
+        /// </summary>
+        /// <param name="rowParameters"></param>
+        private static void CreateRow(PdfRowParameters rowParameters)
         {
             Row row = rowParameters.Table.AddRow();
             for (int i = 0; i < rowParameters.Texts.Count; ++i)
@@ -78,7 +129,11 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 });
             }
         }
-        private static void FillCell (PdfCellParameters cellParameters)
+        /// <summary>
+        /// Заполнение ячейки
+        /// </summary>
+        /// <param name="cellParameters"></param>
+        private static void FillCell(PdfCellParameters cellParameters)
         {
             cellParameters.Cell.AddParagraph(cellParameters.Text);
             if (!string.IsNullOrEmpty(cellParameters.Style))
