@@ -33,6 +33,7 @@ namespace ComputerShopBusinessLogic.BindingModels
         public DateTime? DateTo { get; set; }
         [DataMember]
         public int? ImplementerId { get; set; }
+        public string ImplementerFIO { set; get; }
         public bool? AnyFreeOrders { get; set; }
     }
 }

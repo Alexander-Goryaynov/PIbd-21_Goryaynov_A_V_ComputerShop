@@ -41,6 +41,10 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 {
                     throw new Exception("Заказ не в статусе \"Принят\"");
                 }
+                if (order.ImplementerId.HasValue)
+                {
+                    throw new Exception("У заказа уже есть исполнитель");
+                }
                 orderLogic.CreateOrUpdate(new OrderBindingModel
                 {
                     Id = order.Id,
@@ -48,10 +52,12 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                     Count = order.Count,
                     Sum = order.Sum,
                     DateCreate = order.DateCreate,
-                    DateImplement = null,
+                    DateImplement = DateTime.Now,
                     Status = OrderStatus.Выполняется,
                     ClientId = order.ClientId,
-                    ClientFIO = order.ClientFIO
+                    ClientFIO = order.ClientFIO,
+                    ImplementerId = model.ImplementerId,
+                    ImplementerFIO = model.ImplementerFIO
                 });
             }
         }
@@ -76,7 +82,9 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 DateImplement = DateTime.Now,
                 Status = OrderStatus.Готов,
                 ClientId = order.ClientId,
-                ClientFIO = order.ClientFIO
+                ClientFIO = order.ClientFIO,
+                ImplementerId = order.ImplementerId,
+                ImplementerFIO = order.ImplementerFIO
             });
         }
         public void PayOrder(ChangeStatusBindingModel model)
@@ -100,7 +108,9 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 DateImplement = order.DateImplement,
                 Status = OrderStatus.Оплачен,
                 ClientId = order.ClientId,
-                ClientFIO = order.ClientFIO
+                ClientFIO = order.ClientFIO,
+                ImplementerId = order.ImplementerId,
+                ImplementerFIO = order.ImplementerFIO
             });
         }
     }

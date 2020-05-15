@@ -45,6 +45,7 @@ namespace ComputerShopClientView
                 dataGridView.Columns[0].Visible = false;
                 dataGridView.Columns[1].Visible = false;
                 dataGridView.Columns[2].Visible = false;
+                dataGridView.Columns[10].Visible = false;
                 dataGridView.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 dataGridView.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 dataGridView.Columns[3].FillWeight = 3;

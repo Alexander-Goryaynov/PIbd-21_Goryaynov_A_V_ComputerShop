@@ -61,7 +61,8 @@ namespace ComputerShopBusinessLogic.BindingModels
                         mainLogic.TakeOrderInWork(new ChangeStatusBindingModel
                         {
                             OrderId = order.Id,
-                            ImplementerId = implementer.Id
+                            ImplementerId = implementer.Id,
+                            ImplementerFIO = implementer.FIO
                         });
                         // делаем работу
                         Thread.Sleep(implementer.WorkingTime * rnd.Next(1, 5) * order.Count);

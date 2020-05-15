@@ -10,7 +10,7 @@ namespace ComputerShopBusinessLogic.ViewModels
         public int Id { get; set; }
         [DisplayName("ФИО исполнителя")]
         public string FIO { get; set; }
-        [DisplayName("Время на заказ")]
+        [DisplayName("Время на работу")]
         public int WorkingTime { get; set; }
         [DisplayName("Время на перерыв")]
         public int PauseTime { get; set; }
