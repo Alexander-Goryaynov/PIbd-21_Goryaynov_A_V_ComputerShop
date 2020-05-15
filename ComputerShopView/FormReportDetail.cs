@@ -63,10 +63,5 @@ namespace ComputerShopView
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        private void FormReportDetail_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

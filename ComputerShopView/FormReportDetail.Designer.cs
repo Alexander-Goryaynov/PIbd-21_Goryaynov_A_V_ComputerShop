@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Microsoft.Reporting.WinForms.ReportDataSource reportDataSource2 = new Microsoft.Reporting.WinForms.ReportDataSource();
             this.ReportWarehouseDetailViewModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.ButtonToPdf = new System.Windows.Forms.Button();
             this.reportViewer = new Microsoft.Reporting.WinForms.ReportViewer();
@@ -55,9 +54,7 @@
             // 
             // reportViewer
             // 
-            reportDataSource2.Name = "DataSetWarehouseDetail";
-            reportDataSource2.Value = this.WarehouseDetailViewModelBindingSource;
-            this.reportViewer.LocalReport.DataSources.Add(reportDataSource2);
+           
             this.reportViewer.LocalReport.ReportEmbeddedResource = "ComputerShopView.ReportWarehouseDetail.rdlc";
             this.reportViewer.Location = new System.Drawing.Point(8, 50);
             this.reportViewer.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
@@ -81,7 +78,6 @@
             this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "FormReportDetail";
             this.Text = "Детали по складам";
-            this.Load += new System.EventHandler(this.FormReportDetail_Load);
             ((System.ComponentModel.ISupportInitialize)(this.ReportWarehouseDetailViewModelBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.WarehouseDetailViewModelBindingSource)).EndInit();
             this.ResumeLayout(false);
