@@ -1,5 +1,6 @@
 ﻿using ComputerShopBusinessLogic.BindingModels;
 using ComputerShopBusinessLogic.Enums;
+using ComputerShopBusinessLogic.HelperModels;
 using ComputerShopBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,12 @@ namespace ComputerShopBusinessLogic.BusinessLogic
     public class MainLogic
     {
         private readonly IOrderLogic orderLogic;
+        private readonly IClientLogic clientLogic;
         private readonly object locker = new object();
-        public MainLogic(IOrderLogic orderLogic)
+        public MainLogic(IOrderLogic orderLogic, IClientLogic clientLogic)
         {
             this.orderLogic = orderLogic;
+            this.clientLogic = clientLogic;
         }
         public void CreateOrder(CreateOrderBindingModel model)
         {
@@ -26,7 +29,13 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 Status = OrderStatus.Принят,
                 ClientFIO = model.ClientFIO,
                 ClientId = model.ClientId
-            });            
+            });
+            MailLogic.MailSendAsync(new MailSendInfo
+            {
+                MailAddress = clientLogic.Read(new ClientBindingModel { Id = model.ClientId })?[0]?.Email,
+                Subject = $"Новый заказ",
+                Text = $"Заказ принят."
+            });
         }
         public void TakeOrderInWork(ChangeStatusBindingModel model)
         {
@@ -59,6 +68,12 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                     ImplementerId = model.ImplementerId,
                     ImplementerFIO = model.ImplementerFIO
                 });
+                MailLogic.MailSendAsync(new MailSendInfo
+                {
+                    MailAddress = clientLogic.Read(new ClientBindingModel { Id = order.ClientId })?[0]?.Email,
+                    Subject = $"Заказ №{order.Id}",
+                    Text = $"Заказ №{order.Id} передан в работу."
+                });
             }
         }
         public void FinishOrder (ChangeStatusBindingModel model)
@@ -86,6 +101,12 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 ImplementerId = order.ImplementerId,
                 ImplementerFIO = order.ImplementerFIO
             });
+            MailLogic.MailSendAsync(new MailSendInfo
+            {
+                MailAddress = clientLogic.Read(new ClientBindingModel { Id = order.ClientId })?[0]?.Email,
+                Subject = $"Заказ №{order.Id}",
+                Text = $"Заказ №{order.Id} готов."
+            });
         }
         public void PayOrder(ChangeStatusBindingModel model)
         {
@@ -111,6 +132,12 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 ClientFIO = order.ClientFIO,
                 ImplementerId = order.ImplementerId,
                 ImplementerFIO = order.ImplementerFIO
+            });
+            MailLogic.MailSendAsync(new MailSendInfo
+            {
+                MailAddress = clientLogic.Read(new ClientBindingModel { Id = order.ClientId })?[0]?.Email,
+                Subject = $"Заказ №{order.Id}",
+                Text = $"Заказ №{order.Id} оплачен."
             });
         }
     }
