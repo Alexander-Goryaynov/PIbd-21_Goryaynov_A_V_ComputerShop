@@ -42,6 +42,8 @@
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.buttonCreateOrder = new System.Windows.Forms.Button();
             this.buttonRef = new System.Windows.Forms.Button();
+            this.buttonPayOrder = new System.Windows.Forms.Button();
+            this.сообщенияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
@@ -51,7 +53,8 @@
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.справочникиToolStripMenuItem,
             this.reportsToolStripMenuItem,
-            this.запускРаботToolStripMenuItem});
+            this.запускРаботToolStripMenuItem,
+            this.сообщенияToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(1246, 24);
@@ -158,7 +161,7 @@
             // 
             // buttonRef
             // 
-            this.buttonRef.Location = new System.Drawing.Point(1093, 137);
+            this.buttonRef.Location = new System.Drawing.Point(1093, 180);
             this.buttonRef.Name = "buttonRef";
             this.buttonRef.Size = new System.Drawing.Size(141, 29);
             this.buttonRef.TabIndex = 6;
@@ -166,11 +169,29 @@
             this.buttonRef.UseVisualStyleBackColor = true;
             this.buttonRef.Click += new System.EventHandler(this.buttonRef_Click);
             // 
+            // buttonPayOrder
+            // 
+            this.buttonPayOrder.Location = new System.Drawing.Point(1093, 132);
+            this.buttonPayOrder.Name = "buttonPayOrder";
+            this.buttonPayOrder.Size = new System.Drawing.Size(141, 29);
+            this.buttonPayOrder.TabIndex = 7;
+            this.buttonPayOrder.Text = "Заказ оплачен";
+            this.buttonPayOrder.UseVisualStyleBackColor = true;
+            this.buttonPayOrder.Click += new System.EventHandler(this.buttonPayOrder_Click);
+            // 
+            // сообщенияToolStripMenuItem
+            // 
+            this.сообщенияToolStripMenuItem.Name = "сообщенияToolStripMenuItem";
+            this.сообщенияToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
+            this.сообщенияToolStripMenuItem.Text = "Сообщения";
+            this.сообщенияToolStripMenuItem.Click += new System.EventHandler(this.сообщенияToolStripMenuItem_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1246, 513);
+            this.Controls.Add(this.buttonPayOrder);
             this.Controls.Add(this.buttonRef);
             this.Controls.Add(this.buttonCreateOrder);
             this.Controls.Add(this.dataGridView);
@@ -204,5 +225,7 @@
         private System.Windows.Forms.ToolStripMenuItem клиентыToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem исполнителиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem запускРаботToolStripMenuItem;
+        private System.Windows.Forms.Button buttonPayOrder;
+        private System.Windows.Forms.ToolStripMenuItem сообщенияToolStripMenuItem;
     }
 }

@@ -15,13 +15,13 @@ namespace ComputerShopDatabaseImplement.Implements
         {
             using (var context = new ComputerShopDatabase())
             {
-                MessageInfo element = context.MessageInfoes.FirstOrDefault(rec => rec.MessageId == model.MessageId);
+                MessageInfo element = context.MessageInfos.FirstOrDefault(rec => rec.MessageId == model.MessageId);
                 if (element != null)
                 {
                     throw new Exception("Уже есть письмо с таким идентификатором");
                 }
                 int? clientId = context.Clients.FirstOrDefault(rec => rec.Email == model.FromMailAddress)?.Id;
-                context.MessageInfoes.Add(new MessageInfo
+                context.MessageInfos.Add(new MessageInfo
                 {
                     MessageId = model.MessageId,
                     ClientId = clientId,
@@ -37,7 +37,7 @@ namespace ComputerShopDatabaseImplement.Implements
         {
             using (var context = new ComputerShopDatabase())
             {
-                return context.MessageInfoes
+                return context.MessageInfos
                     .Where(rec => model == null || rec.ClientId == model.ClientId)
                     .Select(rec => new MessageInfoViewModel
                     {
