@@ -29,7 +29,7 @@ namespace ComputerShopView
                 dataGridViewMessages.DataSource = messageInfoLogic.Read(null);
                 dataGridViewMessages.Columns[0].Visible = false;
                 dataGridViewMessages.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-                dataGridViewMessages.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dataGridViewMessages.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
             catch (Exception)
             {

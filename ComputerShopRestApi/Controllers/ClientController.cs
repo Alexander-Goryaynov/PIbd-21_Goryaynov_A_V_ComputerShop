@@ -18,7 +18,7 @@ namespace ComputerShopRestApi.Controllers
         private readonly IClientLogic _logic;
         private readonly IMessageInfoLogic messageInfoLogic;
         private readonly int _passwordMaxLength = 50;
-        private readonly int _passwordMinLength = 10;
+        private readonly int _passwordMinLength = 4;
 
         public ClientController(IClientLogic logic, IMessageInfoLogic messageInfoLogic)
         {

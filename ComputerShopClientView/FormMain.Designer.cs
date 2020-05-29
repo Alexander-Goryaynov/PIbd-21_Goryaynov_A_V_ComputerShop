@@ -32,6 +32,7 @@
             this.updateDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CreateOrderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshOrderListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkEmailToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();

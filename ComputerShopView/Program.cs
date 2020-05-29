@@ -35,7 +35,7 @@ namespace ComputerShopView
                 PopHost = ConfigurationManager.AppSettings["PopHost"],
                 PopPort = Convert.ToInt32(ConfigurationManager.AppSettings["PopPort"]),
                 Logic = container.Resolve<IMessageInfoLogic>()
-            }, 0, 100000);
+            }, 0, 15000);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

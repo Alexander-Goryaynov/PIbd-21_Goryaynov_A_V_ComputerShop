@@ -4,6 +4,7 @@ using MailKit.Net.Pop3;
 using MailKit.Security;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -24,7 +25,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
             mailLogin = config.MailLogin;
             mailPassword = config.MailPassword;
         }
-        public static async void MailSendAsync(MailSendInfo info)
+        public static async void SendMail(MailSendInfo info)
         {
             if (string.IsNullOrEmpty(smtpClientHost) || smtpClientPort == 0)
             {
@@ -55,7 +56,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                         objSmtpClient.EnableSsl = true;
                         objSmtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                         objSmtpClient.Credentials = new NetworkCredential(mailLogin, mailPassword);
-                        await Task.Run(() => objSmtpClient.SendAsync(objMailMessage, null));
+                        await Task.Run(() => objSmtpClient.Send(objMailMessage));
                     }
                     catch (Exception)
                     {
@@ -95,7 +96,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                                 MessageId = message.MessageId,
                                 FromMailAddress = mail.Address,
                                 Subject = message.Subject,
-                                Body = message.TextBody
+                                Body = message.HtmlBody.Replace("<div>"," ").Replace("</div>"," ")
                             });
                         }
                     }
