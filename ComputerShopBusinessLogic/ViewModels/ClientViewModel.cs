@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ComputerShopBusinessLogic.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
@@ -7,12 +8,10 @@ using System.Text;
 namespace ComputerShopBusinessLogic.ViewModels
 {
     [DataContract]
-    public class ClientViewModel
+    public class ClientViewModel : BaseViewModel
     {
         [DataMember]
-        public int Id { get; set; }
-        [DataMember]
-        [DisplayName("ФИО")]
+        [Column(title: "Клиент", gridViewAutoSize: GridViewAutoSize.Fill)]
         public string FIO { get; set; }
         [DataMember]
         [DisplayName("E-mail")]
@@ -20,5 +19,6 @@ namespace ComputerShopBusinessLogic.ViewModels
         [DisplayName("Пароль")]
         [DataMember]
         public string Password { get; set; }
+        public override List<string> Properties() => new List<string> {"Id", "FIO" };
     }
 }

@@ -15,32 +15,22 @@ namespace ComputerShopView
         private readonly IOrderLogic orderLogic;
         private readonly ReportLogic reportLogic;
         private readonly WorkModeling work;
+        private readonly BackUpAbstractLogic backUpLogic;
         public FormMain(MainLogic logic, IOrderLogic orderLogic, 
-            ReportLogic reportLogic, WorkModeling work)
+            ReportLogic reportLogic, WorkModeling work, BackUpAbstractLogic backUpLogic)
         {
             InitializeComponent();
             this.logic = logic;
             this.orderLogic = orderLogic;
             this.reportLogic = reportLogic;
             this.work = work;
+            this.backUpLogic = backUpLogic;
         }
         private void LoadData()
         {
             try
             {
-                var list = orderLogic.Read(null);
-                if (list != null)
-                {
-                    dataGridView.DataSource = list;
-                    dataGridView.Columns[0].Visible = false;
-                    dataGridView.Columns[1].Visible = false;
-                    dataGridView.Columns[2].Visible = false;
-                    dataGridView.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    dataGridView.Columns[5].FillWeight = 1f;
-                    dataGridView.Columns[3].FillWeight = 1f;
-                    dataGridView.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    dataGridView.Columns[10].Visible = false;
-                }
+                Program.ConfigGrid(orderLogic.Read(null), dataGridView);
             }
             catch (Exception ex)
             {
@@ -142,6 +132,26 @@ namespace ComputerShopView
         {
             var form = Container.Resolve<FormMessages>();
             form.ShowDialog();
+        }
+
+        private void создатьБэкапToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (backUpLogic != null)
+                {
+                    var dialog = new FolderBrowserDialog();
+                    if (dialog.ShowDialog() == DialogResult.OK)
+                    {
+                        backUpLogic.CreateArchive(dialog.SelectedPath);
+                        MessageBox.Show("Бэкап создан", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

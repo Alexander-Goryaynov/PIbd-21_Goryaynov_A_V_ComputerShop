@@ -1,18 +1,25 @@
-﻿using System;
+﻿using ComputerShopBusinessLogic.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace ComputerShopBusinessLogic.ViewModels
 {
-    public class ImplementerViewModel
+    [DataContract]
+    public class ImplementerViewModel : BaseViewModel
     {
-        public int Id { get; set; }
-        [DisplayName("ФИО исполнителя")]
+        [DataMember]
+        [Column(title: "ФИО исполнителя", gridViewAutoSize: GridViewAutoSize.Fill)]
         public string FIO { get; set; }
-        [DisplayName("Время на работу")]
+        [DataMember]
+        [Column(title: "Время на работу", width: 100)]
         public int WorkingTime { get; set; }
-        [DisplayName("Время на перерыв")]
+        [DataMember]
+        [Column(title: "Время на перерыв", width: 100)]
         public int PauseTime { get; set; }
+        public override List<string> Properties() => new List<string> { 
+            "Id", "FIO", "WorkingTime", "PauseTime" };
     }
 }

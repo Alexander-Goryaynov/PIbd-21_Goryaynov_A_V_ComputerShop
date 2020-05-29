@@ -26,9 +26,14 @@ namespace ComputerShopView
 
         private void LoadData()
         {
-            dataGridView.DataSource = logic.Read(null);
-            dataGridView.Columns[0].Visible = false;
-            dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            try
+            {
+                Program.ConfigGrid(logic.Read(null), dataGridView);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void buttonAdd_Click(object sender, EventArgs e)
