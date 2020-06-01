@@ -31,6 +31,8 @@ namespace ComputerShopFileImplement.Implements
                 order.DateImplement = model.DateImplement;
                 order.Status = model.Status;
                 order.Sum = model.Sum;
+                order.ClientFIO = model.ClientFIO;
+                order.ClientId = model.ClientId;
             }
             else
             {
@@ -42,6 +44,8 @@ namespace ComputerShopFileImplement.Implements
                 order.DateImplement = model.DateImplement;
                 order.Status = model.Status;
                 order.Sum = model.Sum;
+                order.ClientFIO = model.ClientFIO;
+                order.ClientId = model.ClientId;
                 source.Orders.Add(order);
             }
             
@@ -63,7 +67,10 @@ namespace ComputerShopFileImplement.Implements
         public List<OrderViewModel> Read(OrderBindingModel model)
         {
             return source.Orders
-            .Where(rec => model == null || rec.Id == model.Id)
+            .Where(rec => model == null || (rec.Id == model.Id && model.Id.HasValue) ||
+            (model.DateFrom.HasValue && model.DateTo.HasValue && rec.DateCreate >=
+            model.DateFrom && rec.DateCreate <= model.DateTo) ||
+            (rec.ClientId == model.ClientId))
             .Select(rec => new OrderViewModel
             {
                 Id = rec.Id,
@@ -71,11 +78,13 @@ namespace ComputerShopFileImplement.Implements
                 AssemblyName = source.Assemblies
                 .FirstOrDefault(recA => recA.Id == rec.AssemblyId)?.AssemblyName,
                 Count = rec.Count,
+                ClientId = rec.ClientId,
                 DateCreate = rec.DateCreate,
                 DateImplement = rec.DateImplement,
                 Status = rec.Status,
-                Sum = rec.Sum
-            }).ToList();
+                Sum = rec.Sum,
+                ClientFIO = source.Clients.FirstOrDefault(recC => recC.Id == rec.ClientId)?.FIO,                
+             }).ToList();
         }
         private Order CreateModel(OrderBindingModel model, Order order)
         {
@@ -85,6 +94,8 @@ namespace ComputerShopFileImplement.Implements
             order.AssemblyId = model.AssemblyId;
             order.Status = model.Status;
             order.Sum = model.Sum;
+            order.ClientId = model.ClientId;
+            order.ClientFIO = model.ClientFIO;
             return order;
         }
 

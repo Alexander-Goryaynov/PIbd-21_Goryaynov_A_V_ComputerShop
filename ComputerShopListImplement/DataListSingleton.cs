@@ -14,6 +14,7 @@ namespace ComputerShopListImplement
         public List<AssemblyDetail> AssemblyDetails { get; set; }
         public List<Warehouse> Warehouses { get; set; }
         public List<WarehouseDetail> WarehouseDetails { get; set; }
+        public List<Client> Clients { get; set; }
         private DataListSingleton()
         {
             Details = new List<Detail>();
@@ -22,6 +23,7 @@ namespace ComputerShopListImplement
             AssemblyDetails = new List<AssemblyDetail>();
             Warehouses = new List<Warehouse>();
             WarehouseDetails = new List<WarehouseDetail>();
+            Clients = new List<Client>();
         }
         public static DataListSingleton GetInstance()
         {

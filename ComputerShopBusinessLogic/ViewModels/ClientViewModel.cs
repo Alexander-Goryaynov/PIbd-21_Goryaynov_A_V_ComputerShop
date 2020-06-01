@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace ComputerShopBusinessLogic.ViewModels
 {
     [DataContract]
-    public class AssemblyViewModel
+    public class ClientViewModel
     {
         [DataMember]
         public int Id { get; set; }
         [DataMember]
-        [DisplayName("Название сборки")]
-        public string AssemblyName { get; set; }
+        [DisplayName("ФИО")]
+        public string FIO { get; set; }
         [DataMember]
-        [DisplayName("Цена")]
-        public decimal Price { get; set; }
+        [DisplayName("E-mail")]
+        public string Email { get; set; }
+        [DisplayName("Пароль")]
         [DataMember]
-        public Dictionary<int, (string, int)> AssemblyDetails { get; set; }
+        public string Password { get; set; }
     }
 }
