@@ -32,6 +32,8 @@ namespace ComputerShopRestApi
             services.AddTransient<IOrderLogic, OrderLogic>();
             services.AddTransient<IAssemblyLogic, AssemblyLogic>();
             services.AddTransient<MainLogic>();
+            services.AddTransient<IWarehouseLogic, WarehouseLogic>();
+            services.AddTransient<IDetailLogic, DetailLogic>();
             services.AddControllers();
         }
 

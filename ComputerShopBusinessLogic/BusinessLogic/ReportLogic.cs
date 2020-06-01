@@ -131,7 +131,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
             SaveToPdf.CreateDoc(new PdfInfo
             {
                 FileName = model.FileName,
-                Title = "The list forgeproducts with billets",
+                Title = "Детали сборок",
                 AssemblyDetails = GetAssemblyDetail()
             });
         }

@@ -40,19 +40,26 @@ namespace ComputerShopBusinessLogic.BusinessLogic
             {
                 throw new Exception("Заказ не в статусе \"Принят\"");
             }
-            warehouseLogic.DeleteFromWarehouse(order.AssemblyId, order.Count);
-            orderLogic.CreateOrUpdate(new OrderBindingModel
+            try
             {
-                Id = order.Id,
-                AssemblyId = order.AssemblyId,
-                Count = order.Count,
-                Sum = order.Sum,
-                DateCreate = order.DateCreate,
-                DateImplement = null,          
-                Status = OrderStatus.Выполняется,
-                ClientId = order.ClientId,
-                ClientFIO = order.ClientFIO
-            });
+                warehouseLogic.DeleteFromWarehouse(order);
+                orderLogic.CreateOrUpdate(new OrderBindingModel
+                {
+                    Id = order.Id,
+                    AssemblyId = order.AssemblyId,
+                    Count = order.Count,
+                    Sum = order.Sum,
+                    DateCreate = order.DateCreate,
+                    DateImplement = null,
+                    Status = OrderStatus.Выполняется,
+                    ClientId = order.ClientId,
+                    ClientFIO = order.ClientFIO
+                });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
         public void FinishOrder (ChangeStatusBindingModel model)
         {

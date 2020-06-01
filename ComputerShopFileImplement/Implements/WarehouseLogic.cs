@@ -91,13 +91,17 @@ namespace ComputerShopFileImplement.Implements
                 throw new Exception("Элемент не найден");
             }
         }
-        public void DelElement(int id)
+        public void DelElement(WarehouseBindingModel model)
         {
-            var elem = source.Warehouses.FirstOrDefault(x => x.Id == id);
-            if (elem != null)            
-                source.Warehouses.Remove(elem);            
-            else            
-                throw new Exception("Элемент не найден");            
+            var elem = source.Warehouses.FirstOrDefault(x => x.Id == model.Id);
+            if (elem != null)
+            {
+                source.Warehouses.Remove(elem);
+            }
+            else
+            {
+                throw new Exception("Элемент не найден");
+            }
         }
         public void FillWarehouse(WarehouseDetailBindingModel model)
         {
@@ -142,23 +146,37 @@ namespace ComputerShopFileImplement.Implements
             return true;
         }
 
-        public void DeleteFromWarehouse(int assemblyId, int count)
+        public void DeleteFromWarehouse(OrderViewModel model)
         {
-            var assemblyDetails = source.AssemblyDetails.Where(x => x.AssemblyId == assemblyId);
-            if (assemblyDetails.Count() == 0) return;
-            foreach (var elem in assemblyDetails)
+            var assemblyDetails = source.AssemblyDetails.Where(
+                rec => rec.Id == model.AssemblyId).ToList();
+            foreach (var ad in assemblyDetails)
             {
-                int present = elem.Count * count;
-                var warehouseDetails = source.WarehouseDetails.FindAll(x => x.DetailId == elem.DetailId);
-                foreach (var rec in warehouseDetails)
+                var warehouseDetails = source.WarehouseDetails.Where(
+                    rec => rec.DetailId == ad.DetailId);
+                int sum = warehouseDetails.Sum(rec => rec.Count);
+                if (sum < ad.Count * model.Count)
                 {
-                    int countToDelete = present > rec.Count ? rec.Count : present;
-                    rec.Count -= countToDelete;
-                    present -= countToDelete;
-                    if (present == 0) break;
+                    throw new Exception("Недостаточно деталей на складе");
+                }
+                else
+                {
+                    int left = ad.Count * model.Count;
+                    foreach (var wd in warehouseDetails)
+                    {
+                        if (wd.Count >= left)
+                        {
+                            wd.Count -= left;
+                            break;
+                        }
+                        else
+                        {
+                            left -= wd.Count;
+                            wd.Count = 0;
+                        }
+                    }
                 }
             }
-            return;
         }
     }
 }
