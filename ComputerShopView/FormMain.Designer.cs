@@ -28,29 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.справочникиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.деталиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сборкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.assembliesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.orderDatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.assemblyDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.buttonCreateOrder = new System.Windows.Forms.Button();
             this.buttonTakeOrderInWork = new System.Windows.Forms.Button();
             this.buttonOrderReady = new System.Windows.Forms.Button();
             this.buttonPayOrder = new System.Windows.Forms.Button();
             this.buttonRef = new System.Windows.Forms.Button();
-            this.menuStrip1.SuspendLayout();
+            this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
-            // menuStrip1
+            // menuStrip
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.справочникиToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip";
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.справочникиToolStripMenuItem,
+            this.reportsToolStripMenuItem});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip.TabIndex = 0;
+            this.menuStrip.Text = "menuStrip";
             // 
             // справочникиToolStripMenuItem
             // 
@@ -74,6 +79,37 @@
             this.сборкиToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.сборкиToolStripMenuItem.Text = "Сборки";
             this.сборкиToolStripMenuItem.Click += new System.EventHandler(this.сборкиToolStripMenuItem_Click);
+            // 
+            // reportsToolStripMenuItem
+            // 
+            this.reportsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.assembliesToolStripMenuItem,
+            this.orderDatesToolStripMenuItem,
+            this.assemblyDetailsToolStripMenuItem});
+            this.reportsToolStripMenuItem.Name = "reportsToolStripMenuItem";
+            this.reportsToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
+            this.reportsToolStripMenuItem.Text = "Отчеты";
+            // 
+            // assembliesToolStripMenuItem
+            // 
+            this.assembliesToolStripMenuItem.Name = "assembliesToolStripMenuItem";
+            this.assembliesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.assembliesToolStripMenuItem.Text = "Список сборок";
+            this.assembliesToolStripMenuItem.Click += new System.EventHandler(this.detailsToolStripMenuItem_Click);
+            // 
+            // orderDatesToolStripMenuItem
+            // 
+            this.orderDatesToolStripMenuItem.Name = "orderDatesToolStripMenuItem";
+            this.orderDatesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.orderDatesToolStripMenuItem.Text = "Заказы по датам";
+            this.orderDatesToolStripMenuItem.Click += new System.EventHandler(this.orderDatesToolStripMenuItem_Click);
+            // 
+            // assemblyDetailsToolStripMenuItem
+            // 
+            this.assemblyDetailsToolStripMenuItem.Name = "assemblyDetailsToolStripMenuItem";
+            this.assemblyDetailsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.assemblyDetailsToolStripMenuItem.Text = "Детали сборок";
+            this.assemblyDetailsToolStripMenuItem.Click += new System.EventHandler(this.assemblyDetailsToolStripMenuItem_Click);
             // 
             // dataGridView
             // 
@@ -147,14 +183,14 @@
             this.Controls.Add(this.buttonTakeOrderInWork);
             this.Controls.Add(this.buttonCreateOrder);
             this.Controls.Add(this.dataGridView);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
+            this.Controls.Add(this.menuStrip);
+            this.MainMenuStrip = this.menuStrip;
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Компьютерный магазин";
             this.Load += new System.EventHandler(this.FormMain_Load);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -163,7 +199,7 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem справочникиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem деталиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem сборкиToolStripMenuItem;
@@ -173,5 +209,9 @@
         private System.Windows.Forms.Button buttonOrderReady;
         private System.Windows.Forms.Button buttonPayOrder;
         private System.Windows.Forms.Button buttonRef;
+        private System.Windows.Forms.ToolStripMenuItem reportsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem assembliesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem orderDatesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem assemblyDetailsToolStripMenuItem;
     }
 }

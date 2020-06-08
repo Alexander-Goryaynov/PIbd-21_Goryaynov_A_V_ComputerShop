@@ -74,7 +74,10 @@ namespace ComputerShopDatabaseImplement.Implements
         {
             using (var context = new ComputerShopDatabase())
             {
-                return context.Orders.Where(rec => model == null || rec.Id == model.Id)
+                return context.Orders.Where(rec => model == null ||
+                    (rec.Id == model.Id && model.Id.HasValue) ||
+                    (model.DateFrom.HasValue && model.DateTo.HasValue &&
+                    (rec.DateCreate >= model.DateFrom) && (rec.DateCreate <= model.DateTo)))
                 .Include(order => order.Assembly)
                 .Select(rec => new OrderViewModel()
                 {
