@@ -41,6 +41,8 @@ namespace ComputerShopFileImplement.Implements
                 source.Implementers.Add(tmp);
             }
             tmp.FIO = model.FIO;
+            tmp.WorkingTime = model.WorkingTime;
+            tmp.PauseTime = model.PauseTime;
         }
 
         public void Delete(ImplementerBindingModel model)
@@ -63,7 +65,9 @@ namespace ComputerShopFileImplement.Implements
             .Select(rec => new ImplementerViewModel
             {
                 Id = rec.Id,
-                FIO = rec.FIO
+                FIO = rec.FIO,
+                WorkingTime = rec.WorkingTime,
+                PauseTime = rec.PauseTime
             })
             .ToList();
         }

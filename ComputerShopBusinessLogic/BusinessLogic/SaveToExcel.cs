@@ -61,15 +61,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                     CellToName = "C1"
                 });
                 uint rowIndex = 2;
-                List<DateTime> dates = new List<DateTime>();
-                foreach (var order in info.Orders)
-                {
-                    if (!dates.Contains(order.DateCreate.Date))
-                    {
-                        dates.Add(order.DateCreate.Date);
-                    }
-                }
-                foreach (var date in dates)
+                foreach (var group in info.Orders)
                 {
                     decimal generalSum = 0;
                     InsertCellInWorksheet(new ExcelCellParameters
@@ -78,11 +70,11 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                         ShareStringPart = shareStringPart,
                         ColumnName = "A",
                         RowIndex = rowIndex,
-                        Text = date.Date.ToShortDateString(),
+                        Text = group.Key.ToShortDateString(),
                         StyleIndex = 0U
                     });
                     rowIndex++;
-                    foreach (var order in info.Orders.Where(rec => rec.DateCreate.Date == date.Date))
+                    foreach (var order in group)
                     {
                         InsertCellInWorksheet(new ExcelCellParameters
                         {

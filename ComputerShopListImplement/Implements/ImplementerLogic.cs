@@ -87,6 +87,8 @@ namespace ComputerShopListImplement.Implements
         private Implementer CreateModel(ImplementerBindingModel model, Implementer implementer)
         {
             implementer.FIO = model.FIO;
+            implementer.WorkingTime = model.WorkingTime;
+            implementer.PauseTime = model.PauseTime;
             return implementer;
         }
 
@@ -95,7 +97,9 @@ namespace ComputerShopListImplement.Implements
             return new ImplementerViewModel
             {
                 Id = implementer.Id,
-                FIO = implementer.FIO
+                FIO = implementer.FIO,
+                WorkingTime = implementer.WorkingTime,
+                PauseTime = implementer.PauseTime
             };
         }
     }
