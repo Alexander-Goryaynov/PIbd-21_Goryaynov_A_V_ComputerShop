@@ -11,55 +11,44 @@ namespace ComputerShopBusinessLogic.BusinessLogic
 {
     public class ReportLogic
     {
-        private readonly IDetailLogic detailLogic;
         private readonly IAssemblyLogic assemblyLogic;
         private readonly IOrderLogic orderLogic;
         public ReportLogic(IAssemblyLogic assemblyLogic, IDetailLogic detailLogic,
             IOrderLogic orderLogic)
         {
             this.assemblyLogic = assemblyLogic;
-            this.detailLogic = detailLogic;
             this.orderLogic = orderLogic;
         }
         public List<ReportAssemblyDetailViewModel> GetAssemblyDetail()
         {
-            var details = detailLogic.Read(null);
             var assemblies = assemblyLogic.Read(null);
             var list = new List<ReportAssemblyDetailViewModel>();
-            foreach (var detail in details)
+            foreach (var assembly in assemblies)
             {
-                foreach (var assembly in assemblies)
+                foreach (var ad in assembly.AssemblyDetails)
                 {
-                    if (assembly.AssemblyDetails.ContainsKey(detail.Id))
+                    var record = new ReportAssemblyDetailViewModel
                     {
-                        var record = new ReportAssemblyDetailViewModel
-                        {
-                            AssemblyName = assembly.AssemblyName,
-                            DetailName = detail.DetailName,
-                            Count = assembly.AssemblyDetails[detail.Id].Item2
-                        };
-                        list.Add(record);
-                    }
+                        AssemblyName = assembly.AssemblyName,
+                        DetailName = ad.Value.Item1,
+                        Count = ad.Value.Item2
+                    };
+                    list.Add(record);
                 }
             }
             return list;
         }
-        public List<ReportOrdersViewModel> GetOrders(ReportBindingModel model)
+        public List<IGrouping<DateTime, OrderViewModel>> GetOrders(ReportBindingModel model)
         {
-            return orderLogic.Read(new OrderBindingModel
+            var list = orderLogic.Read(new OrderBindingModel
             {
                 DateFrom = model.DateFrom,
                 DateTo = model.DateTo
             })
-            .Select(x => new ReportOrdersViewModel
-            {
-                DateCreate = x.DateCreate,
-                AssemblyName = x.AssemblyName,
-                Count = x.Count,
-                Sum = x.Sum,
-                Status = x.Status
-            })
+            .GroupBy(rec => rec.DateCreate.Date)
+            .OrderBy(rec => rec.Key)
             .ToList();
+            return list;
         }
         public void SaveAssembliesToWordFile(ReportBindingModel model)
         {
