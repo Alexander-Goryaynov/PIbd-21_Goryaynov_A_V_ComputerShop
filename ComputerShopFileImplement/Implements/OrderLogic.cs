@@ -13,6 +13,7 @@ namespace ComputerShopFileImplement.Implements
     public class OrderLogic : IOrderLogic
     {
         private readonly FileDataListSingleton source;
+
         public OrderLogic()
         {
             source = FileDataListSingleton.GetInstance();
@@ -43,15 +44,14 @@ namespace ComputerShopFileImplement.Implements
             order.DateImplement = model.DateImplement;
             order.Status = model.Status;
             order.Sum = model.Sum;
-
         }
 
         public void Delete(OrderBindingModel model)
         {
-            var element = source.Orders.FirstOrDefault(rec => rec.Id == model.Id.Value);
-            if (element != null)
+            Order order = source.Orders.FirstOrDefault(rec => rec.Id == model.Id);
+            if (order != null)
             {
-                source.Orders.Remove(element);
+                source.Orders.Remove(order);
             }
             else
             {
@@ -62,59 +62,34 @@ namespace ComputerShopFileImplement.Implements
         public List<OrderViewModel> Read(OrderBindingModel model)
         {
             return source.Orders
-            .Where(rec => model == null || (rec.Id == model.Id && model.Id.HasValue) ||
-                (model.DateFrom.HasValue && model.DateTo.HasValue && rec.DateCreate >=
-                model.DateFrom && rec.DateCreate <= model.DateTo) ||
-                (rec.ClientId == model.ClientId) || (model.AnyFreeOrders.HasValue) && 
-                (model.AnyFreeOrders.Value) && !(rec.ImplementerId.HasValue) ||
-                (model.ImplementerId.HasValue) && (rec.ImplementerId == model.ImplementerId) &&
-                (rec.Status == OrderStatus.Выполняется))
+                .Where(rec => model == null ||
+                model.Id.HasValue && rec.Id == model.Id &&
+                rec.ClientId == model.ClientId ||
+                (model.DateTo.HasValue && model.DateFrom.HasValue &&
+                rec.DateCreate >= model.DateFrom &&
+                rec.DateCreate <= model.DateTo) ||
+                (model.ClientId.HasValue &&
+                rec.ClientId == model.ClientId) ||
+                (model.AnyFreeOrders.HasValue && model.AnyFreeOrders.Value &&
+                !(rec.ImplementerFIO != null)) ||
+                (model.ImplementerId.HasValue &&
+                rec.ImplementerId == model.ImplementerId.Value &&
+                rec.Status == OrderStatus.Выполняется))
                 .Select(rec => new OrderViewModel
                 {
                     Id = rec.Id,
                     AssemblyId = rec.AssemblyId,
+                    AssemblyName = source.Assemblies.FirstOrDefault((r) => r.Id == rec.AssemblyId).AssemblyName,
+                    ClientFIO = rec.ClientFIO,
                     ClientId = rec.ClientId,
+                    ImplementerId = rec.ImplementerId,
+                    ImplementerFIO = (!string.IsNullOrEmpty(rec.ImplementerFIO)) ? rec.ImplementerFIO : string.Empty,
+                    Count = rec.Count,
                     DateCreate = rec.DateCreate,
                     DateImplement = rec.DateImplement,
                     Status = rec.Status,
-                    Count = rec.Count,
-                    Sum = rec.Sum,
-                    ClientFIO = source.Clients.FirstOrDefault(recC => recC.Id == rec.ClientId)?.FIO,
-                    AssemblyName = source.Assemblies.FirstOrDefault(recA => 
-                        (recA.Id == rec.AssemblyId))?.AssemblyName,
-                    ImplementerId = rec.ImplementerId,
-                    ImplementerFIO = source.Implementers.FirstOrDefault(
-                        recC => recC.Id == rec.ImplementerId)?.FIO,
+                    Sum = rec.Sum
                 }).ToList();
         }
-        /*private Order CreateModel(OrderBindingModel model, Order order)
-        {
-            order.Count = model.Count;
-            order.DateCreate = model.DateCreate;
-            order.DateImplement = model.DateImplement;
-            order.AssemblyId = model.AssemblyId;
-            order.Status = model.Status;
-            order.Sum = model.Sum;
-            order.ClientId = model.ClientId;
-            order.ClientFIO = model.ClientFIO;
-            return order;
-        }
-
-        private OrderViewModel CreateViewModel(Order order)
-        {
-            string assemblyName = source.Assemblies.FirstOrDefault(rec =>
-                    rec.Id == order.AssemblyId).AssemblyName;
-            return new OrderViewModel
-            {
-                Id = order.Id,
-                Count = order.Count,
-                DateCreate = order.DateCreate,
-                DateImplement = order.DateImplement,
-                AssemblyName = assemblyName,
-                AssemblyId = order.AssemblyId,
-                Status = order.Status,
-                Sum = order.Sum
-            };
-        }*/
     }
 }

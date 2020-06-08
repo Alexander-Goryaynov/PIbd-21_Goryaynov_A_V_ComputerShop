@@ -1,4 +1,5 @@
 ﻿using ComputerShopBusinessLogic.BindingModels;
+using ComputerShopBusinessLogic.Interfaces;
 using ComputerShopBusinessLogic.ViewModels;
 using ComputerShopListImplement.Models;
 using System;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace ComputerShopListImplement.Implements
 {
-    public class ImplementerLogic
+    public class ImplementerLogic : IImplementerLogic
     {
         private readonly DataListSingleton source;
 
@@ -18,30 +19,36 @@ namespace ComputerShopListImplement.Implements
 
         public void CreateOrUpdate(ImplementerBindingModel model)
         {
-            Implementer tempImplementer = new Implementer { Id = 1 };
-
-            bool exists = false;
-
+            Implementer temp = model.Id.HasValue ? null : new Implementer
+            {
+                Id = 1
+            };
             foreach (var implementer in source.Implementers)
             {
-                if (implementer.Id >= tempImplementer.Id)
+                if (implementer.FIO == model.FIO && implementer.Id != model.Id)
                 {
-                    tempImplementer.Id = implementer.Id + 1;
+                    throw new Exception("Уже есть такой исполнитель");
                 }
-                else if (implementer.Id == model.Id)
+                if (!model.Id.HasValue && implementer.Id >= temp.Id)
                 {
-                    tempImplementer = implementer;
-                    exists = true;
-                    break;
+                    temp.Id = implementer.Id + 1;
+                }
+                else if (model.Id.HasValue && implementer.Id == model.Id)
+                {
+                    temp = implementer;
                 }
             }
-            if (exists)
+            if (model.Id.HasValue)
             {
-                CreateModel(model, tempImplementer);
+                if (temp == null)
+                {
+                    throw new Exception("Исполнитель не найден");
+                }
+                CreateModel(model, temp);
             }
             else
             {
-                source.Implementers.Add(CreateModel(model, tempImplementer));
+                source.Implementers.Add(CreateModel(model, temp));
             }
         }
 
@@ -49,13 +56,13 @@ namespace ComputerShopListImplement.Implements
         {
             for (int i = 0; i < source.Implementers.Count; ++i)
             {
-                if (source.Implementers[i].Id == model.Id)
+                if (source.Implementers[i].Id == model.Id.Value)
                 {
                     source.Implementers.RemoveAt(i);
                     return;
                 }
             }
-            throw new Exception("Элемент не найден");
+            throw new Exception("Исполнитель не найден");
         }
 
         public List<ImplementerViewModel> Read(ImplementerBindingModel model)
@@ -77,22 +84,22 @@ namespace ComputerShopListImplement.Implements
             return result;
         }
 
-        private Implementer CreateModel(ImplementerBindingModel model, Implementer Implementer)
+        private Implementer CreateModel(ImplementerBindingModel model, Implementer implementer)
         {
-            Implementer.FIO = model.FIO;
-            Implementer.WorkingTime = model.WorkingTime;
-            Implementer.PauseTime = model.PauseTime;
-            return Implementer;
+            implementer.FIO = model.FIO;
+            implementer.WorkingTime = model.WorkingTime;
+            implementer.PauseTime = model.PauseTime;
+            return implementer;
         }
 
-        private ImplementerViewModel CreateViewModel(Implementer Implementer)
+        private ImplementerViewModel CreateViewModel(Implementer implementer)
         {
             return new ImplementerViewModel
             {
-                Id = Implementer.Id,
-                FIO = Implementer.FIO,
-                WorkingTime = Implementer.WorkingTime,
-                PauseTime = Implementer.PauseTime
+                Id = implementer.Id,
+                FIO = implementer.FIO,
+                WorkingTime = implementer.WorkingTime,
+                PauseTime = implementer.PauseTime
             };
         }
     }

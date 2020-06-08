@@ -37,23 +37,15 @@ namespace ComputerShopView
                 var dict = logic.GetOrders(new ReportBindingModel { 
                     DateFrom = dateTimePickerFrom.Value.Date, 
                     DateTo = dateTimePickerTo.Value.Date });
-                List<DateTime> dates = new List<DateTime>();
-                foreach (var order in dict)
-                {
-                    if (!dates.Contains(order.DateCreate.Date))
-                    {
-                        dates.Add(order.DateCreate.Date);
-                    }
-                }
                 if (dict != null)
                 {
                     dataGridView.Rows.Clear();
-                    foreach (var date in dates)
+                    foreach (var group in dict)
                     {
                         decimal generalSum = 0;
-                        dataGridView.Rows.Add(new object[] { date.Date.ToShortDateString() });
+                        dataGridView.Rows.Add(new object[] { group.Key.ToShortDateString() });
 
-                        foreach (var order in dict.Where(rec => rec.DateCreate.Date == date.Date))
+                        foreach (var order in group)
                         {
                             dataGridView.Rows.Add(new object[] { "", order.AssemblyName, order.Sum });
                             generalSum += order.Sum;
