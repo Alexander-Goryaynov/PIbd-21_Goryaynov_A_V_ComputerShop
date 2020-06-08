@@ -1,6 +1,7 @@
 ﻿using ComputerShopBusinessLogic.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ComputerShopBusinessLogic.HelperModels
@@ -12,6 +13,6 @@ namespace ComputerShopBusinessLogic.HelperModels
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public List<ReportAssemblyDetailViewModel> AssemblyDetails { get; set; }
-        public List<ReportOrdersViewModel> Orders { get; set; }
+        public List<IGrouping<DateTime, OrderViewModel>> Orders { get; set; }
     }
 }
