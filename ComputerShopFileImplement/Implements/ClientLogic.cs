@@ -18,7 +18,12 @@ namespace ComputerShopFileImplement.Implements
         }
         public void CreateOrUpdate(ClientBindingModel model)
         {
-            Client element;
+            Client element = source.Clients.FirstOrDefault(rec =>
+                rec.Email == model.Email && rec.Id != model.Id);
+            if (element != null)
+            {
+                throw new Exception("Уже есть клиент с такой почтой");
+            }
             if (model.Id.HasValue)
             {
                 element = source.Clients.FirstOrDefault(rec => rec.Id == model.Id);

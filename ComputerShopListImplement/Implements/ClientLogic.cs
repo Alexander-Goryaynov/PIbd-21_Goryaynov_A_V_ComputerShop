@@ -22,7 +22,7 @@ namespace ComputerShopListImplement.Implements
             {
                 if (client.FIO == model.FIO && client.Id != model.Id)
                 {
-                    throw new Exception("Уже есть компонент с таким названием");
+                    throw new Exception("Уже есть клиент с таким именем");
                 }
                 if (!model.Id.HasValue && client.Id >= tempClient.Id)
                 {
@@ -37,7 +37,7 @@ namespace ComputerShopListImplement.Implements
             {
                 if (tempClient == null)
                 {
-                    throw new Exception("Элемент не найден");
+                    throw new Exception("Клиент не найден");
                 }
                 CreateModel(model, tempClient);
             }
