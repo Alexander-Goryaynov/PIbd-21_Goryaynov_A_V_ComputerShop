@@ -62,9 +62,9 @@ namespace ComputerShopFileImplement.Implements
         public List<OrderViewModel> Read(OrderBindingModel model)
         {
             return source.Orders
-                .Where(rec => model == null ||
-                model.Id.HasValue && rec.Id == model.Id &&
-                rec.ClientId == model.ClientId ||
+                .Where(rec => (model == null) ||
+                (model.Id.HasValue && rec.Id == model.Id &&
+                rec.ClientId == model.ClientId) ||
                 (model.DateTo.HasValue && model.DateFrom.HasValue &&
                 rec.DateCreate >= model.DateFrom &&
                 rec.DateCreate <= model.DateTo) ||
@@ -74,7 +74,9 @@ namespace ComputerShopFileImplement.Implements
                 !(rec.ImplementerFIO != null)) ||
                 (model.ImplementerId.HasValue &&
                 rec.ImplementerId == model.ImplementerId.Value &&
-                rec.Status == OrderStatus.Выполняется))
+                rec.Status == OrderStatus.Выполняется) || 
+                (model.IsLackOfDetails.HasValue && model.IsLackOfDetails.Value && 
+                rec.Status == OrderStatus.НедостаточноДеталей))
                 .Select(rec => new OrderViewModel
                 {
                     Id = rec.Id,
@@ -99,7 +101,7 @@ namespace ComputerShopFileImplement.Implements
             order.AssemblyId = model.AssemblyId;
             order.Status = model.Status;
             order.Sum = model.Sum;
-            order.ClientId = model.ClientId;
+            order.ClientId = (int)model.ClientId;
             order.ClientFIO = model.ClientFIO;
             return order;
         }

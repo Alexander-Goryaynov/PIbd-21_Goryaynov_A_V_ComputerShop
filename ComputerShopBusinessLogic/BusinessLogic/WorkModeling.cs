@@ -1,8 +1,10 @@
 ﻿using ComputerShopBusinessLogic.BusinessLogic;
+using ComputerShopBusinessLogic.Enums;
 using ComputerShopBusinessLogic.Interfaces;
 using ComputerShopBusinessLogic.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +18,7 @@ namespace ComputerShopBusinessLogic.BindingModels
         private readonly MainLogic mainLogic;
         private readonly Random rnd;
         public WorkModeling(IImplementerLogic implementerLogic, IOrderLogic orderLogic,
-        MainLogic mainLogic)
+            MainLogic mainLogic)
         {
             this.implementerLogic = implementerLogic;
             this.orderLogic = orderLogic;
@@ -51,31 +53,50 @@ namespace ComputerShopBusinessLogic.BindingModels
                 // отдыхаем
                 Thread.Sleep(implementer.PauseTime);
             }
+            var ordersWithLackOfDetails = orders
+               .Where(x => x.Status == OrderStatus.НедостаточноДеталей)
+               .Select(x => x)
+               .ToList();
+            orders.RemoveAll(x => ordersWithLackOfDetails.Contains(x));
+            DoWork(implementer, ordersWithLackOfDetails);
             await Task.Run(() =>
             {
-                foreach (var order in orders)
-                {
-                    // пытаемся назначить заказ на исполнителя
-                    try
-                    {
-                        mainLogic.TakeOrderInWork(new ChangeStatusBindingModel
-                        {
-                            OrderId = order.Id,
-                            ImplementerId = implementer.Id,
-                            ImplementerFIO = implementer.FIO
-                        });
-                        // делаем работу
-                        Thread.Sleep(implementer.WorkingTime * rnd.Next(1, 5) * order.Count);
-                        mainLogic.FinishOrder(new ChangeStatusBindingModel
-                        {
-                            OrderId = order.Id
-                        });
-                        // отдыхаем
-                        Thread.Sleep(implementer.PauseTime);
-                    }
-                    catch (Exception) { }
-                }
+                DoWork(implementer, orders);
             });
+        }
+        private void DoWork(ImplementerViewModel implementer, List<OrderViewModel> orders)
+        {
+
+            foreach (var order in orders)
+            {
+                // пытаемся назначить заказ на исполнителя
+                try
+                {
+                    mainLogic.TakeOrderInWork(new ChangeStatusBindingModel
+                    {
+                        OrderId = order.Id,
+                        ImplementerId = implementer.Id
+                    });
+                    var isLackOfDetails = orderLogic.Read(new OrderBindingModel
+                    {
+                        Id = order.Id
+                    }).FirstOrDefault().Status == OrderStatus.НедостаточноДеталей;
+                    if (isLackOfDetails)
+                    {
+                        continue;
+                    }
+                    // делаем работу
+                    Thread.Sleep(implementer.WorkingTime * rnd.Next(1, 5) * order.Count);
+                    mainLogic.FinishOrder(new ChangeStatusBindingModel
+                    {
+                        OrderId = order.Id,
+                        ImplementerId = implementer.Id
+                    });
+                    // отдыхаем
+                    Thread.Sleep(implementer.PauseTime);
+                }
+                catch (Exception) { }
+            }
         }
     }
 }

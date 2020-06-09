@@ -40,6 +40,8 @@ namespace ComputerShopView
                     dataGridView.Columns[3].FillWeight = 1f;
                     dataGridView.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                     dataGridView.Columns[10].Visible = false;
+                    dataGridView.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    dataGridView.Columns[7].FillWeight = 1f;
                 }
             }
             catch (Exception ex)
@@ -168,6 +170,17 @@ namespace ComputerShopView
         }
 
         private void запускРаботToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            work.DoWork();
+        }
+
+        private void исполнителиToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormImplementers>();
+            form.ShowDialog();
+        }
+
+        private void запускРаботToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             work.DoWork();
         }

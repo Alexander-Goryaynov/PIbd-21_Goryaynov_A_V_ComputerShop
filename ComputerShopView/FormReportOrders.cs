@@ -1,13 +1,6 @@
 ﻿using ComputerShopBusinessLogic.BindingModels;
 using ComputerShopBusinessLogic.BusinessLogic;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Unity;
 
@@ -24,7 +17,7 @@ namespace ComputerShopView
             this.logic = logic;
         }
 
-        private void buttonMake_Click(object sender, EventArgs e)
+        private void ButtonMake_Click(object sender, EventArgs e)
         {
             if (dateTimePickerFrom.Value.Date >= dateTimePickerTo.Value.Date)
             {
@@ -60,7 +53,7 @@ namespace ComputerShopView
             }
         }
 
-        private void buttonSaveToExcel_Click(object sender, EventArgs e)
+        private void ButtonSaveToExcel_Click(object sender, EventArgs e)
         {
             using (var dialog = new SaveFileDialog { Filter = "xlsx|*.xlsx" })
             {

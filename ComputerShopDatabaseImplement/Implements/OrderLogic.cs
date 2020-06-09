@@ -84,7 +84,8 @@ namespace ComputerShopDatabaseImplement.Implements
                     (model.ClientId == rec.ClientId) || (model.AnyFreeOrders.HasValue &&
                     model.AnyFreeOrders.Value && !(rec.ImplementerFIO != null)) ||
                     (model.ImplementerId.HasValue && rec.ImplementerId == model.ImplementerId.Value &&
-                    rec.Status == OrderStatus.Выполняется))
+                    rec.Status == OrderStatus.Выполняется) || (model.IsLackOfDetails.HasValue &&
+                    model.IsLackOfDetails.Value && rec.Status == OrderStatus.НедостаточноДеталей))
                     .Include(order => order.Assembly) 
                     .Include(rec => rec.Implementer)
                     .Select(rec => new OrderViewModel()
@@ -100,8 +101,7 @@ namespace ComputerShopDatabaseImplement.Implements
                         Status = rec.Status,
                         Sum = rec.Sum,
                         ImplementerId = rec.ImplementerId,
-                        ImplementerFIO = !string.IsNullOrEmpty(rec.ImplementerFIO) ?
-                                rec.ImplementerFIO : string.Empty,
+                        ImplementerFIO = rec.Implementer.FIO
                     }).ToList();
             }
         }

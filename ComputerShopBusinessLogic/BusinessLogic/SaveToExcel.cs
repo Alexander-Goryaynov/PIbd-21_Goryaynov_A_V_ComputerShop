@@ -16,7 +16,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
         public static void CreateDoc(ExcelInfo info)
         {
             using (SpreadsheetDocument spreadsheetDocument =
-                SpreadsheetDocument.Create(info.FileName, SpreadsheetDocumentType.Workbook))
+           SpreadsheetDocument.Create(info.FileName, SpreadsheetDocumentType.Workbook))
             {
                 // Создаем книгу (в ней хранятся листы)
                 WorkbookPart workbookpart = spreadsheetDocument.AddWorkbookPart();
@@ -24,11 +24,11 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 CreateStyles(workbookpart);
                 // Получаем/создаем хранилище текстов для книги
                 SharedStringTablePart shareStringPart =
-                spreadsheetDocument.WorkbookPart.GetPartsOfType<SharedStringTablePart>().Count() > 0
+               spreadsheetDocument.WorkbookPart.GetPartsOfType<SharedStringTablePart>().Count() > 0
                 ?
-                spreadsheetDocument.WorkbookPart.GetPartsOfType<SharedStringTablePart>().First()
+               spreadsheetDocument.WorkbookPart.GetPartsOfType<SharedStringTablePart>().First()
                 :
-                spreadsheetDocument.WorkbookPart.AddNewPart<SharedStringTablePart>();
+               spreadsheetDocument.WorkbookPart.AddNewPart<SharedStringTablePart>();
                 // Создаем SharedStringTable, если его нет
                 if (shareStringPart.SharedStringTable == null)
                 {
@@ -39,7 +39,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 worksheetPart.Worksheet = new Worksheet(new SheetData());
                 // Добавляем лист в книгу
                 Sheets sheets =
-                spreadsheetDocument.WorkbookPart.Workbook.AppendChild<Sheets>(new Sheets());
+               spreadsheetDocument.WorkbookPart.Workbook.AppendChild<Sheets>(new Sheets());
                 Sheet sheet = new Sheet()
                 {
                     Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart),
@@ -64,13 +64,12 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                     CellFromName = "A1",
                     CellToName = "E1"
                 });
-
                 uint rowIndex = 2;
                 if (info.Orders != null)
                 {
-                    foreach (var date in info.Orders)
+                    foreach (var group in info.Orders)
                     {
-                        decimal GenSum = 0;
+                        decimal generalSum = 0;
 
                         InsertCellInWorksheet(new ExcelCellParameters
                         {
@@ -78,12 +77,12 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                             ShareStringPart = shareStringPart,
                             ColumnName = "A",
                             RowIndex = rowIndex,
-                            Text = date.Key.ToShortDateString(),
+                            Text = group.Key.ToShortDateString(),
                             StyleIndex = 0U
                         });
                         rowIndex++;
 
-                        foreach (var order in date)
+                        foreach (var order in group)
                         {
                             InsertCellInWorksheet(new ExcelCellParameters
                             {
@@ -104,7 +103,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                                 Text = order.Sum.ToString(),
                                 StyleIndex = 1U
                             });
-                            GenSum += order.Sum;
+                            generalSum += order.Sum;
                             rowIndex++;
                         }
 
@@ -124,7 +123,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                             ShareStringPart = shareStringPart,
                             ColumnName = "C",
                             RowIndex = rowIndex,
-                            Text = GenSum.ToString(),
+                            Text = generalSum.ToString(),
                             StyleIndex = 0U
                         });
                         rowIndex++;
@@ -133,22 +132,8 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 else if (info.Warehouses != null)
                 {
                     foreach (var warehouse in info.Warehouses)
-                foreach (var group in info.Orders)
-                {
-                    decimal generalSum = 0;
-                    InsertCellInWorksheet(new ExcelCellParameters
                     {
-                        Worksheet = worksheetPart.Worksheet,
-                        ShareStringPart = shareStringPart,
-                        ColumnName = "A",
-                        RowIndex = rowIndex,
-                        Text = group.Key.ToShortDateString(),
-                        StyleIndex = 0U
-                    });
-                    rowIndex++;
-                    foreach (var order in group)
-                    {
-                        int detailsSum = 0;
+                        int sum = 0;
 
                         InsertCellInWorksheet(new ExcelCellParameters
                         {
@@ -162,7 +147,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
 
                         rowIndex++;
 
-                        foreach (var detail in warehouse.WarehouseDetails)
+                        foreach (var wd in warehouse.WarehouseDetails)
                         {
                             InsertCellInWorksheet(new ExcelCellParameters
                             {
@@ -170,7 +155,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                                 ShareStringPart = shareStringPart,
                                 ColumnName = "B",
                                 RowIndex = rowIndex,
-                                Text = detail.DetailName,
+                                Text = wd.DetailName,
                                 StyleIndex = 1U
                             });
 
@@ -180,10 +165,10 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                                 ShareStringPart = shareStringPart,
                                 ColumnName = "C",
                                 RowIndex = rowIndex,
-                                Text = detail.Count.ToString(),
+                                Text = wd.Count.ToString(),
                                 StyleIndex = 1U
                             });
-                            detailsSum += detail.Count;
+                            sum += wd.Count;
                             rowIndex++;
                         }
 
@@ -193,7 +178,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                             ShareStringPart = shareStringPart,
                             ColumnName = "A",
                             RowIndex = rowIndex,
-                            Text = "Итого",
+                            Text = "Итого: ",
                             StyleIndex = 0U
                         });
 
@@ -203,7 +188,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                             ShareStringPart = shareStringPart,
                             ColumnName = "C",
                             RowIndex = rowIndex,
-                            Text = detailsSum.ToString(),
+                            Text = sum.ToString(),
                             StyleIndex = 0U
                         });
                         rowIndex++;
@@ -277,8 +262,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
             });
             BottomBorder bottomBorder = new BottomBorder()
             {
-                Style =
-           BorderStyleValues.Thin
+                Style = BorderStyleValues.Thin
             };
             bottomBorder.Append(new DocumentFormat.OpenXml.Office2010.Excel.Color()
             {
@@ -293,17 +277,14 @@ namespace ComputerShopBusinessLogic.BusinessLogic
             borders.Append(borderThin);
             CellStyleFormats cellStyleFormats = new CellStyleFormats()
             {
-                Count =
-           (UInt32Value)1U
+                Count = (UInt32Value)1U
             };
             CellFormat cellFormatStyle = new CellFormat()
             {
-                NumberFormatId =
-           (UInt32Value)0U,
+                NumberFormatId = (UInt32Value)0U,
                 FontId = (UInt32Value)0U,
                 FillId = (UInt32Value)0U,
-                BorderId =
-           (UInt32Value)0U
+                BorderId = (UInt32Value)0U
             };
             cellStyleFormats.Append(cellFormatStyle);
             CellFormats cellFormats = new CellFormats() { Count = (UInt32Value)3U };
@@ -312,39 +293,32 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 NumberFormatId = (UInt32Value)0U,
                 FontId = (UInt32Value)0U,
                 FillId = (UInt32Value)0U,
-                BorderId =
-           (UInt32Value)0U,
+                BorderId = (UInt32Value)0U,
                 FormatId = (UInt32Value)0U,
                 ApplyFont = true
             };
             CellFormat cellFormatFontAndBorder = new CellFormat()
             {
-                NumberFormatId =
-           (UInt32Value)0U,
+                NumberFormatId = (UInt32Value)0U,
                 FontId = (UInt32Value)0U,
                 FillId = (UInt32Value)0U,
-                BorderId =
-           (UInt32Value)1U,
+                BorderId = (UInt32Value)1U,
                 FormatId = (UInt32Value)0U,
                 ApplyFont = true,
                 ApplyBorder = true
             };
             CellFormat cellFormatTitle = new CellFormat()
             {
-                NumberFormatId =
-           (UInt32Value)0U,
+                NumberFormatId = (UInt32Value)0U,
                 FontId = (UInt32Value)1U,
                 FillId = (UInt32Value)0U,
-                BorderId =
-           (UInt32Value)0U,
+                BorderId = (UInt32Value)0U,
                 FormatId = (UInt32Value)0U,
                 Alignment = new Alignment()
                 {
-                    Vertical =
-           VerticalAlignmentValues.Center,
+                    Vertical = VerticalAlignmentValues.Center,
                     WrapText = true,
-                    Horizontal =
-           HorizontalAlignmentValues.Center
+                    Horizontal = HorizontalAlignmentValues.Center
                 },
                 ApplyFont = true
             };
@@ -355,15 +329,14 @@ namespace ComputerShopBusinessLogic.BusinessLogic
             cellStyles.Append(new CellStyle()
             {
                 Name = "Normal",
-                FormatId =
-           (UInt32Value)0U,
+                FormatId = (UInt32Value)0U,
                 BuiltinId = (UInt32Value)0U
             });
             DocumentFormat.OpenXml.Office2013.Excel.DifferentialFormats
-           differentialFormats = new DocumentFormat.OpenXml.Office2013.Excel.DifferentialFormats()
-           {
-               Count = (UInt32Value)0U
-           };
+            differentialFormats = new DocumentFormat.OpenXml.Office2013.Excel.DifferentialFormats()
+            {
+                Count = (UInt32Value)0U
+            };
 
             TableStyles tableStyles = new TableStyles()
             {
@@ -371,19 +344,16 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 DefaultTableStyle = "TableStyleMedium2",
                 DefaultPivotStyle = "PivotStyleLight16"
             };
-            StylesheetExtensionList stylesheetExtensionList = new
-           StylesheetExtensionList();
+            StylesheetExtensionList stylesheetExtensionList = new StylesheetExtensionList();
             StylesheetExtension stylesheetExtension1 = new StylesheetExtension()
             {
-                Uri =
-           "{EB79DEF2-80B8-43e5-95BD-54CBDDF9020C}"
+                Uri = "{EB79DEF2-80B8-43e5-95BD-54CBDDF9020C}"
             };
             stylesheetExtension1.AddNamespaceDeclaration("x14",
            "http://schemas.microsoft.com/office/spreadsheetml/2009/9/main");
             stylesheetExtension1.Append(new SlicerStyles()
             {
-                DefaultSlicerStyle =
-           "SlicerStyleLight1"
+                DefaultSlicerStyle = "SlicerStyleLight1"
             });
             StylesheetExtension stylesheetExtension2 = new StylesheetExtension()
             {
@@ -423,10 +393,10 @@ namespace ComputerShopBusinessLogic.BusinessLogic
             // Ищем строку, либо добавляем ее
             Row row;
             if (sheetData.Elements<Row>().Where(r => r.RowIndex ==
-           cellParameters.RowIndex).Count() != 0)
+                cellParameters.RowIndex).Count() != 0)
             {
                 row = sheetData.Elements<Row>().Where(r => r.RowIndex ==
-            cellParameters.RowIndex).First();
+                    cellParameters.RowIndex).First();
             }
             else
             {
@@ -436,10 +406,10 @@ namespace ComputerShopBusinessLogic.BusinessLogic
             // Ищем нужную ячейку
             Cell cell;
             if (row.Elements<Cell>().Where(c => c.CellReference.Value ==
-           cellParameters.CellReference).Count() > 0)
+                cellParameters.CellReference).Count() > 0)
             {
                 cell = row.Elements<Cell>().Where(c => c.CellReference.Value ==
-               cellParameters.CellReference).First();
+                    cellParameters.CellReference).First();
             }
             else
             {
@@ -449,7 +419,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 foreach (Cell rowCell in row.Elements<Cell>())
                 {
                     if (string.Compare(rowCell.CellReference.Value,
-                   cellParameters.CellReference, true) > 0)
+                        cellParameters.CellReference, true) > 0)
                     {
                         refCell = rowCell;
                         break;
@@ -464,11 +434,11 @@ namespace ComputerShopBusinessLogic.BusinessLogic
             }
             // вставляем новый текст
             cellParameters.ShareStringPart.SharedStringTable.AppendChild(new
-           SharedStringItem(new Text(cellParameters.Text)));
+                SharedStringItem(new Text(cellParameters.Text)));
             cellParameters.ShareStringPart.SharedStringTable.Save();
             cell.CellValue = new
-           CellValue((cellParameters.ShareStringPart.SharedStringTable.Elements<SharedStringItem>().
-           Count() - 1).ToString());
+            CellValue((cellParameters.ShareStringPart.SharedStringTable.Elements<SharedStringItem>().
+                Count() - 1).ToString());
             cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
             cell.StyleIndex = cellParameters.StyleIndex;
         }
@@ -491,12 +461,12 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 if (mergeParameters.Worksheet.Elements<CustomSheetView>().Count() > 0)
                 {
                     mergeParameters.Worksheet.InsertAfter(mergeCells,
-                   mergeParameters.Worksheet.Elements<CustomSheetView>().First());
+                        mergeParameters.Worksheet.Elements<CustomSheetView>().First());
                 }
                 else
                 {
                     mergeParameters.Worksheet.InsertAfter(mergeCells,
-                   mergeParameters.Worksheet.Elements<SheetData>().First());
+                        mergeParameters.Worksheet.Elements<SheetData>().First());
                 }
             }
             MergeCell mergeCell = new MergeCell()

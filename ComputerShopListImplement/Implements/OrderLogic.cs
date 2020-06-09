@@ -62,16 +62,41 @@ namespace ComputerShopListImplement.Implements
             List<OrderViewModel> result = new List<OrderViewModel>();
             foreach (var order in source.Orders)
             {
-                if ((model != null) && (order.Id == model.Id) ||
-                    (model.DateFrom.HasValue) && (model.DateTo.HasValue) && 
-                    (order.DateCreate >= model.DateFrom) && (order.DateCreate <= model.DateTo) ||
-                    (model.ClientId.HasValue) && (order.ClientId == model.ClientId) ||
-                    (model.AnyFreeOrders.HasValue) && (model.AnyFreeOrders.Value) ||
-                    (model.ImplementerId.HasValue) && (order.ImplementerId == model.ImplementerId) &&
-                    (order.Status == OrderStatus.Выполняется))
-                {                    
-                    result.Add(CreateViewModel(order));
-                    break;                    
+                if (model != null)
+                {
+                    if (order.Id == model.Id && order.ClientId == model.ClientId)
+                    {
+                        result.Add(CreateViewModel(order));
+                        break;
+                    }
+                    else if (model.DateFrom.HasValue && model.DateTo.HasValue &&
+                         order.DateCreate >= model.DateFrom && order.DateCreate <= model.DateTo)
+                    {
+                        result.Add(CreateViewModel(order));
+                    }
+                    else if (model.ClientId.HasValue && order.ClientId == model.ClientId)
+                    {
+                        result.Add(CreateViewModel(order));
+                    }
+                    else if (model.AnyFreeOrders.HasValue && model.AnyFreeOrders.Value &&
+                        !(model.ImplementerFIO != null))
+                    {
+                        result.Add(CreateViewModel(order));
+                    }
+                    else if (model.ImplementerId.HasValue &&
+                        order.ImplementerId == model.ImplementerId.Value &&
+                        order.Status == OrderStatus.Выполняется)
+                    {
+                        result.Add(CreateViewModel(order));
+                    }
+                    else if (model.IsLackOfDetails.HasValue &&
+                         model.IsLackOfDetails.Value &&
+                         order.Status == OrderStatus.НедостаточноДеталей)
+                    {
+                        result.Add(CreateViewModel(order));
+                        continue;
+                    }
+                    continue;
                 }
                 result.Add(CreateViewModel(order));
             }
@@ -87,6 +112,8 @@ namespace ComputerShopListImplement.Implements
             order.AssemblyId = model.AssemblyId;
             order.Status = model.Status;
             order.Sum = model.Sum;
+            order.ImplementerId = (int)model.ImplementerId;
+            order.ImplementerFIO = model.ImplementerFIO;
             return order;
         }
 
@@ -112,7 +139,9 @@ namespace ComputerShopListImplement.Implements
                 AssemblyName = assemblyName,
                 AssemblyId = order.AssemblyId,
                 Status = order.Status,
-                Sum = order.Sum
+                Sum = order.Sum,
+                ImplementerId = order.ImplementerId,
+                ImplementerFIO = order.ImplementerFIO,
             };
         }
     }

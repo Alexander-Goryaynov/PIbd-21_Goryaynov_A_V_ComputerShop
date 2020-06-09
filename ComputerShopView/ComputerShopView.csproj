@@ -246,6 +246,7 @@
     </Compile>
     <Compile Include="FormFillWarehouse.Designer.cs">
       <DependentUpon>FormFillWarehouse.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormImplementer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -326,6 +327,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormFillWarehouse.resx">
       <DependentUpon>FormFillWarehouse.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormImplementer.resx">
       <DependentUpon>FormImplementer.cs</DependentUpon>
     </EmbeddedResource>

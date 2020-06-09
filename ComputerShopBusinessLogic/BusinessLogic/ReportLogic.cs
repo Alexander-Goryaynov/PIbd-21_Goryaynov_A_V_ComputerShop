@@ -33,7 +33,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                     {
                         AssemblyName = assembly.AssemblyName,
                         DetailName = ad.Value.Item1,
-                        Count = ad.Value.Item2
+                        TotalCount = ad.Value.Item2
                     };
                     list.Add(record);
                 }

@@ -35,5 +35,6 @@ namespace ComputerShopBusinessLogic.BindingModels
         public int? ImplementerId { get; set; }
         public string ImplementerFIO { set; get; }
         public bool? AnyFreeOrders { get; set; }
+        public bool? IsLackOfDetails { get; set; }
     }
 }
