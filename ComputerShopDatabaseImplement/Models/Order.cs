@@ -24,6 +24,9 @@ namespace ComputerShopDatabaseImplement.Models
         public DateTime? DateImplement { get; set; }
         public int AssemblyId { get; set; }
         public virtual Client Client { get; set; }
-        public virtual Assembly Assembly { get; set; } 
+        public virtual Assembly Assembly { get; set; }
+        public int? ImplementerId { get; set; }
+        public Implementer Implementer { get; set; }
+        public string ImplementerFIO { get; set; }
     }
 }

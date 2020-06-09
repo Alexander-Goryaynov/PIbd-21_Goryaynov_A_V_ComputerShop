@@ -16,5 +16,7 @@ namespace ComputerShopListImplement.Models
         public DateTime? DateImplement { get; set; }
         public int ClientId { set; get; }
         public string ClientFIO { set; get; }
+        public int ImplementerId { get; set; }
+        public string ImplementerFIO { set; get; }
     }
 }

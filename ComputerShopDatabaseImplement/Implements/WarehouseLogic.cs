@@ -193,6 +193,7 @@ namespace ComputerShopDatabaseImplement.Implements
                             if (detailCount > 0)
                                 throw new Exception("Недостаточно деталей на складе");
                         }
+                        context.SaveChanges();
                         transaction.Commit();
                     }
                     catch (Exception)

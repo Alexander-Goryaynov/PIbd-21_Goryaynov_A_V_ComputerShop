@@ -11,6 +11,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
     {
         private readonly IOrderLogic orderLogic;
         private readonly IWarehouseLogic warehouseLogic;
+        private readonly object locker = new object();
         public MainLogic(IOrderLogic orderLogic, IWarehouseLogic warehouseLogic)
         {
             this.orderLogic = orderLogic;
@@ -31,34 +32,43 @@ namespace ComputerShopBusinessLogic.BusinessLogic
         }
         public void TakeOrderInWork(ChangeStatusBindingModel model)
         {
-            var order = orderLogic.Read(new OrderBindingModel { Id = model.OrderId })?[0];
-            if (order == null)
+            lock (locker)
             {
-                throw new Exception("Не найден заказ");
-            }
-            if (order.Status != OrderStatus.Принят)
-            {
-                throw new Exception("Заказ не в статусе \"Принят\"");
-            }
-            try
-            {
-                warehouseLogic.DeleteFromWarehouse(order);
-                orderLogic.CreateOrUpdate(new OrderBindingModel
+                var order = orderLogic.Read(new OrderBindingModel { Id = model.OrderId })?[0];
+                if (order == null)
+                {
+                    throw new Exception("Не найден заказ");
+                }
+                if (order.Status != OrderStatus.Принят && order.Status != OrderStatus.НедостаточноДеталей)
+                {
+                    throw new Exception("Заказ не в статусе \"Принят\" или \"НедостаточноДеталей\"");
+                }
+                if (order.ImplementerId.HasValue)
+                {
+                    throw new Exception("У заказа уже есть исполнитель");
+                }
+                var bookingModel = new OrderBindingModel
                 {
                     Id = order.Id,
                     AssemblyId = order.AssemblyId,
                     Count = order.Count,
                     Sum = order.Sum,
-                    DateCreate = order.DateCreate,
-                    DateImplement = null,
-                    Status = OrderStatus.Выполняется,
                     ClientId = order.ClientId,
-                    ClientFIO = order.ClientFIO
-                });
-            }
-            catch (Exception)
-            {
-                throw;
+                    ClientFIO = order.ClientFIO,
+                    DateCreate = order.DateCreate
+                };
+                try
+                {
+                    warehouseLogic.DeleteFromWarehouse(order);
+                    bookingModel.DateImplement = DateTime.Now;
+                    bookingModel.Status = OrderStatus.Выполняется;
+                    bookingModel.ImplementerId = model.ImplementerId;
+                }
+                catch
+                {
+                    bookingModel.Status = OrderStatus.НедостаточноДеталей;
+                }
+                orderLogic.CreateOrUpdate(bookingModel);
             }
         }
         public void FinishOrder (ChangeStatusBindingModel model)
@@ -82,7 +92,9 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 DateImplement = DateTime.Now,
                 Status = OrderStatus.Готов,
                 ClientId = order.ClientId,
-                ClientFIO = order.ClientFIO
+                ClientFIO = order.ClientFIO,
+                ImplementerId = order.ImplementerId,
+                ImplementerFIO = order.ImplementerFIO
             });
         }
         public void PayOrder(ChangeStatusBindingModel model)
@@ -106,7 +118,9 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 DateImplement = order.DateImplement,
                 Status = OrderStatus.Оплачен,
                 ClientId = order.ClientId,
-                ClientFIO = order.ClientFIO
+                ClientFIO = order.ClientFIO,
+                ImplementerId = order.ImplementerId,
+                ImplementerFIO = order.ImplementerFIO
             });
         }
         public void FillWarehouse(WarehouseDetailBindingModel model)

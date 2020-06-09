@@ -1,4 +1,5 @@
 ﻿using ComputerShopBusinessLogic.BindingModels;
+using ComputerShopBusinessLogic.Enums;
 using ComputerShopBusinessLogic.Interfaces;
 using ComputerShopBusinessLogic.ViewModels;
 using ComputerShopListImplement.Models;
@@ -63,10 +64,37 @@ namespace ComputerShopListImplement.Implements
             {
                 if (model != null)
                 {
-                    if (order.Id == model.Id)
+                    if (order.Id == model.Id && order.ClientId == model.ClientId)
                     {
                         result.Add(CreateViewModel(order));
                         break;
+                    }
+                    else if (model.DateFrom.HasValue && model.DateTo.HasValue &&
+                         order.DateCreate >= model.DateFrom && order.DateCreate <= model.DateTo)
+                    {
+                        result.Add(CreateViewModel(order));
+                    }
+                    else if (model.ClientId.HasValue && order.ClientId == model.ClientId)
+                    {
+                        result.Add(CreateViewModel(order));
+                    }
+                    else if (model.AnyFreeOrders.HasValue && model.AnyFreeOrders.Value &&
+                        !(model.ImplementerFIO != null))
+                    {
+                        result.Add(CreateViewModel(order));
+                    }
+                    else if (model.ImplementerId.HasValue &&
+                        order.ImplementerId == model.ImplementerId.Value &&
+                        order.Status == OrderStatus.Выполняется)
+                    {
+                        result.Add(CreateViewModel(order));
+                    }
+                    else if (model.IsLackOfDetails.HasValue &&
+                         model.IsLackOfDetails.Value &&
+                         order.Status == OrderStatus.НедостаточноДеталей)
+                    {
+                        result.Add(CreateViewModel(order));
+                        continue;
                     }
                     continue;
                 }
@@ -77,13 +105,15 @@ namespace ComputerShopListImplement.Implements
         private Order CreateModel(OrderBindingModel model, Order order)
         {
             order.Count = model.Count;
-            order.ClientId = model.ClientId;
+            order.ClientId = model.ClientId.Value;
             order.ClientFIO = model.ClientFIO;
             order.DateCreate = model.DateCreate;
             order.DateImplement = model.DateImplement;
             order.AssemblyId = model.AssemblyId;
             order.Status = model.Status;
             order.Sum = model.Sum;
+            order.ImplementerId = (int)model.ImplementerId;
+            order.ImplementerFIO = model.ImplementerFIO;
             return order;
         }
 
@@ -109,7 +139,9 @@ namespace ComputerShopListImplement.Implements
                 AssemblyName = assemblyName,
                 AssemblyId = order.AssemblyId,
                 Status = order.Status,
-                Sum = order.Sum
+                Sum = order.Sum,
+                ImplementerId = order.ImplementerId,
+                ImplementerFIO = order.ImplementerFIO,
             };
         }
     }
