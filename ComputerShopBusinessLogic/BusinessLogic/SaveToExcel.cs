@@ -133,6 +133,20 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 else if (info.Warehouses != null)
                 {
                     foreach (var warehouse in info.Warehouses)
+                foreach (var group in info.Orders)
+                {
+                    decimal generalSum = 0;
+                    InsertCellInWorksheet(new ExcelCellParameters
+                    {
+                        Worksheet = worksheetPart.Worksheet,
+                        ShareStringPart = shareStringPart,
+                        ColumnName = "A",
+                        RowIndex = rowIndex,
+                        Text = group.Key.ToShortDateString(),
+                        StyleIndex = 0U
+                    });
+                    rowIndex++;
+                    foreach (var order in group)
                     {
                         int detailsSum = 0;
 

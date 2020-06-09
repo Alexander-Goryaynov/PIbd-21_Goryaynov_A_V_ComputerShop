@@ -23,17 +23,17 @@ namespace ComputerShopBusinessLogic.BusinessLogic
 
         public List<ReportAssemblyDetailViewModel> GetAssemblyDetail()
         {
-            var details = assemblyLogic.Read(null);
+            var assemblies = assemblyLogic.Read(null);
             var list = new List<ReportAssemblyDetailViewModel>();
-            foreach (var detail in details)
+            foreach (var assembly in assemblies)
             {
-                foreach (var ad in detail.AssemblyDetails)
+                foreach (var ad in assembly.AssemblyDetails)
                 {
                     var record = new ReportAssemblyDetailViewModel
                     {
-                        AssemblyName = detail.AssemblyName,
+                        AssemblyName = assembly.AssemblyName,
                         DetailName = ad.Value.Item1,
-                        TotalCount = ad.Value.Item2
+                        Count = ad.Value.Item2
                     };
                     list.Add(record);
                 }
@@ -61,14 +61,13 @@ namespace ComputerShopBusinessLogic.BusinessLogic
         }
         public List<IGrouping<DateTime, OrderViewModel>> GetOrders(ReportBindingModel model)
         {
-            var list = orderLogic
-            .Read(new OrderBindingModel
-             {
-                 DateFrom = model.DateFrom,
-                 DateTo = model.DateTo
+            var list = orderLogic.Read(new OrderBindingModel
+            {
+                DateFrom = model.DateFrom,
+                DateTo = model.DateTo
             })
             .GroupBy(rec => rec.DateCreate.Date)
-            .OrderBy(group => group.Key)
+            .OrderBy(rec => rec.Key)
             .ToList();
             return list;
         }

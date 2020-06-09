@@ -12,5 +12,8 @@ namespace ComputerShopBusinessLogic.HelperModels
         public string Title { get; set; }
         public List<IGrouping<DateTime, OrderViewModel>> Orders { get; set; }
         public List<WarehouseViewModel> Warehouses { get; set; }
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+        public List<ReportAssemblyDetailViewModel> AssemblyDetails { get; set; }
     }
 }
