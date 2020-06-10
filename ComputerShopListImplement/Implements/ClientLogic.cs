@@ -20,7 +20,7 @@ namespace ComputerShopListImplement.Implements
             Client tempClient = (model.Id.HasValue) ? null : new Client { Id = 1 };
             foreach (var client in source.Clients)
             {
-                if (client.FIO == model.FIO && client.Id != model.Id)
+                if (client.Email == model.Email && client.Id != model.Id)
                 {
                     throw new Exception("Уже есть клиент с таким именем");
                 }

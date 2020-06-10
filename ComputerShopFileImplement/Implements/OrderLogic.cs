@@ -25,30 +25,21 @@ namespace ComputerShopFileImplement.Implements
                 order = source.Orders.FirstOrDefault(rec => rec.Id == model.Id);
                 if (order == null)
                     throw new Exception("Элемент не найден");
-                order.AssemblyId = model.AssemblyId;
-                order.Count = model.Count;
-                order.DateCreate = model.DateCreate;
-                order.DateImplement = model.DateImplement;
-                order.Status = model.Status;
-                order.Sum = model.Sum;
-                order.ClientFIO = model.ClientFIO;
-                order.ClientId = model.ClientId;
+
             }
             else
             {
                 int maxId = source.Orders.Count > 0 ? source.Orders.Max(rec => rec.Id) : 0;
                 order = new Order { Id = maxId + 1 };
-                order.AssemblyId = model.AssemblyId;
-                order.Count = model.Count;
-                order.DateCreate = model.DateCreate;
-                order.DateImplement = model.DateImplement;
-                order.Status = model.Status;
-                order.Sum = model.Sum;
-                order.ClientFIO = model.ClientFIO;
-                order.ClientId = model.ClientId;
                 source.Orders.Add(order);
             }
-            
+            order.AssemblyId = model.AssemblyId;
+            order.Count = model.Count;
+            order.DateCreate = model.DateCreate;
+            order.DateImplement = model.DateImplement;
+            order.Status = model.Status;
+            order.Sum = model.Sum;
+            order.ClientId = model.ClientId;
         }
 
         public void Delete(OrderBindingModel model)
@@ -85,35 +76,6 @@ namespace ComputerShopFileImplement.Implements
                 AssemblyName = source.Assemblies.FirstOrDefault(recA => 
                     recA.Id == rec.AssemblyId)?.AssemblyName
              }).ToList();
-        }
-        private Order CreateModel(OrderBindingModel model, Order order)
-        {
-            order.Count = model.Count;
-            order.DateCreate = model.DateCreate;
-            order.DateImplement = model.DateImplement;
-            order.AssemblyId = model.AssemblyId;
-            order.Status = model.Status;
-            order.Sum = model.Sum;
-            order.ClientId = model.ClientId;
-            order.ClientFIO = model.ClientFIO;
-            return order;
-        }
-
-        private OrderViewModel CreateViewModel(Order order)
-        {
-            string assemblyName = source.Assemblies.FirstOrDefault(rec =>
-                    rec.Id == order.AssemblyId).AssemblyName;
-            return new OrderViewModel
-            {
-                Id = order.Id,
-                Count = order.Count,
-                DateCreate = order.DateCreate,
-                DateImplement = order.DateImplement,
-                AssemblyName = assemblyName,
-                AssemblyId = order.AssemblyId,
-                Status = order.Status,
-                Sum = order.Sum
-            };
         }
     }
 }
