@@ -35,7 +35,6 @@ namespace ComputerShopFileImplement.Implements
                 source.Orders.Add(order);
             }
             order.AssemblyId = model.AssemblyId;
-            order.ClientFIO = model.ClientFIO;
             order.ClientId = model.ClientId.Value;
             order.Count = model.Count;
             order.DateCreate = model.DateCreate;
@@ -80,7 +79,7 @@ namespace ComputerShopFileImplement.Implements
                     Id = rec.Id,
                     AssemblyId = rec.AssemblyId,
                     AssemblyName = source.Assemblies.FirstOrDefault((r) => r.Id == rec.AssemblyId).AssemblyName,
-                    ClientFIO = rec.ClientFIO,
+                    ClientFIO = source.Clients.FirstOrDefault(recC => recC.Id == rec.ClientId)?.FIO,
                     ClientId = rec.ClientId,
                     ImplementerId = rec.ImplementerId,
                     ImplementerFIO = (!string.IsNullOrEmpty(rec.ImplementerFIO)) ? rec.ImplementerFIO : string.Empty,

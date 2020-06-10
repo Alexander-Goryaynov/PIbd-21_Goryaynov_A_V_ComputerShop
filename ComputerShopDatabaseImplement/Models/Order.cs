@@ -12,8 +12,6 @@ namespace ComputerShopDatabaseImplement.Models
         [Required]
         public int ClientId { set; get; }
         [Required]
-        public string ClientFIO { set; get; }
-        [Required]
         public int Count { get; set; }
         [Required]
         public decimal Sum { get; set; }
