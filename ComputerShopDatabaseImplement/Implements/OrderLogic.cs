@@ -33,7 +33,6 @@ namespace ComputerShopDatabaseImplement.Implements
                 }
                 element.AssemblyId = model.AssemblyId == 0 ? element.AssemblyId : model.AssemblyId;
                 element.ClientId = model.ClientId.Value;
-                element.ClientFIO = model.ClientFIO;
                 element.ImplementerId = model.ImplementerId;
                 element.ImplementerFIO = model.ImplementerFIO;
                 element.Count = model.Count;
@@ -92,7 +91,7 @@ namespace ComputerShopDatabaseImplement.Implements
                         Id = rec.Id,
                         AssemblyId = rec.AssemblyId,
                         AssemblyName = rec.Assembly.Name,
-                        ClientFIO = rec.ClientFIO,
+                        ClientFIO = rec.Client.FIO,
                         ClientId = rec.ClientId,
                         Count = rec.Count,
                         DateCreate = rec.DateCreate,

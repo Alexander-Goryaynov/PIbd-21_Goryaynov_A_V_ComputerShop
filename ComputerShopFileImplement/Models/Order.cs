@@ -15,7 +15,6 @@ namespace ComputerShopFileImplement.Models
         public OrderStatus Status { get; set; }
         public DateTime DateCreate { get; set; }
         public DateTime? DateImplement { get; set; }
-        public string ClientFIO { get; set; }
         public int? ImplementerId { get; set; }
         public string ImplementerFIO { set; get; }
     }
