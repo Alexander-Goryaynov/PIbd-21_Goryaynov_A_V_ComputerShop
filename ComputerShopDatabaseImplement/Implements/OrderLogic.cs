@@ -33,7 +33,6 @@ namespace ComputerShopDatabaseImplement.Implements
                 }
                 element.AssemblyId = model.AssemblyId == 0 ? element.AssemblyId : model.AssemblyId;
                 element.ClientId = model.ClientId.Value;
-                element.ClientFIO = model.ClientFIO;
                 element.ImplementerId = model.ImplementerId;
                 element.ImplementerFIO = model.ImplementerFIO;
                 element.Count = model.Count;

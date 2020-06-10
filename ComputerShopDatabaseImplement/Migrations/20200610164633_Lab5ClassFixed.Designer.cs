@@ -4,14 +4,16 @@ using ComputerShopDatabaseImplement;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ComputerShopDatabaseImplement.Migrations
 {
     [DbContext(typeof(ComputerShopDatabase))]
-    partial class ComputerShopDatabaseModelSnapshot : ModelSnapshot
+    [Migration("20200610164633_Lab5ClassFixed")]
+    partial class Lab5ClassFixed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,27 +105,6 @@ namespace ComputerShopDatabaseImplement.Migrations
                     b.ToTable("Details");
                 });
 
-            modelBuilder.Entity("ComputerShopDatabaseImplement.Models.Implementer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("FIO")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PauseTime")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WorkingTime")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Implementers");
-                });
-
             modelBuilder.Entity("ComputerShopDatabaseImplement.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -146,12 +127,6 @@ namespace ComputerShopDatabaseImplement.Migrations
                     b.Property<DateTime?>("DateImplement")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ImplementerFIO")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ImplementerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -163,8 +138,6 @@ namespace ComputerShopDatabaseImplement.Migrations
                     b.HasIndex("AssemblyId");
 
                     b.HasIndex("ClientId");
-
-                    b.HasIndex("ImplementerId");
 
                     b.ToTable("Orders");
                 });
@@ -197,10 +170,6 @@ namespace ComputerShopDatabaseImplement.Migrations
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("ComputerShopDatabaseImplement.Models.Implementer", "Implementer")
-                        .WithMany("Orders")
-                        .HasForeignKey("ImplementerId");
                 });
 #pragma warning restore 612, 618
         }
