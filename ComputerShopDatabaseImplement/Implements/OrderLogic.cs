@@ -91,7 +91,7 @@ namespace ComputerShopDatabaseImplement.Implements
                         Id = rec.Id,
                         AssemblyId = rec.AssemblyId,
                         AssemblyName = rec.Assembly.Name,
-                        ClientFIO = rec.ClientFIO,
+                        ClientFIO = rec.Client.FIO,
                         ClientId = rec.ClientId,
                         Count = rec.Count,
                         DateCreate = rec.DateCreate,
