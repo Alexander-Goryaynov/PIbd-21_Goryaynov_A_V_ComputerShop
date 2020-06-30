@@ -32,7 +32,6 @@ namespace ComputerShopDatabaseImplement.Implements
                 }
                 element.AssemblyId = model.AssemblyId;
                 element.ClientId = model.ClientId;
-                element.ClientFIO = model.ClientFIO;
                 element.Count = model.Count;
                 element.Sum = model.Sum;
                 element.Status = model.Status;
@@ -86,7 +85,7 @@ namespace ComputerShopDatabaseImplement.Implements
                     Id = rec.Id,
                     AssemblyId = rec.AssemblyId,
                     AssemblyName = rec.Assembly.Name,
-                    ClientFIO = rec.ClientFIO,
+                    ClientFIO = rec.Client.FIO,
                     ClientId = rec.ClientId,
                     Count = rec.Count,
                     DateCreate = rec.DateCreate,

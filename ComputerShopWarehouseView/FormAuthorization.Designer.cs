@@ -49,6 +49,7 @@
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.Size = new System.Drawing.Size(200, 20);
             this.textBoxPassword.TabIndex = 3;
+            this.textBoxPassword.Text = "1234";
             // 
             // buttonLogin
             // 
