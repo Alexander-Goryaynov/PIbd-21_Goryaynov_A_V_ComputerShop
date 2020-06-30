@@ -10,6 +10,8 @@ namespace ComputerShopDatabaseImplement.Models
     {
         public int Id { get; set; }
         [Required]
+        public int ClientId { set; get; }
+        [Required]
         public int Count { get; set; }
         [Required]
         public decimal Sum { get; set; }
@@ -18,8 +20,8 @@ namespace ComputerShopDatabaseImplement.Models
         [Required]
         public DateTime DateCreate { get; set; }
         public DateTime? DateImplement { get; set; }
-        public int AssemblyId { get; set; } 
+        public int AssemblyId { get; set; }
+        public virtual Client Client { get; set; }
         public virtual Assembly Assembly { get; set; } 
-
     }
 }

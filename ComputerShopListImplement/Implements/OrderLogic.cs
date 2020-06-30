@@ -4,7 +4,7 @@ using ComputerShopBusinessLogic.ViewModels;
 using ComputerShopListImplement.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace ComputerShopListImplement.Implements
 {
@@ -78,6 +78,7 @@ namespace ComputerShopListImplement.Implements
         private Order CreateModel(OrderBindingModel model, Order order)
         {
             order.Count = model.Count;
+            order.ClientId = model.ClientId;
             order.DateCreate = model.DateCreate;
             order.DateImplement = model.DateImplement;
             order.AssemblyId = model.AssemblyId;
@@ -101,6 +102,8 @@ namespace ComputerShopListImplement.Implements
             {
                 Id = order.Id,
                 Count = order.Count,
+                ClientFIO = source.Clients.FirstOrDefault(rec => rec.Id == order.ClientId).FIO,
+                ClientId = order.ClientId,
                 DateCreate = order.DateCreate,
                 DateImplement = order.DateImplement,
                 AssemblyName = assemblyName,

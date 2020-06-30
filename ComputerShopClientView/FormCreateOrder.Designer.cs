@@ -1,4 +1,4 @@
-﻿namespace ComputerShopView
+﻿namespace ComputerShopClientView
 {
     partial class FormCreateOrder
     {
@@ -34,10 +34,7 @@
             this.comboBoxAssembly = new System.Windows.Forms.ComboBox();
             this.textBoxCount = new System.Windows.Forms.TextBox();
             this.textBoxSum = new System.Windows.Forms.TextBox();
-            this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
-            this.comboBoxClient = new System.Windows.Forms.ComboBox();
-            this.labelClient = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // labelAssembly
@@ -75,7 +72,7 @@
             this.comboBoxAssembly.Name = "comboBoxAssembly";
             this.comboBoxAssembly.Size = new System.Drawing.Size(229, 21);
             this.comboBoxAssembly.TabIndex = 3;
-            this.comboBoxAssembly.SelectedIndexChanged += new System.EventHandler(this.comboBoxAssembly_SelectedIndexChanged);
+            this.comboBoxAssembly.SelectedIndexChanged += new System.EventHandler(this.ComboBoxAssembly_SelectedIndexChanged);
             // 
             // textBoxCount
             // 
@@ -83,7 +80,7 @@
             this.textBoxCount.Name = "textBoxCount";
             this.textBoxCount.Size = new System.Drawing.Size(229, 20);
             this.textBoxCount.TabIndex = 4;
-            this.textBoxCount.TextChanged += new System.EventHandler(this.textBoxCount_TextChanged);
+            this.textBoxCount.TextChanged += new System.EventHandler(this.TextBoxCount_TextChanged);
             // 
             // textBoxSum
             // 
@@ -93,53 +90,22 @@
             this.textBoxSum.Size = new System.Drawing.Size(229, 20);
             this.textBoxSum.TabIndex = 5;
             // 
-            // buttonCancel
-            // 
-            this.buttonCancel.Location = new System.Drawing.Point(227, 139);
-            this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(104, 22);
-            this.buttonCancel.TabIndex = 6;
-            this.buttonCancel.Text = "Отменить";
-            this.buttonCancel.UseVisualStyleBackColor = true;
-            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
-            // 
             // buttonSave
             // 
-            this.buttonSave.Location = new System.Drawing.Point(102, 139);
+            this.buttonSave.Location = new System.Drawing.Point(102, 113);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(119, 22);
             this.buttonSave.TabIndex = 7;
             this.buttonSave.Text = "Сохранить";
             this.buttonSave.UseVisualStyleBackColor = true;
-            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
-            // 
-            // comboBoxClient
-            // 
-            this.comboBoxClient.FormattingEnabled = true;
-            this.comboBoxClient.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxClient.Location = new System.Drawing.Point(102, 100);
-            this.comboBoxClient.Name = "comboBoxClient";
-            this.comboBoxClient.Size = new System.Drawing.Size(229, 21);
-            this.comboBoxClient.TabIndex = 8;
-            // 
-            // labelClient
-            // 
-            this.labelClient.AutoSize = true;
-            this.labelClient.Location = new System.Drawing.Point(14, 103);
-            this.labelClient.Name = "labelClient";
-            this.labelClient.Size = new System.Drawing.Size(46, 13);
-            this.labelClient.TabIndex = 9;
-            this.labelClient.Text = "Клиент:";
+            this.buttonSave.Click += new System.EventHandler(this.ButtonSave_Click);
             // 
             // FormCreateOrder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(355, 177);
-            this.Controls.Add(this.labelClient);
-            this.Controls.Add(this.comboBoxClient);
+            this.ClientSize = new System.Drawing.Size(355, 157);
             this.Controls.Add(this.buttonSave);
-            this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.textBoxSum);
             this.Controls.Add(this.textBoxCount);
             this.Controls.Add(this.comboBoxAssembly);
@@ -163,9 +129,6 @@
         private System.Windows.Forms.ComboBox comboBoxAssembly;
         private System.Windows.Forms.TextBox textBoxCount;
         private System.Windows.Forms.TextBox textBoxSum;
-        private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonSave;
-        private System.Windows.Forms.ComboBox comboBoxClient;
-        private System.Windows.Forms.Label labelClient;
     }
 }
