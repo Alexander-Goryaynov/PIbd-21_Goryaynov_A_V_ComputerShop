@@ -16,6 +16,5 @@ namespace ComputerShopFileImplement.Models
         public DateTime DateCreate { get; set; }
         public DateTime? DateImplement { get; set; }
         public int? ImplementerId { get; set; }
-        public string ImplementerFIO { set; get; }
     }
 }

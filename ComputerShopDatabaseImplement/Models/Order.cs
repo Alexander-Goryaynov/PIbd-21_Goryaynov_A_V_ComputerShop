@@ -25,6 +25,5 @@ namespace ComputerShopDatabaseImplement.Models
         public virtual Assembly Assembly { get; set; }
         public int? ImplementerId { get; set; }
         public Implementer Implementer { get; set; }
-        public string ImplementerFIO { get; set; }
     }
 }
