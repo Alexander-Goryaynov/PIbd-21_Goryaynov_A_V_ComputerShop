@@ -64,7 +64,10 @@
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.Size = new System.Drawing.Size(403, 342);
             this.dataGridView.TabIndex = 0;
-            
+            this.dataGridView.AllowUserToAddRows = false;
+            this.dataGridView.AllowUserToDeleteRows = false;
+            this.dataGridView.ReadOnly = true;
+
             this.buttonSave.Location = new System.Drawing.Point(260, 411);
             this.buttonSave.Name = "ButtonSave";
             this.buttonSave.Size = new System.Drawing.Size(75, 23);
