@@ -12,10 +12,12 @@ namespace ComputerShopFileImplement.Implements
     public class ClientLogic : IClientLogic
     {
         private readonly FileDataListSingleton source;
+
         public ClientLogic()
         {
             source = FileDataListSingleton.GetInstance();
         }
+
         public void CreateOrUpdate(ClientBindingModel model)
         {
             Client element = source.Clients.FirstOrDefault(rec =>
@@ -34,7 +36,7 @@ namespace ComputerShopFileImplement.Implements
             }
             else
             {
-                int maxId = (source.Clients.Count > 0) ? source.Clients.Max(rec => rec.Id) : 0;
+                int maxId = source.Clients.Count > 0 ? source.Clients.Max(rec => rec.Id) : 0;
                 element = new Client { Id = maxId + 1 };
                 source.Clients.Add(element);
             }

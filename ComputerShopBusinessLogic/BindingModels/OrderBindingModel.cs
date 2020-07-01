@@ -12,7 +12,7 @@ namespace ComputerShopBusinessLogic.BindingModels
         [DataMember]
         public int? Id { get; set; }
         [DataMember]
-        public int ClientId { get; set; }
+        public int? ClientId { get; set; }
         [DataMember]
         public int AssemblyId { get; set; }
         [DataMember]
@@ -31,5 +31,8 @@ namespace ComputerShopBusinessLogic.BindingModels
         public DateTime? DateFrom { get; set; }
         [DataMember]
         public DateTime? DateTo { get; set; }
+        [DataMember]
+        public int? ImplementerId { get; set; }
+        public bool? AnyFreeOrders { get; set; }
     }
 }

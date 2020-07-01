@@ -1,10 +1,8 @@
-﻿using ComputerShopBusinessLogic.BusinessLogic;
+﻿using ComputerShopBusinessLogic.BindingModels;
+using ComputerShopBusinessLogic.BusinessLogic;
 using ComputerShopBusinessLogic.Interfaces;
 using ComputerShopDatabaseImplement.Implements;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Unity;
 using Unity.Lifetime;
@@ -38,6 +36,10 @@ namespace ComputerShopView
             currentContainer.RegisterType<ReportLogic>(
                 new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IClientLogic, ClientLogic>(
+                new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IImplementerLogic, ImplementerLogic>(
+                new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<WorkModeling>(
                 new HierarchicalLifetimeManager());
             return currentContainer;
         }

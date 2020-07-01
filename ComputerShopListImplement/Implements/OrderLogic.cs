@@ -1,4 +1,5 @@
 ﻿using ComputerShopBusinessLogic.BindingModels;
+using ComputerShopBusinessLogic.Enums;
 using ComputerShopBusinessLogic.Interfaces;
 using ComputerShopBusinessLogic.ViewModels;
 using ComputerShopListImplement.Models;
@@ -62,14 +63,16 @@ namespace ComputerShopListImplement.Implements
             List<OrderViewModel> result = new List<OrderViewModel>();
             foreach (var order in source.Orders)
             {
-                if (model != null)
-                {
-                    if (order.Id == model.Id)
-                    {
-                        result.Add(CreateViewModel(order));
-                        break;
-                    }
-                    continue;
+                if ((model != null) && (order.Id == model.Id) ||
+                    (model.DateFrom.HasValue) && (model.DateTo.HasValue) && 
+                    (order.DateCreate >= model.DateFrom) && (order.DateCreate <= model.DateTo) ||
+                    (model.ClientId.HasValue) && (order.ClientId == model.ClientId) ||
+                    (model.AnyFreeOrders.HasValue) && (model.AnyFreeOrders.Value) ||
+                    (model.ImplementerId.HasValue) && (order.ImplementerId == model.ImplementerId) &&
+                    (order.Status == OrderStatus.Выполняется))
+                {                    
+                    result.Add(CreateViewModel(order));
+                    break;                    
                 }
                 result.Add(CreateViewModel(order));
             }
@@ -78,8 +81,9 @@ namespace ComputerShopListImplement.Implements
         private Order CreateModel(OrderBindingModel model, Order order)
         {
             order.Count = model.Count;
-            order.ClientId = model.ClientId;
+            order.ClientId = model.ClientId.Value;
             order.DateCreate = model.DateCreate;
+            order.ImplementerId = (int)model.ImplementerId;
             order.DateImplement = model.DateImplement;
             order.AssemblyId = model.AssemblyId;
             order.Status = model.Status;
@@ -109,7 +113,9 @@ namespace ComputerShopListImplement.Implements
                 AssemblyName = assemblyName,
                 AssemblyId = order.AssemblyId,
                 Status = order.Status,
-                Sum = order.Sum
+                Sum = order.Sum,
+                ImplementerId = order.ImplementerId,
+                ImplementerFIO = source.Implementers.FirstOrDefault(i => i.Id == order.ImplementerId)?.FIO,
             };
         }
     }

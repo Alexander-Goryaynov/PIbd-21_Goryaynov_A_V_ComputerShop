@@ -1,4 +1,5 @@
 ﻿using ComputerShopBusinessLogic.BindingModels;
+using ComputerShopBusinessLogic.Enums;
 using ComputerShopBusinessLogic.Interfaces;
 using ComputerShopBusinessLogic.ViewModels;
 using ComputerShopFileImplement.Models;
@@ -12,6 +13,7 @@ namespace ComputerShopFileImplement.Implements
     public class OrderLogic : IOrderLogic
     {
         private readonly FileDataListSingleton source;
+
         public OrderLogic()
         {
             source = FileDataListSingleton.GetInstance();
@@ -25,7 +27,6 @@ namespace ComputerShopFileImplement.Implements
                 order = source.Orders.FirstOrDefault(rec => rec.Id == model.Id);
                 if (order == null)
                     throw new Exception("Элемент не найден");
-
             }
             else
             {
@@ -34,20 +35,21 @@ namespace ComputerShopFileImplement.Implements
                 source.Orders.Add(order);
             }
             order.AssemblyId = model.AssemblyId;
+            order.ClientId = model.ClientId.Value;
             order.Count = model.Count;
             order.DateCreate = model.DateCreate;
+            order.ImplementerId = model.ImplementerId;
             order.DateImplement = model.DateImplement;
             order.Status = model.Status;
             order.Sum = model.Sum;
-            order.ClientId = model.ClientId;
         }
 
         public void Delete(OrderBindingModel model)
         {
-            var element = source.Orders.FirstOrDefault(rec => rec.Id == model.Id.Value);
-            if (element != null)
+            Order order = source.Orders.FirstOrDefault(rec => rec.Id == model.Id);
+            if (order != null)
             {
-                source.Orders.Remove(element);
+                source.Orders.Remove(order);
             }
             else
             {
@@ -58,24 +60,34 @@ namespace ComputerShopFileImplement.Implements
         public List<OrderViewModel> Read(OrderBindingModel model)
         {
             return source.Orders
-            .Where(rec => model == null || (rec.Id == model.Id && model.Id.HasValue) ||
-            (model.DateFrom.HasValue && model.DateTo.HasValue && rec.DateCreate >=
-            model.DateFrom && rec.DateCreate <= model.DateTo) ||
-            (rec.ClientId == model.ClientId))
-            .Select(rec => new OrderViewModel
-            {
-                Id = rec.Id,
-                AssemblyId = rec.AssemblyId,
-                ClientId = rec.ClientId,
-                DateCreate = rec.DateCreate,
-                DateImplement = rec.DateImplement,
-                Status = rec.Status,
-                Count = rec.Count,
-                Sum = rec.Sum,
-                ClientFIO = source.Clients.FirstOrDefault(recC => recC.Id == rec.ClientId)?.FIO,
-                AssemblyName = source.Assemblies.FirstOrDefault(recA => 
-                    recA.Id == rec.AssemblyId)?.AssemblyName
-             }).ToList();
+                .Where(rec => model == null ||
+                model.Id.HasValue && rec.Id == model.Id &&
+                rec.ClientId == model.ClientId ||
+                (model.DateTo.HasValue && model.DateFrom.HasValue &&
+                rec.DateCreate >= model.DateFrom &&
+                rec.DateCreate <= model.DateTo) ||
+                (model.ClientId.HasValue &&
+                rec.ClientId == model.ClientId) ||
+                (model.AnyFreeOrders.HasValue && model.AnyFreeOrders.Value &&
+                !rec.ImplementerId.HasValue) ||
+                (model.ImplementerId.HasValue &&
+                rec.ImplementerId == model.ImplementerId.Value &&
+                rec.Status == OrderStatus.Выполняется))
+                .Select(rec => new OrderViewModel
+                {
+                    Id = rec.Id,
+                    AssemblyId = rec.AssemblyId,
+                    AssemblyName = source.Assemblies.FirstOrDefault(r => r.Id == rec.AssemblyId)?.AssemblyName,
+                    ClientFIO = source.Clients.FirstOrDefault(recC => recC.Id == rec.ClientId)?.FIO,
+                    ClientId = rec.ClientId,
+                    ImplementerId = rec.ImplementerId,
+                    ImplementerFIO = source.Implementers.FirstOrDefault(x => x.Id == rec.ImplementerId)?.FIO,
+                    Count = rec.Count,
+                    DateCreate = rec.DateCreate,
+                    DateImplement = rec.DateImplement,
+                    Status = rec.Status,
+                    Sum = rec.Sum
+                }).ToList();
         }
     }
 }
