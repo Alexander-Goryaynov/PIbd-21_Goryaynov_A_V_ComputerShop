@@ -22,7 +22,7 @@ namespace ComputerShopListImplement.Implements
             {
                 if (client.Email == model.Email && client.Id != model.Id)
                 {
-                    throw new Exception("Уже есть клиент с таким именем");
+                    throw new Exception("Уже есть клиент с такой почтой");
                 }
                 if (!model.Id.HasValue && client.Id >= tempClient.Id)
                 {

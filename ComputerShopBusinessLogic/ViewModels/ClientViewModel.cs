@@ -15,10 +15,11 @@ namespace ComputerShopBusinessLogic.ViewModels
         public string FIO { get; set; }
         [DataMember]
         [DisplayName("E-mail")]
+        [Column(title: "E-mail", gridViewAutoSize: GridViewAutoSize.Fill)]
         public string Email { get; set; }
         [DisplayName("Пароль")]
         [DataMember]
         public string Password { get; set; }
-        public override List<string> Properties() => new List<string> {"Id", "FIO" };
+        public override List<string> Properties() => new List<string> {"Id", "FIO", "Email" };
     }
 }

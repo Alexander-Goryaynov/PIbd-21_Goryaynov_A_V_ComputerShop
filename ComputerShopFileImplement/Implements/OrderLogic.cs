@@ -61,8 +61,7 @@ namespace ComputerShopFileImplement.Implements
         {
             return source.Orders
                 .Where(rec => model == null ||
-                model.Id.HasValue && rec.Id == model.Id &&
-                rec.ClientId == model.ClientId ||
+                model.Id.HasValue && rec.Id == model.Id ||
                 (model.DateTo.HasValue && model.DateFrom.HasValue &&
                 rec.DateCreate >= model.DateFrom &&
                 rec.DateCreate <= model.DateTo) ||

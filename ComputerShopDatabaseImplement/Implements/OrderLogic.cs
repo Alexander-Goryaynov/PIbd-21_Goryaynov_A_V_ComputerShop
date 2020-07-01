@@ -78,12 +78,14 @@ namespace ComputerShopDatabaseImplement.Implements
             {
                 return context.Orders
                     .Where(rec => model == null || rec.Id == model.Id || 
-                    (rec.DateCreate >= model.DateFrom) && (rec.DateCreate <= model.DateTo) ||
+                    (model.DateFrom.HasValue && model.DateTo.HasValue &&
+                    rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo) ||
                     (model.ClientId == rec.ClientId) || (model.AnyFreeOrders.HasValue &&
                     model.AnyFreeOrders.Value && !rec.ImplementerId.HasValue) ||
                     (model.ImplementerId.HasValue && rec.ImplementerId == model.ImplementerId.Value &&
                     rec.Status == OrderStatus.Выполняется))
-                    .Include(order => order.Assembly) 
+                    .Include(order => order.Assembly)
+                    .Include(order => order.Client)
                     .Include(rec => rec.Implementer)
                     .Select(rec => new OrderViewModel()
                     {

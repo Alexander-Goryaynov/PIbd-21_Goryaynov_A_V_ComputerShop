@@ -63,16 +63,38 @@ namespace ComputerShopListImplement.Implements
             List<OrderViewModel> result = new List<OrderViewModel>();
             foreach (var order in source.Orders)
             {
-                if ((model != null) && (order.Id == model.Id) ||
-                    (model.DateFrom.HasValue) && (model.DateTo.HasValue) && 
-                    (order.DateCreate >= model.DateFrom) && (order.DateCreate <= model.DateTo) ||
-                    (model.ClientId.HasValue) && (order.ClientId == model.ClientId) ||
-                    (model.AnyFreeOrders.HasValue) && (model.AnyFreeOrders.Value) ||
-                    (model.ImplementerId.HasValue) && (order.ImplementerId == model.ImplementerId) &&
-                    (order.Status == OrderStatus.Выполняется))
-                {                    
-                    result.Add(CreateViewModel(order));
-                    break;                    
+                if (model != null)
+                {
+                    if (order.Id == model.Id)
+                    {
+                        if (model.DateFrom.HasValue && model.DateTo.HasValue &&
+                                order.DateCreate >= model.DateFrom &&
+                                order.DateCreate <= model.DateTo)
+                        {
+                            result.Add(CreateViewModel(order));
+                            continue;
+                        }
+                        if (model.ClientId == order.ClientId)
+                        {
+                            result.Add(CreateViewModel(order));
+                            continue;
+                        }
+                        if (model.ImplementerId.HasValue &&
+                            order.ImplementerId == model.ImplementerId &&
+                            order.Status == OrderStatus.Выполняется)
+                        {
+                            result.Add(CreateViewModel(order));
+                            continue;
+                        }
+                        if (model.AnyFreeOrders.HasValue && model.AnyFreeOrders.Value)
+                        {
+                            result.Add(CreateViewModel(order));
+                            continue;
+                        }
+                        result.Add(CreateViewModel(order));
+                        break;
+                    }
+                    continue;
                 }
                 result.Add(CreateViewModel(order));
             }
