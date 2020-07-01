@@ -34,7 +34,6 @@ namespace ComputerShopDatabaseImplement.Implements
                 element.AssemblyId = model.AssemblyId == 0 ? element.AssemblyId : model.AssemblyId;
                 element.ClientId = model.ClientId.Value;
                 element.ImplementerId = model.ImplementerId;
-                element.ImplementerFIO = model.ImplementerFIO;
                 element.Count = model.Count;
                 element.Sum = model.Sum;
                 element.Status = model.Status;
@@ -81,7 +80,7 @@ namespace ComputerShopDatabaseImplement.Implements
                     .Where(rec => model == null || rec.Id == model.Id || 
                     (rec.DateCreate >= model.DateFrom) && (rec.DateCreate <= model.DateTo) ||
                     (model.ClientId == rec.ClientId) || (model.AnyFreeOrders.HasValue &&
-                    model.AnyFreeOrders.Value && !(rec.ImplementerFIO != null)) ||
+                    model.AnyFreeOrders.Value && !rec.ImplementerId.HasValue) ||
                     (model.ImplementerId.HasValue && rec.ImplementerId == model.ImplementerId.Value &&
                     rec.Status == OrderStatus.Выполняется))
                     .Include(order => order.Assembly) 
@@ -99,8 +98,7 @@ namespace ComputerShopDatabaseImplement.Implements
                         Status = rec.Status,
                         Sum = rec.Sum,
                         ImplementerId = rec.ImplementerId,
-                        ImplementerFIO = !string.IsNullOrEmpty(rec.ImplementerFIO) ?
-                                rec.ImplementerFIO : string.Empty,
+                        ImplementerFIO = rec.Implementer.FIO
                     }).ToList();
             }
         }

@@ -4,14 +4,16 @@ using ComputerShopDatabaseImplement;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ComputerShopDatabaseImplement.Migrations
 {
     [DbContext(typeof(ComputerShopDatabase))]
-    partial class ComputerShopDatabaseModelSnapshot : ModelSnapshot
+    [Migration("20200701024821_Lab6ClassFixedTwo")]
+    partial class Lab6ClassFixedTwo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,33 +126,6 @@ namespace ComputerShopDatabaseImplement.Migrations
                     b.ToTable("Implementers");
                 });
 
-            modelBuilder.Entity("ComputerShopDatabaseImplement.Models.MessageInfo", b =>
-                {
-                    b.Property<string>("MessageId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Body")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ClientId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateDelivery")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("SenderName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Subject")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MessageId");
-
-                    b.HasIndex("ClientId");
-
-                    b.ToTable("MessageInfos");
-                });
-
             modelBuilder.Entity("ComputerShopDatabaseImplement.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -206,13 +181,6 @@ namespace ComputerShopDatabaseImplement.Migrations
                         .HasForeignKey("DetailId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ComputerShopDatabaseImplement.Models.MessageInfo", b =>
-                {
-                    b.HasOne("ComputerShopDatabaseImplement.Models.Client", "Client")
-                        .WithMany("MessageInfos")
-                        .HasForeignKey("ClientId");
                 });
 
             modelBuilder.Entity("ComputerShopDatabaseImplement.Models.Order", b =>
