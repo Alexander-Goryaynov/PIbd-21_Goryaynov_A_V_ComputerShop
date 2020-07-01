@@ -26,6 +26,7 @@ namespace ComputerShopClientView
                     APIClient.GetRequest<List<MessageInfoViewModel>>($"api/client/getmessages?clientid={Program.Client.Id}");
                 dataGridViewClientMessages.Columns[0].Visible = false;
                 dataGridViewClientMessages.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataGridViewClientMessages.Columns[5].Visible = false;
             }
             catch (Exception)
             {
