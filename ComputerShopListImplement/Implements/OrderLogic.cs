@@ -83,6 +83,7 @@ namespace ComputerShopListImplement.Implements
             order.Count = model.Count;
             order.ClientId = model.ClientId.Value;
             order.DateCreate = model.DateCreate;
+            order.ImplementerId = (int)model.ImplementerId;
             order.DateImplement = model.DateImplement;
             order.AssemblyId = model.AssemblyId;
             order.Status = model.Status;
@@ -112,7 +113,9 @@ namespace ComputerShopListImplement.Implements
                 AssemblyName = assemblyName,
                 AssemblyId = order.AssemblyId,
                 Status = order.Status,
-                Sum = order.Sum
+                Sum = order.Sum,
+                ImplementerId = order.ImplementerId,
+                ImplementerFIO = source.Implementers.FirstOrDefault(i => i.Id == order.ImplementerId)?.FIO,
             };
         }
     }

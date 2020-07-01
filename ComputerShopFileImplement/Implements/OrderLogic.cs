@@ -38,7 +38,6 @@ namespace ComputerShopFileImplement.Implements
             order.ClientId = model.ClientId.Value;
             order.Count = model.Count;
             order.DateCreate = model.DateCreate;
-            order.ImplementerFIO = model.ImplementerFIO;
             order.ImplementerId = model.ImplementerId;
             order.DateImplement = model.DateImplement;
             order.Status = model.Status;
@@ -70,7 +69,7 @@ namespace ComputerShopFileImplement.Implements
                 (model.ClientId.HasValue &&
                 rec.ClientId == model.ClientId) ||
                 (model.AnyFreeOrders.HasValue && model.AnyFreeOrders.Value &&
-                !(rec.ImplementerFIO != null)) ||
+                !rec.ImplementerId.HasValue) ||
                 (model.ImplementerId.HasValue &&
                 rec.ImplementerId == model.ImplementerId.Value &&
                 rec.Status == OrderStatus.Выполняется))
@@ -78,11 +77,11 @@ namespace ComputerShopFileImplement.Implements
                 {
                     Id = rec.Id,
                     AssemblyId = rec.AssemblyId,
-                    AssemblyName = source.Assemblies.FirstOrDefault((r) => r.Id == rec.AssemblyId).AssemblyName,
+                    AssemblyName = source.Assemblies.FirstOrDefault(r => r.Id == rec.AssemblyId)?.AssemblyName,
                     ClientFIO = source.Clients.FirstOrDefault(recC => recC.Id == rec.ClientId)?.FIO,
                     ClientId = rec.ClientId,
                     ImplementerId = rec.ImplementerId,
-                    ImplementerFIO = (!string.IsNullOrEmpty(rec.ImplementerFIO)) ? rec.ImplementerFIO : string.Empty,
+                    ImplementerFIO = source.Implementers.FirstOrDefault(x => x.Id == rec.ImplementerId)?.FIO,
                     Count = rec.Count,
                     DateCreate = rec.DateCreate,
                     DateImplement = rec.DateImplement,

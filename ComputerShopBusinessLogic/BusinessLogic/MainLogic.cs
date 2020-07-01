@@ -56,8 +56,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                     Status = OrderStatus.Выполняется,
                     ClientId = order.ClientId,
                     ClientFIO = order.ClientFIO,
-                    ImplementerId = model.ImplementerId,
-                    ImplementerFIO = model.ImplementerFIO
+                    ImplementerId = model.ImplementerId
                 });
             }
         }
@@ -83,8 +82,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 Status = OrderStatus.Готов,
                 ClientId = order.ClientId,
                 ClientFIO = order.ClientFIO,
-                ImplementerId = order.ImplementerId,
-                ImplementerFIO = order.ImplementerFIO
+                ImplementerId = order.ImplementerId
             });
         }
         public void PayOrder(ChangeStatusBindingModel model)
@@ -109,8 +107,7 @@ namespace ComputerShopBusinessLogic.BusinessLogic
                 Status = OrderStatus.Оплачен,
                 ClientId = order.ClientId,
                 ClientFIO = order.ClientFIO,
-                ImplementerId = order.ImplementerId,
-                ImplementerFIO = order.ImplementerFIO
+                ImplementerId = order.ImplementerId
             });
         }
     }
