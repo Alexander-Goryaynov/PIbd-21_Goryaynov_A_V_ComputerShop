@@ -4,14 +4,16 @@ using ComputerShopDatabaseImplement;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ComputerShopDatabaseImplement.Migrations
 {
     [DbContext(typeof(ComputerShopDatabase))]
-    partial class ComputerShopDatabaseModelSnapshot : ModelSnapshot
+    [Migration("20200610182107_Lab7ClassFixed")]
+    partial class Lab7ClassFixed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -172,6 +174,9 @@ namespace ComputerShopDatabaseImplement.Migrations
 
                     b.Property<DateTime?>("DateImplement")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ImplementerFIO")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ImplementerId")
                         .HasColumnType("int");

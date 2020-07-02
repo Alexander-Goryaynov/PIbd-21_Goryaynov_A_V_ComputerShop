@@ -31,6 +31,12 @@ namespace ComputerShopClientView
             }
         }
 
+        private void ShowMessagesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new FormMessages();
+            form.ShowDialog();
+        }
+
         private void RefreshOrderListToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LoadList();
@@ -47,9 +53,10 @@ namespace ComputerShopClientView
                 dataGridView.Columns[2].Visible = false;
                 dataGridView.Columns[10].Visible = false;
                 dataGridView.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dataGridView.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 dataGridView.Columns[3].FillWeight = 3;
-                dataGridView.Columns[4].FillWeight = 1;
+                dataGridView.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dataGridView.Columns[7].Visible = false;
+                dataGridView.Columns[11].Visible = false;
             }
             catch (Exception ex)
             {

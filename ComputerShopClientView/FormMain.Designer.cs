@@ -32,6 +32,7 @@
             this.updateDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CreateOrderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshOrderListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkEmailToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
@@ -42,12 +43,20 @@
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.updateDataToolStripMenuItem,
             this.CreateOrderToolStripMenuItem,
-            this.refreshOrderListToolStripMenuItem});
+            this.refreshOrderListToolStripMenuItem,
+            this.checkEmailToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(800, 24);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
+            //
+            // checkEmailToolStripMenuItem
+            //
+            this.checkEmailToolStripMenuItem.Name = "checkEmailToolStripMenuItem";
+            this.checkEmailToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.checkEmailToolStripMenuItem.Text = "Просмотреть сообщения";
+            this.checkEmailToolStripMenuItem.Click += ShowMessagesToolStripMenuItem_Click;
             // 
             // updateDataToolStripMenuItem
             // 
@@ -103,6 +112,7 @@
         private System.Windows.Forms.ToolStripMenuItem updateDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CreateOrderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem refreshOrderListToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkEmailToolStripMenuItem;
         private System.Windows.Forms.DataGridView dataGridView;
     }
 }

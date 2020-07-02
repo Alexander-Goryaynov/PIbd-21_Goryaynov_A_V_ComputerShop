@@ -15,18 +15,15 @@ namespace ComputerShopDatabaseImplement.Implements
         {
             using (var context = new ComputerShopDatabase())
             {
-                Client client = context.Clients.FirstOrDefault(rec =>
-                    rec.Email == model.Email && rec.Id != model.Id);
+                Client client = context.Clients.FirstOrDefault(c => c.Email == model.Email && c.Id != model.Id);
                 if (client != null)
-                {
-                    throw new Exception("Уже есть клиент с такой почтой");
-                }
+                    throw new Exception("Такой клиент уже есть!");
                 if (model.Id.HasValue)
                 {
                     client = context.Clients.FirstOrDefault(rec => rec.Id == model.Id);
                     if (client == null)
                     {
-                        throw new Exception("Элемент не найден");
+                        throw new Exception("Клиент не найден");
                     }
                 }
                 else
@@ -38,8 +35,9 @@ namespace ComputerShopDatabaseImplement.Implements
                 client.Email = model.Email;
                 client.Password = model.Password;
                 context.SaveChanges();
-            }        
+            }
         }
+
         public void Delete(ClientBindingModel model)
         {
             using (var context = new ComputerShopDatabase())
@@ -52,17 +50,19 @@ namespace ComputerShopDatabaseImplement.Implements
                 }
                 else
                 {
-                    throw new Exception("Элемент не найден");
+                    throw new Exception("Клиент не найден");
                 }
             }
         }
+
         public List<ClientViewModel> Read(ClientBindingModel model)
         {
             using (var context = new ComputerShopDatabase())
             {
                 return context.Clients
-                .Where(rec => (model == null) || (rec.Id == model.Id) || 
-                        (rec.Email.Equals(model.Email) && (rec.Password.Equals(model.Password))))
+                .Where(rec => model == null ||
+                    rec.Id == model.Id ||
+                    rec.Email== model.Email && rec.Password == model.Password)
                 .Select(rec => new ClientViewModel
                 {
                     Id = rec.Id,
