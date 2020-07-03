@@ -32,21 +32,22 @@
             this.справочникиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.деталиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сборкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.складыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.warehousesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clientsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.assembliesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderDatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.assemblyDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.пополнитьСкладToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.detailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.warehouseDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.listOfWarehouses = new System.Windows.Forms.ToolStripMenuItem();
+            this.FillWarehouseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.buttonCreateOrder = new System.Windows.Forms.Button();
-            this.buttonTakeOrderInWork = new System.Windows.Forms.Button();
-            this.buttonOrderReady = new System.Windows.Forms.Button();
-            this.buttonPayOrder = new System.Windows.Forms.Button();
-            this.buttonRef = new System.Windows.Forms.Button();
-            this.списокСкладовToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.деталиПоСкладамToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.деталиПоСкладамPdfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ButtonСreateOrder = new System.Windows.Forms.Button();
+            this.ButtonTakeOrderInWork = new System.Windows.Forms.Button();
+            this.ButtonOrderReady = new System.Windows.Forms.Button();
+            this.ButtonPayOrder = new System.Windows.Forms.Button();
+            this.ButtonRef = new System.Windows.Forms.Button();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
@@ -56,19 +57,20 @@
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.справочникиToolStripMenuItem,
             this.reportsToolStripMenuItem,
-            this.пополнитьСкладToolStripMenuItem});
+            this.FillWarehouseToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip.Size = new System.Drawing.Size(906, 24);
             this.menuStrip.TabIndex = 0;
-            this.menuStrip.Text = "menuStrip";
+            this.menuStrip.Text = "menuStrip1";
             // 
             // справочникиToolStripMenuItem
             // 
             this.справочникиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.деталиToolStripMenuItem,
             this.сборкиToolStripMenuItem,
-            this.складыToolStripMenuItem});
+            this.warehousesToolStripMenuItem,
+            this.clientsToolStripMenuItem});
             this.справочникиToolStripMenuItem.Name = "справочникиToolStripMenuItem";
             this.справочникиToolStripMenuItem.Size = new System.Drawing.Size(94, 20);
             this.справочникиToolStripMenuItem.Text = "Справочники";
@@ -76,23 +78,30 @@
             // деталиToolStripMenuItem
             // 
             this.деталиToolStripMenuItem.Name = "деталиToolStripMenuItem";
-            this.деталиToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.деталиToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.деталиToolStripMenuItem.Text = "Детали";
             this.деталиToolStripMenuItem.Click += new System.EventHandler(this.деталиToolStripMenuItem_Click);
             // 
             // сборкиToolStripMenuItem
             // 
             this.сборкиToolStripMenuItem.Name = "сборкиToolStripMenuItem";
-            this.сборкиToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.сборкиToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.сборкиToolStripMenuItem.Text = "Сборки";
             this.сборкиToolStripMenuItem.Click += new System.EventHandler(this.сборкиToolStripMenuItem_Click);
             // 
-            // складыToolStripMenuItem
+            // warehousesToolStripMenuItem
             // 
-            this.складыToolStripMenuItem.Name = "складыToolStripMenuItem";
-            this.складыToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
-            this.складыToolStripMenuItem.Text = "Склады";
-            this.складыToolStripMenuItem.Click += new System.EventHandler(this.складыToolStripMenuItem_Click);
+            this.warehousesToolStripMenuItem.Name = "warehousesToolStripMenuItem";
+            this.warehousesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.warehousesToolStripMenuItem.Text = "Склады";
+            this.warehousesToolStripMenuItem.Click += new System.EventHandler(this.складыToolStripMenuItem_Click);
+            // 
+            // clientsToolStripMenuItem
+            // 
+            this.clientsToolStripMenuItem.Name = "clientsToolStripMenuItem";
+            this.clientsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.clientsToolStripMenuItem.Text = "Клиенты";
+            this.clientsToolStripMenuItem.Click += new System.EventHandler(this.клиентыToolStripMenuItem_Click);
             // 
             // reportsToolStripMenuItem
             // 
@@ -100,9 +109,9 @@
             this.assembliesToolStripMenuItem,
             this.orderDatesToolStripMenuItem,
             this.assemblyDetailsToolStripMenuItem,
-            this.списокСкладовToolStripMenuItem,
-            this.деталиПоСкладамToolStripMenuItem,
-            this.деталиПоСкладамPdfToolStripMenuItem});
+            this.detailsToolStripMenuItem,
+            this.warehouseDetailsToolStripMenuItem,
+            this.listOfWarehouses});
             this.reportsToolStripMenuItem.Name = "reportsToolStripMenuItem";
             this.reportsToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
             this.reportsToolStripMenuItem.Text = "Отчеты";
@@ -110,128 +119,125 @@
             // assembliesToolStripMenuItem
             // 
             this.assembliesToolStripMenuItem.Name = "assembliesToolStripMenuItem";
-            this.assembliesToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.assembliesToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.assembliesToolStripMenuItem.Text = "Список сборок";
-            this.assembliesToolStripMenuItem.Click += new System.EventHandler(this.detailsToolStripMenuItem_Click);
+            this.assembliesToolStripMenuItem.Click += new System.EventHandler(this.сборкиToolStripMenuItem_Click);
             // 
             // orderDatesToolStripMenuItem
             // 
             this.orderDatesToolStripMenuItem.Name = "orderDatesToolStripMenuItem";
-            this.orderDatesToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.orderDatesToolStripMenuItem.Text = "Заказы по датам";
+            this.orderDatesToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.orderDatesToolStripMenuItem.Text = "Список заказов";
             this.orderDatesToolStripMenuItem.Click += new System.EventHandler(this.orderDatesToolStripMenuItem_Click);
             // 
             // assemblyDetailsToolStripMenuItem
             // 
             this.assemblyDetailsToolStripMenuItem.Name = "assemblyDetailsToolStripMenuItem";
-            this.assemblyDetailsToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.assemblyDetailsToolStripMenuItem.Text = "Детали сборок";
+            this.assemblyDetailsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.assemblyDetailsToolStripMenuItem.Text = "Список деталей заказов";
             this.assemblyDetailsToolStripMenuItem.Click += new System.EventHandler(this.assemblyDetailsToolStripMenuItem_Click);
             // 
-            // пополнитьСкладToolStripMenuItem
+            // detailsToolStripMenuItem
             // 
-            this.пополнитьСкладToolStripMenuItem.Name = "пополнитьСкладToolStripMenuItem";
-            this.пополнитьСкладToolStripMenuItem.Size = new System.Drawing.Size(115, 20);
-            this.пополнитьСкладToolStripMenuItem.Text = "Пополнить склад";
-            this.пополнитьСкладToolStripMenuItem.Click += new System.EventHandler(this.пополнитьСкладToolStripMenuItem_Click);
+            this.detailsToolStripMenuItem.Name = "detailsToolStripMenuItem";
+            this.detailsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.detailsToolStripMenuItem.Text = "Список деталей";
+            this.detailsToolStripMenuItem.Click += new System.EventHandler(this.detailsToolStripMenuItem_Click);
+            // 
+            // warehouseDetailsToolStripMenuItem
+            // 
+            this.warehouseDetailsToolStripMenuItem.Name = "warehouseDetailsToolStripMenuItem";
+            this.warehouseDetailsToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.warehouseDetailsToolStripMenuItem.Text = "Список деталей по складам";
+            this.warehouseDetailsToolStripMenuItem.Click += new System.EventHandler(this.деталиПоСкладамToolStripMenuItem_Click);
+            // 
+            // listOfWarehouses
+            // 
+            this.listOfWarehouses.Name = "listOfWarehouses";
+            this.listOfWarehouses.Size = new System.Drawing.Size(227, 22);
+            this.listOfWarehouses.Text = "Список складов";
+            this.listOfWarehouses.Click += new System.EventHandler(this.списокСкладовToolStripMenuItem_Click);
+            // 
+            // FillWarehouseToolStripMenuItem
+            // 
+            this.FillWarehouseToolStripMenuItem.Name = "FillWarehouseToolStripMenuItem";
+            this.FillWarehouseToolStripMenuItem.Size = new System.Drawing.Size(115, 20);
+            this.FillWarehouseToolStripMenuItem.Text = "Пополнить склад";
+            this.FillWarehouseToolStripMenuItem.Click += new System.EventHandler(this.пополнитьСкладToolStripMenuItem_Click);
             // 
             // dataGridView
             // 
-            this.dataGridView.AllowUserToAddRows = false;
-            this.dataGridView.AllowUserToDeleteRows = false;
+            this.dataGridView.BackgroundColor = System.Drawing.SystemColors.HighlightText;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.Location = new System.Drawing.Point(0, 27);
+            this.dataGridView.Location = new System.Drawing.Point(2, 23);
             this.dataGridView.Name = "dataGridView";
-            this.dataGridView.ReadOnly = true;
-            this.dataGridView.Size = new System.Drawing.Size(633, 421);
+            this.dataGridView.Size = new System.Drawing.Size(738, 307);
             this.dataGridView.TabIndex = 1;
             // 
-            // buttonCreateOrder
+            // ButtonСreateOrder
             // 
-            this.buttonCreateOrder.Location = new System.Drawing.Point(646, 43);
-            this.buttonCreateOrder.Name = "buttonCreateOrder";
-            this.buttonCreateOrder.Size = new System.Drawing.Size(142, 29);
-            this.buttonCreateOrder.TabIndex = 2;
-            this.buttonCreateOrder.Text = "Создать заказ";
-            this.buttonCreateOrder.UseVisualStyleBackColor = true;
-            this.buttonCreateOrder.Click += new System.EventHandler(this.buttonCreateOrder_Click);
+            this.ButtonСreateOrder.Location = new System.Drawing.Point(757, 45);
+            this.ButtonСreateOrder.Name = "ButtonСreateOrder";
+            this.ButtonСreateOrder.Size = new System.Drawing.Size(126, 29);
+            this.ButtonСreateOrder.TabIndex = 2;
+            this.ButtonСreateOrder.Text = "Создать заказ";
+            this.ButtonСreateOrder.UseVisualStyleBackColor = true;
+            this.ButtonСreateOrder.Click += new System.EventHandler(this.buttonCreateOrder_Click);
             // 
-            // buttonTakeOrderInWork
+            // ButtonTakeOrderInWork
             // 
-            this.buttonTakeOrderInWork.Location = new System.Drawing.Point(646, 91);
-            this.buttonTakeOrderInWork.Name = "buttonTakeOrderInWork";
-            this.buttonTakeOrderInWork.Size = new System.Drawing.Size(141, 29);
-            this.buttonTakeOrderInWork.TabIndex = 3;
-            this.buttonTakeOrderInWork.Text = "Отдать на выполнение";
-            this.buttonTakeOrderInWork.UseVisualStyleBackColor = true;
-            this.buttonTakeOrderInWork.Click += new System.EventHandler(this.buttonTakeOrderInWork_Click);
+            this.ButtonTakeOrderInWork.Location = new System.Drawing.Point(757, 89);
+            this.ButtonTakeOrderInWork.Name = "ButtonTakeOrderInWork";
+            this.ButtonTakeOrderInWork.Size = new System.Drawing.Size(126, 40);
+            this.ButtonTakeOrderInWork.TabIndex = 3;
+            this.ButtonTakeOrderInWork.Text = "Отдать на выполнение";
+            this.ButtonTakeOrderInWork.UseVisualStyleBackColor = true;
+            this.ButtonTakeOrderInWork.Click += new System.EventHandler(this.buttonTakeOrderInWork_Click);
             // 
-            // buttonOrderReady
+            // ButtonOrderReady
             // 
-            this.buttonOrderReady.Location = new System.Drawing.Point(646, 138);
-            this.buttonOrderReady.Name = "buttonOrderReady";
-            this.buttonOrderReady.Size = new System.Drawing.Size(141, 28);
-            this.buttonOrderReady.TabIndex = 4;
-            this.buttonOrderReady.Text = "Заказ готов";
-            this.buttonOrderReady.UseVisualStyleBackColor = true;
-            this.buttonOrderReady.Click += new System.EventHandler(this.buttonOrderReady_Click);
+            this.ButtonOrderReady.Location = new System.Drawing.Point(757, 144);
+            this.ButtonOrderReady.Name = "ButtonOrderReady";
+            this.ButtonOrderReady.Size = new System.Drawing.Size(126, 29);
+            this.ButtonOrderReady.TabIndex = 4;
+            this.ButtonOrderReady.Text = "Заказ готов";
+            this.ButtonOrderReady.UseVisualStyleBackColor = true;
+            this.ButtonOrderReady.Click += new System.EventHandler(this.buttonOrderReady_Click);
             // 
-            // buttonPayOrder
+            // ButtonPayOrder
             // 
-            this.buttonPayOrder.Location = new System.Drawing.Point(649, 183);
-            this.buttonPayOrder.Name = "buttonPayOrder";
-            this.buttonPayOrder.Size = new System.Drawing.Size(139, 29);
-            this.buttonPayOrder.TabIndex = 5;
-            this.buttonPayOrder.Text = "Заказ оплачен";
-            this.buttonPayOrder.UseVisualStyleBackColor = true;
-            this.buttonPayOrder.Click += new System.EventHandler(this.buttonPayOrder_Click);
+            this.ButtonPayOrder.Location = new System.Drawing.Point(757, 189);
+            this.ButtonPayOrder.Name = "ButtonPayOrder";
+            this.ButtonPayOrder.Size = new System.Drawing.Size(126, 29);
+            this.ButtonPayOrder.TabIndex = 5;
+            this.ButtonPayOrder.Text = "Заказ оплачен";
+            this.ButtonPayOrder.UseVisualStyleBackColor = true;
+            this.ButtonPayOrder.Click += new System.EventHandler(this.buttonPayOrder_Click);
             // 
-            // buttonRef
+            // ButtonRef
             // 
-            this.buttonRef.Location = new System.Drawing.Point(649, 230);
-            this.buttonRef.Name = "buttonRef";
-            this.buttonRef.Size = new System.Drawing.Size(138, 27);
-            this.buttonRef.TabIndex = 6;
-            this.buttonRef.Text = "Обновить";
-            this.buttonRef.UseVisualStyleBackColor = true;
-            this.buttonRef.Click += new System.EventHandler(this.buttonRef_Click);
-            // 
-            // списокСкладовToolStripMenuItem
-            // 
-            this.списокСкладовToolStripMenuItem.Name = "списокСкладовToolStripMenuItem";
-            this.списокСкладовToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.списокСкладовToolStripMenuItem.Text = "Список складов";
-            this.списокСкладовToolStripMenuItem.Click += new System.EventHandler(this.списокСкладовToolStripMenuItem_Click);
-            // 
-            // деталиПоСкладамToolStripMenuItem
-            // 
-            this.деталиПоСкладамToolStripMenuItem.Name = "деталиПоСкладамToolStripMenuItem";
-            this.деталиПоСкладамToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.деталиПоСкладамToolStripMenuItem.Text = "Детали по складам";
-            this.деталиПоСкладамToolStripMenuItem.Click += new System.EventHandler(this.деталиПоСкладамToolStripMenuItem_Click);
-            // 
-            // деталиПоСкладамPdfToolStripMenuItem
-            // 
-            this.деталиПоСкладамPdfToolStripMenuItem.Name = "деталиПоСкладамPdfToolStripMenuItem";
-            this.деталиПоСкладамPdfToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.деталиПоСкладамPdfToolStripMenuItem.Text = "Детали по складам pdf";
-            this.деталиПоСкладамPdfToolStripMenuItem.Click += new System.EventHandler(this.деталиПоСкладамPdfToolStripMenuItem_Click);
+            this.ButtonRef.Location = new System.Drawing.Point(757, 238);
+            this.ButtonRef.Name = "ButtonRef";
+            this.ButtonRef.Size = new System.Drawing.Size(126, 29);
+            this.ButtonRef.TabIndex = 6;
+            this.ButtonRef.Text = "Обновить список";
+            this.ButtonRef.UseVisualStyleBackColor = true;
+            this.ButtonRef.Click += new System.EventHandler(this.buttonRef_Click);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.buttonRef);
-            this.Controls.Add(this.buttonPayOrder);
-            this.Controls.Add(this.buttonOrderReady);
-            this.Controls.Add(this.buttonTakeOrderInWork);
-            this.Controls.Add(this.buttonCreateOrder);
+            this.ClientSize = new System.Drawing.Size(906, 337);
+            this.Controls.Add(this.ButtonRef);
+            this.Controls.Add(this.ButtonPayOrder);
+            this.Controls.Add(this.ButtonOrderReady);
+            this.Controls.Add(this.ButtonTakeOrderInWork);
+            this.Controls.Add(this.ButtonСreateOrder);
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
             this.Name = "FormMain";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Компьютерный магазин";
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.menuStrip.ResumeLayout(false);
@@ -249,19 +255,20 @@
         private System.Windows.Forms.ToolStripMenuItem деталиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem сборкиToolStripMenuItem;
         private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.Button buttonCreateOrder;
-        private System.Windows.Forms.Button buttonTakeOrderInWork;
-        private System.Windows.Forms.Button buttonOrderReady;
-        private System.Windows.Forms.Button buttonPayOrder;
-        private System.Windows.Forms.Button buttonRef;
-        private System.Windows.Forms.ToolStripMenuItem складыToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem пополнитьСкладToolStripMenuItem;
+        private System.Windows.Forms.Button ButtonСreateOrder;
+        private System.Windows.Forms.Button ButtonTakeOrderInWork;
+        private System.Windows.Forms.Button ButtonOrderReady;
+        private System.Windows.Forms.Button ButtonPayOrder;
+        private System.Windows.Forms.Button ButtonRef;
         private System.Windows.Forms.ToolStripMenuItem reportsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem assembliesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem orderDatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem assemblyDetailsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem списокСкладовToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem деталиПоСкладамToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem деталиПоСкладамPdfToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clientsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem warehousesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem FillWarehouseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem detailsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem warehouseDetailsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem listOfWarehouses;
     }
 }

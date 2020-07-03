@@ -36,18 +36,18 @@ namespace ComputerShopListImplement.Implements
             });
         }
 
-        public void DelElement(int id)
+        public void DelElement(WarehouseBindingModel model)
         {
             for (int i = 0; i < source.WarehouseDetails.Count; ++i)
             {
-                if (source.WarehouseDetails[i].WarehouseId == id)
+                if (source.WarehouseDetails[i].WarehouseId == model.Id)
                 {
                     source.WarehouseDetails.RemoveAt(i--);
                 }
             }
             for (int i = 0; i < source.Warehouses.Count; ++i)
             {
-                if (source.Warehouses[i].Id == id)
+                if (source.Warehouses[i].Id == model.Id)
                 {
                     source.Warehouses.RemoveAt(i);
                     return;
@@ -56,9 +56,37 @@ namespace ComputerShopListImplement.Implements
             throw new Exception("Элемент не найден");
         }
 
-        public void DeleteFromWarehouse(int assemblyId, int count)
+        public void DeleteFromWarehouse(OrderViewModel model)
         {
-            throw new NotImplementedException();
+            var assemblyDetails = source.AssemblyDetails.Where(rec =>
+                rec.Id == model.AssemblyId).ToList();
+            foreach (var ad in assemblyDetails)
+            {
+                var warehouseDetails = source.WarehouseDetails.Where(rec =>
+                    rec.DetailId == ad.DetailId);
+                int sum = warehouseDetails.Sum(rec => rec.Count);
+                if (sum < ad.Count * model.Count)
+                {
+                    throw new Exception("Недостаточно деталей на складе");
+                }
+                else
+                {
+                    int left = ad.Count * model.Count;
+                    foreach (var wd in warehouseDetails)
+                    {
+                        if (wd.Count >= left)
+                        {
+                            wd.Count -= left;
+                            break;
+                        }
+                        else
+                        {
+                            left -= wd.Count;
+                            wd.Count = 0;
+                        }
+                    }
+                }
+            }
         }
 
         public WarehouseViewModel GetElement(int id)

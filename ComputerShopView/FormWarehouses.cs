@@ -1,4 +1,5 @@
-﻿using ComputerShopBusinessLogic.Interfaces;
+﻿using ComputerShopBusinessLogic.BindingModels;
+using ComputerShopBusinessLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -79,7 +80,7 @@ namespace ComputerShopView
                     int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        logic.DelElement(id);
+                        logic.DelElement(new WarehouseBindingModel { Id = id });
                     }
                     catch (Exception ex)
                     {

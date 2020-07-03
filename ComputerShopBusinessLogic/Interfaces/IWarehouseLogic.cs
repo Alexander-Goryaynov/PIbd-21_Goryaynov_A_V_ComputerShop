@@ -12,8 +12,8 @@ namespace ComputerShopBusinessLogic.Interfaces
         WarehouseViewModel GetElement(int id);
         void AddElement(WarehouseBindingModel model);
         void UpdElement(WarehouseBindingModel model);
-        void DelElement(int id);
+        void DelElement(WarehouseBindingModel model);
         void FillWarehouse(WarehouseDetailBindingModel model);
-        void DeleteFromWarehouse(int assemblyId, int count);
+        void DeleteFromWarehouse(OrderViewModel model);
     }
 }

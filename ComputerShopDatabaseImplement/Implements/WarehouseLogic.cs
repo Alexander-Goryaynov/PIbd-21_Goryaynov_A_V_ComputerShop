@@ -108,19 +108,32 @@ namespace ComputerShopDatabaseImplement.Implements
             }
         }
 
-        public void DelElement(int id)
+        public void DelElement(WarehouseBindingModel model)
         {
             using (var context = new ComputerShopDatabase())
             {
-                var elem = context.Warehouses.FirstOrDefault(x => x.Id == id);
-                if (elem != null)
+                using (var transaction = context.Database.BeginTransaction())
                 {
-                    context.Warehouses.Remove(elem);
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new Exception("Элемент не найден");
+                    try
+                    {
+                        context.WarehouseDetails.RemoveRange(context.WarehouseDetails.Where(rec => rec.WarehouseId == model.Id));
+                        Warehouse element = context.Warehouses.FirstOrDefault(rec => rec.Id == model.Id);
+                        if (element != null)
+                        {
+                            context.Warehouses.Remove(element);
+                            context.SaveChanges();
+                        }
+                        else
+                        {
+                            throw new Exception("Элемент не найден");
+                        }
+                        transaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
         }
@@ -147,7 +160,7 @@ namespace ComputerShopDatabaseImplement.Implements
             }
         }
 
-        public void DeleteFromWarehouse(int assemblyId, int assembliesCount)
+        public void DeleteFromWarehouse(OrderViewModel order)
         {
             using (var context = new ComputerShopDatabase())
             {
@@ -155,33 +168,37 @@ namespace ComputerShopDatabaseImplement.Implements
                 {
                     try
                     {
-                        var assemblyDetails = context.AssemblyDetails.Where(x => x.AssemblyId == assemblyId);
-                        if (assemblyDetails.Count() == 0) 
-                            return;
-                        foreach (var elem in assemblyDetails)
+                        var assemblyDetails = context.AssemblyDetails.Where(
+                            x => x.AssemblyId == order.AssemblyId).ToList();
+                        var warehouseDetails = context.WarehouseDetails.ToList();
+                        foreach (var detail in assemblyDetails)
                         {
-                            int left = elem.Count * assembliesCount;
-                            var warehouseDetails = context.WarehouseDetails.Where(x => x.DetailId == elem.DetailId);
-                            int available = warehouseDetails.Sum(x => x.Count);
-                            if (available < left) 
-                                throw new Exception("Недостаточно деталей на складе");
-                            foreach (var rec in warehouseDetails)
+                            var detailCount = detail.Count * order.Count;
+                            foreach (var wd in warehouseDetails)
                             {
-                                int toRemove = left > rec.Count ? rec.Count : left;
-                                rec.Count -= toRemove;
-                                left -= toRemove;
-                                if (left == 0) 
+                                if (wd.DetailId == detail.DetailId && wd.Count >= detailCount)
+                                {
+                                    wd.Count -= detailCount;
+                                    detailCount = 0;
+                                    context.SaveChanges();
                                     break;
+                                }
+                                else if (wd.DetailId == detail.DetailId && wd.Count < detailCount)
+                                {
+                                    detailCount -= wd.Count;
+                                    wd.Count = 0;
+                                    context.SaveChanges();
+                                }
                             }
+                            if (detailCount > 0)
+                                throw new Exception("Недостаточно деталей на складе");
                         }
-                        context.SaveChanges();
                         transaction.Commit();
-                        return;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         transaction.Rollback();
-                        throw ex;
+                        throw;
                     }
                 }
             }
