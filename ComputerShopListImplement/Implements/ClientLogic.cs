@@ -84,7 +84,12 @@ namespace ComputerShopListImplement.Implements
             {
                 if (model != null)
                 {
-                    if (client.Id == model.Id)
+                    if (model.Id.HasValue && client.Id == model.Id)
+                    {                        
+                        result.Add(CreateViewModel(client));
+                        break;                        
+                    }
+                    else if (client.Email == model.Email && client.Password == model.Password)
                     {
                         result.Add(CreateViewModel(client));
                         break;
