@@ -22,7 +22,7 @@ namespace ComputerShopListImplement.Implements
             {
                 if (client.Email == model.Email && client.Id != model.Id)
                 {
-                    throw new Exception("Уже есть клиент с таким именем");
+                    throw new Exception("Уже есть клиент с такой почтой");
                 }
                 if (!model.Id.HasValue && client.Id >= tempClient.Id)
                 {
@@ -84,7 +84,12 @@ namespace ComputerShopListImplement.Implements
             {
                 if (model != null)
                 {
-                    if (client.Id == model.Id)
+                    if (model.Id.HasValue && client.Id == model.Id)
+                    {                        
+                        result.Add(CreateViewModel(client));
+                        break;                        
+                    }
+                    else if (client.Email == model.Email && client.Password == model.Password)
                     {
                         result.Add(CreateViewModel(client));
                         break;

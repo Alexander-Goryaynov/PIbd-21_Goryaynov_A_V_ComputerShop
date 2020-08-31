@@ -34,9 +34,12 @@
             // 
             // dataGridViewMessages
             // 
+            this.dataGridViewMessages.AllowUserToAddRows = false;
+            this.dataGridViewMessages.AllowUserToDeleteRows = false;
             this.dataGridViewMessages.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewMessages.Location = new System.Drawing.Point(1, 3);
             this.dataGridViewMessages.Name = "dataGridViewMessages";
+            this.dataGridViewMessages.ReadOnly = true;
             this.dataGridViewMessages.Size = new System.Drawing.Size(497, 346);
             this.dataGridViewMessages.TabIndex = 0;
             // 

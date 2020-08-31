@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ComputerShopBusinessLogic.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
@@ -10,21 +11,27 @@ namespace ComputerShopBusinessLogic.ViewModels
     /// Сообщения, приходящие на почту
     /// </summary>
     [DataContract]
-    public class MessageInfoViewModel
+    public class MessageInfoViewModel : BaseViewModel
     {
         [DataMember]
         public string MessageId { get; set; }
+        [Column(title: "Отправитель", width: 100)]
         [DisplayName("Отправитель")]
         [DataMember]
         public string SenderName { get; set; }
+        [Column(title: "Дата письма", width: 100)]
         [DisplayName("Дата письма")]
         [DataMember]
         public DateTime DateDelivery { get; set; }
+        [Column(title: "Заголовок", gridViewAutoSize: GridViewAutoSize.Fill)]
         [DisplayName("Заголовок")]
         [DataMember]
         public string Subject { get; set; }
+        [Column(title: "Текст", gridViewAutoSize: GridViewAutoSize.Fill)]
         [DisplayName("Текст")]
         [DataMember]
         public string Body { get; set; }
+        public override List<string> Properties() => new List<string> { 
+            "SenderName", "DateDelivery", "Subject", "Body" };
     }    
 }

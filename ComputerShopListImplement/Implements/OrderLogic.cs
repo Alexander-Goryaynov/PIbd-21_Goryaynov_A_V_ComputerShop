@@ -63,16 +63,38 @@ namespace ComputerShopListImplement.Implements
             List<OrderViewModel> result = new List<OrderViewModel>();
             foreach (var order in source.Orders)
             {
-                if ((model != null) && (order.Id == model.Id) ||
-                    (model.DateFrom.HasValue) && (model.DateTo.HasValue) && 
-                    (order.DateCreate >= model.DateFrom) && (order.DateCreate <= model.DateTo) ||
-                    (model.ClientId.HasValue) && (order.ClientId == model.ClientId) ||
-                    (model.AnyFreeOrders.HasValue) && (model.AnyFreeOrders.Value) ||
-                    (model.ImplementerId.HasValue) && (order.ImplementerId == model.ImplementerId) &&
-                    (order.Status == OrderStatus.Выполняется))
-                {                    
-                    result.Add(CreateViewModel(order));
-                    break;                    
+                if (model != null)
+                {
+                    if (order.Id == model.Id)
+                    {
+                        if (model.DateFrom.HasValue && model.DateTo.HasValue &&
+                                order.DateCreate >= model.DateFrom &&
+                                order.DateCreate <= model.DateTo)
+                        {
+                            result.Add(CreateViewModel(order));
+                            continue;
+                        }
+                        if (model.ClientId == order.ClientId)
+                        {
+                            result.Add(CreateViewModel(order));
+                            continue;
+                        }
+                        if (model.ImplementerId.HasValue &&
+                            order.ImplementerId == model.ImplementerId &&
+                            order.Status == OrderStatus.Выполняется)
+                        {
+                            result.Add(CreateViewModel(order));
+                            continue;
+                        }
+                        if (model.AnyFreeOrders.HasValue && model.AnyFreeOrders.Value)
+                        {
+                            result.Add(CreateViewModel(order));
+                            continue;
+                        }
+                        result.Add(CreateViewModel(order));
+                        break;
+                    }
+                    continue;
                 }
                 result.Add(CreateViewModel(order));
             }
@@ -80,6 +102,38 @@ namespace ComputerShopListImplement.Implements
         }
         private Order CreateModel(OrderBindingModel model, Order order)
         {
+            Assembly assembly = null;
+            foreach (var a in source.Assemblies)
+            {
+                if (a.Id == model.AssemblyId)
+                {
+                    assembly = a;
+                    break;
+                }
+            }
+            Client client = null;
+            foreach (var c in source.Clients)
+            {
+                if (c.Id == model.ClientId)
+                {
+                    client = c;
+                    break;
+                }
+            }
+            Implementer implementer = null;
+            foreach (var i in source.Implementers)
+            {
+                if (i.Id == model.ImplementerId)
+                {
+                    implementer = i;
+                    break;
+                }
+            }
+            if (assembly == null || client == null ||
+                model.ImplementerId.HasValue && implementer == null)
+            {
+                throw new Exception("Элемент не найден");
+            }
             order.Count = model.Count;
             order.ClientId = model.ClientId.Value;
             order.DateCreate = model.DateCreate;
@@ -87,35 +141,58 @@ namespace ComputerShopListImplement.Implements
             order.DateImplement = model.DateImplement;
             order.AssemblyId = model.AssemblyId;
             order.Status = model.Status;
-            order.Sum = model.Sum;
+            order.Sum = model.Count * assembly.Price;
             return order;
         }
 
         private OrderViewModel CreateViewModel(Order order)
         {
-            string assemblyName = "";
-            foreach (var assembly in source.Assemblies)
+            Assembly assembly = null;
+            foreach (var a in source.Assemblies)
             {
-                if (assembly.Id == order.AssemblyId)
+                if (a.Id == order.AssemblyId)
                 {
-                    assemblyName = assembly.AssemblyName;
+                    assembly = a;
                     break;
                 }
+            }
+            Client client = null;
+            foreach (var c in source.Clients)
+            {
+                if (c.Id == order.ClientId)
+                {
+                    client = c;
+                    break;
+                }
+            }
+            Implementer implementer = null;
+            foreach (var i in source.Implementers)
+            {
+                if (i.Id == order.ImplementerId)
+                {
+                    implementer = i;
+                    break;
+                }
+            }
+            if (assembly == null || client == null ||
+                implementer == null)
+            {
+                throw new Exception("Элемент не найден");
             }
             return new OrderViewModel
             {
                 Id = order.Id,
                 Count = order.Count,
-                ClientFIO = source.Clients.FirstOrDefault(rec => rec.Id == order.ClientId).FIO,
+                ClientFIO = client.FIO,
                 ClientId = order.ClientId,
                 DateCreate = order.DateCreate,
                 DateImplement = order.DateImplement,
-                AssemblyName = assemblyName,
+                AssemblyName = assembly.AssemblyName,
                 AssemblyId = order.AssemblyId,
                 Status = order.Status,
                 Sum = order.Sum,
                 ImplementerId = order.ImplementerId,
-                ImplementerFIO = source.Implementers.FirstOrDefault(i => i.Id == order.ImplementerId)?.FIO,
+                ImplementerFIO = implementer.FIO,
             };
         }
     }

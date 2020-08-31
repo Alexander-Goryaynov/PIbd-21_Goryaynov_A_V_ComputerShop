@@ -50,12 +50,10 @@ namespace ComputerShopClientView
                         $"api/main/getorders?clientId={Program.Client.Id}");
                 dataGridView.Columns[0].Visible = false;
                 dataGridView.Columns[1].Visible = false;
-                dataGridView.Columns[2].Visible = false;
-                dataGridView.Columns[10].Visible = false;
-                dataGridView.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dataGridView.Columns[3].FillWeight = 3;
-                dataGridView.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-                dataGridView.Columns[7].Visible = false;
+                dataGridView.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;               
+                dataGridView.Columns[4].Visible = false;
+                dataGridView.Columns[9].Visible = false;
+                dataGridView.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 dataGridView.Columns[11].Visible = false;
             }
             catch (Exception ex)

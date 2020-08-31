@@ -43,18 +43,8 @@ namespace ComputerShopView
         private void LoadData()
         {
             try
-            {
-                var clients = logic.Read(null);
-                if (clients != null)
-                {
-                    dataGridView.DataSource = clients;
-                    dataGridView.Columns[0].Visible = false;
-                    dataGridView.Columns[3].Visible = false;
-                    dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    dataGridView.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    dataGridView.Columns[1].FillWeight = 3;
-                    dataGridView.Columns[2].FillWeight = 2;
-                }
+            {                
+                Program.ConfigGrid(logic.Read(null), dataGridView);                
             }
             catch (Exception ex)
             {

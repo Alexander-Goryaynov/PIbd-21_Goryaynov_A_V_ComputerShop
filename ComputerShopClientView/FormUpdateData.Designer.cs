@@ -44,7 +44,7 @@
             this.labelEmail.Name = "labelEmail";
             this.labelEmail.Size = new System.Drawing.Size(41, 13);
             this.labelEmail.TabIndex = 0;
-            this.labelEmail.Text = "Логин(почта):";
+            this.labelEmail.Text = "Почта:";
             // 
             // textBoxEmail
             // 
